@@ -4,10 +4,9 @@ class monjeu extends Phaser.Scene {
         this.player_invulnerable = false;
     }
     preload() {
-        this.load.tilemapTiledJSON("Village","maps/VILLAGE.json");
-        this.load.image("phaser_assets", "maps/newstileset.png");
-        this.load.image('perso','Sprites/Player.png');
-
+        this.load.tilemapTiledJSON("Village","assets/maps/VILLAGE.json");
+        this.load.image("phaser_assets", "assets/maps/newstileset.png");
+        this.load.image('perso','assets/Sprites/Hero.gif');
     }
 
 
@@ -15,6 +14,8 @@ class monjeu extends Phaser.Scene {
         const carteDuNiveau = this.add.tilemap("Village");        
         const tileset = carteDuNiveau.addTilesetImage("newstileset","phaser_assets");
         const base = carteDuNiveau.createLayer('Calque 1 sol',tileset);
+        base.setCollisionByProperty({ estSolide: true });
+        const bg1 = carteDuNiveau.createLayer('bg1',tileset);
         base.setCollisionByProperty({ estSolide: true }); 
         this.player = this.physics.add.sprite(0*64, 9*64, 'perso');
         this.physics.add.collider(this.player, base);
