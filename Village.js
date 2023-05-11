@@ -8,20 +8,15 @@ class monjeu extends Phaser.Scene {
         this.coY = data.y
     }
     preload() {
-        this.load.image('Tileset1', 'assets/maps/newstileset.png');
+        this.load.image('Tileset1', 'assets/maps/newtileset.png');
         this.load.image("UI","Assets/ui.png");
         this.load.image("background", "Assets/maps/ZL_MAP_PRINCIPAL.png");
 
-        this.load.spritesheet('player', 'assets/sprites/supercat_sprites.png',
-            { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('Chests', 'assets/sprites/Chests.png',
-            { frameWidth: 32, frameHeight: 32 });
-
-        this.load.spritesheet('enemy', 'assets/sprites/Robot_Mouse-sheet.png',
-            { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('player', 'assets/Sprites/Hero.gif',
+            { frameWidth: 64, frameHeight: 64});
 
 
-        this.load.tilemapTiledJSON('tilemap', 'assets/maps/ZL_MAP_PRINCIPAL.json')
+        this.load.tilemapTiledJSON('tilemap', 'assets/maps/VILLAGE.json')
 
     }
 
@@ -30,34 +25,15 @@ class monjeu extends Phaser.Scene {
 
 
         
-        this.hp = 9;
+        this.hp = 100;
         this.timer = false
         
-
-        this.add.image(300,300,"background");
-
 
         // TILED - load la map
         const map = this.make.tilemap({ key: 'tilemap' })
         const tileset = map.addTilesetImage('newstileset', 'Tileset1')
         const Teleportation = map.createLayer(
             "Calque 8 Teleportation",
-            tileset,
-        )
-        const tp2 = map.createLayer(
-            "Calque 9 tp1",
-            tileset,
-        )
-        const tp3 = map.createLayer(
-            "Calque 10 tp2",
-            tileset,
-        )
-        const tp4 = map.createLayer(
-            "Calque 11 tp3",
-            tileset,
-        )
-        const tp5 = map.createLayer(
-            "Calque 12 tp4",
             tileset,
         )
         
@@ -73,16 +49,16 @@ class monjeu extends Phaser.Scene {
         this.SurCiel.setDepth(3);
        
 
-        if(this.coX && this.coY){
-            this.player = this.physics.add.sprite(this.coX, this.coY, 'player').setSize(15,25).setOffset(7,5);
-        }
-        else{
-        this.player = this.physics.add.sprite(155 * 16, 297 * 16, 'player').setSize(15,25).setOffset(7,5);
-        }
-        this.player.setDepth(1);
-
-        this.enemy = this.physics.add.sprite(155 * 16, 249 * 16, 'enemy').setSize(18,23).setOffset(11,8);
-        this.enemy.setDepth(1);
+        //if(this.coX && this.coY){
+        //    this.player = this.physics.add.sprite(this.coX, this.coY, 'player').setSize(15,25).setOffset(7,5);
+        //}
+        //else{
+        //this.player = this.physics.add.sprite(155 * 16, 297 * 16, 'player').setSize(15,25).setOffset(7,5);
+        //}
+        //this.player.setDepth(1);
+//
+        //this.enemy = this.physics.add.sprite(155 * 16, 249 * 16, 'enemy').setSize(18,23).setOffset(11,8);
+        //this.enemy.setDepth(1);
 
 
         //this.enemy = enemy = this.physics.add.sprite(155 * 16, 287 * 16, 'enemy');
@@ -118,21 +94,6 @@ class monjeu extends Phaser.Scene {
 
         Teleportation.setCollisionByExclusion (-1, true);
         this.physics.add.collider(this.player, Teleportation,this.changeScene, null, this);
-
-        tp2.setCollisionByExclusion (-1, true);
-        this.physics.add.collider(this.player, tp2,this.changeScene2, null, this);
-        
-        //TELEPORTEUR DE CHANGEMENT DE SCENE DE LA SALLE 2
-        tp3.setCollisionByExclusion (-1, true);
-        this.physics.add.collider(this.player, tp3,this.changeScene3, null, this);
-
-        tp4.setCollisionByExclusion (-1, true);
-        this.physics.add.collider(this.player, tp4,this.changeScene4, null, this);
-
-        //TELEPORTEUR DE CHANGEMENT DE SCENE 3
-
-        tp5.setCollisionByExclusion (-1, true);
-        this.physics.add.collider(this.player, tp5,this.changeScene5, null, this);
 
         this.clavier = this.input.keyboard.addKeys('S,Q,D,Z,SPACE,SHIFT');
 
@@ -295,17 +256,5 @@ class monjeu extends Phaser.Scene {
     }
     changeScene(){
         this.scene.start("Dortoire",{x: 96 * 16, y: 95 * 16},)
-    }
-    changeScene2(){
-        this.scene.start("Dortoire", {x: 97 * 16, y: 6 * 16})
-    }
-    changeScene3(){
-        this.scene.start("Labo", {x: 5 * 16, y: 96 * 16})
-    }
-    changeScene4(){
-        this.scene.start("Labo", {x: 95 * 16, y: 96 * 16})
-    }
-    changeScene5(){
-        this.scene.start("Hall", {x: 2 * 16, y: 58 * 16})
     }
 }
