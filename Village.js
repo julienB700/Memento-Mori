@@ -8,9 +8,8 @@ class monjeu extends Phaser.Scene {
         this.coY = data.y
     }
     preload() {
-        this.load.image('Tileset1', 'assets/maps/newtileset.png');
-        this.load.image("UI","Assets/ui.png");
-        this.load.image("background", "Assets/maps/ZL_MAP_PRINCIPAL.png");
+        this.load.image('Tileset1', 'assets/maps/newstileset.png');
+        //this.load.image("UI","Assets/ui.png");
 
         this.load.spritesheet('player', 'assets/Sprites/Hero.gif',
             { frameWidth: 64, frameHeight: 64});
@@ -32,21 +31,21 @@ class monjeu extends Phaser.Scene {
         // TILED - load la map
         const map = this.make.tilemap({ key: 'tilemap' })
         const tileset = map.addTilesetImage('newstileset', 'Tileset1')
-        const Teleportation = map.createLayer(
-            "Calque 8 Teleportation",
-            tileset,
-        )
+            //const Teleportation = map.createLayer(
+            //    "Calque 8 Teleportation",
+            //    tileset,
+            //)
         
 
         this.Sol = map.createLayer('Calque 1 Sol', tileset)
-        this.murnoir = map.createLayer('Calque 2 Collision', tileset)
-        this.Deco1 = map.createLayer('Calque 3 Décoration 1', tileset)
-        this.Deco2 = map.createLayer('Calque 4 Décoration 2', tileset)
-        this.Deco3 = map.createLayer('Calque 5 Décoration 3', tileset)
-        this.Ciel = map.createLayer('Calque 6 Ciel', tileset)
-        this.Ciel.setDepth(2);
-        this.SurCiel = map.createLayer('Calque 7 SurCiel', tileset)
-        this.SurCiel.setDepth(3);
+        //this.murnoir = map.createLayer('Calque 2 Collision', tileset)
+        //this.Deco1 = map.createLayer('Calque 3 Décoration 1', tileset)
+        //this.Deco2 = map.createLayer('Calque 4 Décoration 2', tileset)
+        //this.Deco3 = map.createLayer('Calque 5 Décoration 3', tileset)
+        //this.Ciel = map.createLayer('Calque 6 Ciel', tileset)
+        //this.Ciel.setDepth(2);
+        //this.SurCiel = map.createLayer('Calque 7 SurCiel', tileset)
+        //this.SurCiel.setDepth(3);
        
 
         //if(this.coX && this.coY){
@@ -68,26 +67,26 @@ class monjeu extends Phaser.Scene {
 
         
 
-        this.murnoir.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.player, this.murnoir);
-        this.Deco1.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.player, this.Deco1);
-        this.Deco2.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.player, this.Deco2);
-        this.Deco3.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.player, this.Deco3);
+        //this.murnoir.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.player, this.murnoir);
+        //this.Deco1.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.player, this.Deco1);
+        //this.Deco2.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.player, this.Deco2);
+        //this.Deco3.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.player, this.Deco3);
+//
+//
+        //this.murnoir.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.enemy, this.murnoir);
+        //this.Deco1.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.enemy, this.Deco1);
+        //this.Deco2.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.enemy, this.Deco2);
+        //this.Deco3.setCollisionByProperty({ estSolide: true });
+        //this.physics.add.collider(this.enemy, this.Deco3);
 
-
-        this.murnoir.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.enemy, this.murnoir);
-        this.Deco1.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.enemy, this.Deco1);
-        this.Deco2.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.enemy, this.Deco2);
-        this.Deco3.setCollisionByProperty({ estSolide: true });
-        this.physics.add.collider(this.enemy, this.Deco3);
-
-        this.physics.add.collider(this.player, this.enemy, this.handlePlayerEnemyCollision, null, this);
+        //this.physics.add.collider(this.player, this.enemy, this.handlePlayerEnemyCollision, null, this);
         // ...
 
         //TELEPORTEUR DE CHANGEMENT DE SCENE DE LA SALLE 1
@@ -100,12 +99,12 @@ class monjeu extends Phaser.Scene {
         // Create interact button
         this.interactButton = this.input.keyboard.addKey('E');
 
-        this.camera = this.cameras.main.setSize(1600, 900);
+        //this.camera = this.cameras.main.setSize(1600, 900);
 
         this.camera.startFollow(this.player);
-        this.camera.setDeadzone(100, 100);
-        this.camera.setBounds(0, 0, 299 * 16, 299 * 16);
-        this.cameras.main.zoom = 1.8
+        //this.camera.setDeadzone(100, 100);
+        //this.camera.setBounds(0, 0, 299 * 16, 299 * 16);
+        this.cameras.main.zoom = 0.5
         
 
 
