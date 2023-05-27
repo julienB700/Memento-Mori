@@ -1,17 +1,24 @@
-class Player {
-    constructor() {
-      this.health = 100;
-      this.isHit = false;
+export class Player extends Phaser.Physics.Arcade.Sprite {
+
+    constructor(scene, x, y, sprite) {
+        super(scene, x, y, sprite);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+
+        this.player_invulnerable = false;
+        this.CanShoot = true;
+        this.CanJump = true;
+        this.CDDash = true;
+        this.HPbar= 5;
+        this.CanSummon = true;
+        this.HP = 5;
+        this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     }
-    
-    hit() {
-      if (!this.isHit) {
-        this.health -= 10;
-        this.isHit = true;
-  
-        setTimeout(() => {
-          this.isHit = false;
-        }, 1000); // 1-second delay
-      }
-      }
+
+    update(){
+
+       
     }
+
+
+}

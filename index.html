@@ -13,28 +13,7 @@
 </head>
 
 <body>
-	<script src= "Startscreen.js"></script>
-	<script src= "Village.js"></script>
-	<script src= "Enemy.js"></script>
-	<script src= "Player.js"></script>
-	<script type="text/javascript">
-
-		
-		var config = {
-			type: Phaser.AUTO,
-			width: 896, height: 448,
-			physics: {
-				default: 'arcade',
-				arcade: {
-					gravity:{y: 500},
-					debug: true
-				}
-			},
-			antialias: false,
-			scene: [Menu,monjeu],
-		};
-		new Phaser.Game(config)
-	</script>
+	<script type="module" src="script.js" async></script>
 </body>
 
 </html>
