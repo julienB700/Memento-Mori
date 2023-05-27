@@ -403,57 +403,34 @@ export class Foret extends Phaser.Scene {
             child.anims.play('LeftHit', true);
         }, this);
 
-        if (this.mespointsdevie == 5) { this.mespointsdevie.setTexture("vie5")}
-        else if (this.mespointsdevie == 4) { this.mespointsdevie.setTexture("vie4") }
-        else if (this.mespointsdevie == 3) { this.mespointsdevie.setTexture("vie3") }
-        else if (this.mespointsdevie == 2) { this.mespointsdevie.setTexture("vie2") }
-        else if (this.mespointsdevie == 1) { this.mespointsdevie.anims.setTexture("vie1") }
-        else if (this.mespointsdevie == 0) { 
-            this.mespointsdevie.setTexture("vie0") 
-            this.scene.start("Menu")
-        }
-        
     }
-
-    //GetHit(){
-    //    if(this.HP == 5){
-    //        setTimeout(() => {
-    //            this.HP -= 1
-    //            this.player_invulnerable = true;
-    //        }, 1000);
-    //        this.HPbar.setTexture('vie4');
-    //    }
-    //    else if(this.HP == 4){
-    //        setTimeout(() => {
-    //            this.HP -= 1;
-    //        }, 1000);
-    //        this.HPbar.setTexture('vie3');
-    //    }
-    //    else if(this.HP == 3){
-    //        setTimeout(() => {
-    //            this.HP -= 1;
-    //        }, 1000);
-    //        this.HPbar.setTexture('vie2');
-    //    }
-    //    else if(this.HP == 2){
-    //        setTimeout(() => {
-    //            this.HP -= 1;
-    //        }, 1000);
-    //        this.HPbar.setTexture('vie1');
-    //    }
-    //    else if(this.HP == 1){
-    //        setTimeout(() => {
-    //            this.HP -= 1;
-    //        }, 1000);
-    //    }
-    //}
+    GetHit(){
+        if(this.mespointsdevie == 5){ 
+            this.MyInterface.setTexture('vie5');
+        }
+        else if(this.mespointsdevie == 4){ 
+            this.MyInterface.setTexture('vie4');
+        }
+        else if(this.mespointsdevie == 3){
+     
+            this.MyInterface.setTexture('vie3');
+        }
+        else if(this.mespointsdevie == 2){
+            
+            this.MyInterface.setTexture('vie2');
+        }
+        else if(this.mespointsdevie == 1){
+            this.MyInterface.setTexture('vie1');
+        }
+    }
+    
 
     PRENDREDESDEGATSCAFAITMAL(player, enemy){
         if(!this.player.invulnerable){
             
             this.mespointsdevie -= 1;
             this.cameras.main.shake(100, 0.025);
-
+            this.GetHit = true; 
                 if(this.mespointsdevie === 0){
                     this.player.setTint( 0xff0000 );
                     this.physics.pause();
@@ -470,6 +447,8 @@ export class Foret extends Phaser.Scene {
                 )
         }
     }
+
+    
 
     sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
