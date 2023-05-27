@@ -35,7 +35,7 @@ export class Foret extends Phaser.Scene {
         this.load.spritesheet('SummonSprites', 'assets/Sprites/SummonSprites.png',
             { frameWidth: 64, frameHeight: 64 });
 
-        this.load.spritesheet('UI', 'assets/Sprites/UI-5-vie.png', 
+        this.load.spritesheet('MyInterface', 'assets/Sprites/UI-5-vie.png', 
             { frameWidth: 237, frameHeight: 86 });
         this.load.spritesheet('CoupDeFaux', 'assets/Sprites/ScytheHit.png',
             { frameWidth: 64, frameHeight: 64 });
@@ -188,31 +188,31 @@ export class Foret extends Phaser.Scene {
 
         this.anims.create({
             key: 'vie1',
-            frames: this.anims.generateFrameNumbers('UI', { start: 24, end: 31 }),
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 22, end: 29 }),
             frameRate: 1,
             repeat: -1
         });
         this.anims.create({
             key: 'vie2',
-            frames: this.anims.generateFrameNumbers('UI', { start: 16, end: 23 }),
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 16, end: 23 }),
             frameRate: 1,
             repeat: -1
         });
         this.anims.create({
             key: 'vie3',
-            frames: this.anims.generateFrameNumbers('UI', { start: 8, end: 15 }),
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 8, end: 15 }),
             frameRate: 1,
             repeat: -1
         });
         this.anims.create({
             key: 'vie4',
-            frames: this.anims.generateFrameNumbers('UI', { start: 0, end: 7 }),
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 0, end: 7 }),
             frameRate: 1,
             repeat: -1
         });
         this.anims.create({
             key: 'vie5',
-            frames: this.anims.generateFrameNumbers('UI', { start: 25, end: 25 }),
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 25, end: 25 }),
             frameRate: 1,
             repeat: -1
         });
@@ -225,13 +225,24 @@ export class Foret extends Phaser.Scene {
             repeat: -1
         });
 
-        this.physics.add.sprite(this.player.x+450,230, "UI").setScale(1).setScrollFactor(0);
+        this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
+        this.MyInterface.body.allowGravity = false;
+        this.cameras.main.zoom = 1;
     }
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
+    TestUi(player, MyInterface){
+        if (player.mespointsdevie == 5){
+            
+            this.player.scene.MyInterface.setTexture('Health75');
+            }
+        }
+
     update(time, delta) {
         this.mespointsdevieText.setText(this.mespointsdevie);
+
+      
 
     
         /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
@@ -392,21 +403,52 @@ export class Foret extends Phaser.Scene {
             child.anims.play('LeftHit', true);
         }, this);
 
-        if (this.mespointsdevie == 5) { this.mespointsdevie.anims.play("vie5"), true }
-
-        //else if (this.mespointsdevie == 4) { this.mespointsdevie.anims.play("vie4", true) }
-        //else if (this.mespointsdevie == 3) { this.mespointsdevie.anims.play("vie3", true) }
-        //else if (this.mespointsdevie == 2) { this.mespointsdevie.anims.play("vie2", true) }
-        //else if (this.mespointsdevie == 1) { this.mespointsdevie.anims.play("vie1", true) }
-        //else if (this.mespointsdevie == 0) { 
-        //    this.mespointsdevie.anims.play("vie0", true) 
-        //    this.scene.start("Menu")
-        //}
+        if (this.mespointsdevie == 5) { this.mespointsdevie.setTexture("vie5")}
+        else if (this.mespointsdevie == 4) { this.mespointsdevie.setTexture("vie4") }
+        else if (this.mespointsdevie == 3) { this.mespointsdevie.setTexture("vie3") }
+        else if (this.mespointsdevie == 2) { this.mespointsdevie.setTexture("vie2") }
+        else if (this.mespointsdevie == 1) { this.mespointsdevie.anims.setTexture("vie1") }
+        else if (this.mespointsdevie == 0) { 
+            this.mespointsdevie.setTexture("vie0") 
+            this.scene.start("Menu")
+        }
         
     }
 
+    //GetHit(){
+    //    if(this.HP == 5){
+    //        setTimeout(() => {
+    //            this.HP -= 1
+    //            this.player_invulnerable = true;
+    //        }, 1000);
+    //        this.HPbar.setTexture('vie4');
+    //    }
+    //    else if(this.HP == 4){
+    //        setTimeout(() => {
+    //            this.HP -= 1;
+    //        }, 1000);
+    //        this.HPbar.setTexture('vie3');
+    //    }
+    //    else if(this.HP == 3){
+    //        setTimeout(() => {
+    //            this.HP -= 1;
+    //        }, 1000);
+    //        this.HPbar.setTexture('vie2');
+    //    }
+    //    else if(this.HP == 2){
+    //        setTimeout(() => {
+    //            this.HP -= 1;
+    //        }, 1000);
+    //        this.HPbar.setTexture('vie1');
+    //    }
+    //    else if(this.HP == 1){
+    //        setTimeout(() => {
+    //            this.HP -= 1;
+    //        }, 1000);
+    //    }
+    //}
 
-    PRENDREDESDEGATSCAFAITMAL(player, enemy) {
+    PRENDREDESDEGATSCAFAITMAL(player, enemy){
         if(!this.player.invulnerable){
             
             this.mespointsdevie -= 1;
