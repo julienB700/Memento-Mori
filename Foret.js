@@ -10,6 +10,9 @@ export class Foret extends Phaser.Scene {
         this.CanHit = true;
         this.CDDash = true;
         this.CanSummon = true;
+        
+        this.EnemyHP = 5;
+        
     }
     init(data) {
         spawnx = data.x;
@@ -48,7 +51,8 @@ export class Foret extends Phaser.Scene {
 
     create() {
 
-        this.clavier = this.input.keyboard.addKeys('K,L,M,Z,O,Q,D,E,SPACE,SHIFT');
+        this.clavier = this.input.keyboard.createCursorKeys('up,down,left,right');
+        this.clavier = this.input.keyboard.addKeys('K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
         this.add.image(1600, 960, "Background_foret");
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
@@ -72,42 +76,42 @@ export class Foret extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
 
-        /////////////////////////// ORBE ////////////////////////////////////////
+        ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
         this.Orbe = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
         this.physics.add.collider(this.Orbe, Sol, function (Orbe, Sol) {
             Orbe.destroy();
         });
 
+        ////////////////////////////////////////////// LA FAUX /////////////////////////////////////////////////////////////
 
-
-        /////////////////////////////////////// LA FAUX /////////////////////////////////////////////////////////////
         this.Scyth = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
         this.ScythLeft = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
 
-        this.SpriteHitBox = this.physics.add.sprite(10 * 32, 25 * 32, 'SpriteHitBox').setImmovable(true);
-        this.SpriteHitBox.body.setAllowGravity(false);
+        //this.SpriteHitBox = this.physics.add.sprite(10 * 32, 25 * 32, 'SpriteHitBox').setImmovable(true);
+        //this.SpriteHitBox.body.setAllowGravity(false);
 
-        /////////////////////////////////////////////// TRANSITION ////////////////////////////////////////
+        /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
 
         this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
         this.SpritesTransition = this.transition.create(99 * 32, 27.8 * 32, 'Transi')
 
-        /////////////////////////////////////////////// SPAWN MONSTRE ////////////////////////////////////////
+        /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
 
         this.enemy = this.physics.add.sprite(5 * 32, 25 * 32, "MobSprite");
         this.physics.add.collider(this.enemy, Sol);
         this.enemy.setCollideWorldBounds(true);
-        this.physics.add.overlap(this.player, this.enemy, this.PRENDREDESDEGATSCAFAITMAL,null,this)
+        this.physics.add.overlap(this.player, this.enemy, this.PRENDREDESDEGATSCAFAITMAL,null,this);
         
-        this.physics.add.collider(this.Orbe, this.enemy, this.enemyHit, null, this);
+       
+
+        
+        this.physics.add.collider(this.Orbe, this.enemy, this.enemyHit,null,this);
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        this.mespointsdevie = this.add.sprite(449, 224, "HP").setScrollFactor(0);
-
-        this.mespointsdevie = 5 
-        this.mespointsdevieText=this.add.text(375,233,this.mespointsdevie,{fontSize:'20px',fill:'#fff'}).setScale(1).setScrollFactor(0);
+        this.mespointsdevie = 5 ;
+        this.mespointsdevieText=this.add.text(375,133,this.mespointsdevie,{fontSize:'20px',fill:'#fff'}).setScale(1).setScrollFactor(0);
         
         this.anims.create({
             key: 'enemy1',
@@ -116,7 +120,8 @@ export class Foret extends Phaser.Scene {
             repeat: -1
         });
 
-        /////////////////////////// Animations ////////////////////////////////////////
+        /////////////////////////// Animations ////////////////////////////////////////////////////////////////////
+        
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
@@ -131,9 +136,9 @@ export class Foret extends Phaser.Scene {
             repeat: -1
         });
 
-        
 
-        /////////////////////////// ATTAQUES ////////////////////////////////////////
+        ///////////////////////////////////////// ATTAQUES /////////////////////////////////////////////////////////////
+
         this.anims.create({
             key: 'RightHit',
             frames: this.anims.generateFrameNumbers('CoupDeFaux', { start: 0, end: 7 }),
@@ -147,7 +152,8 @@ export class Foret extends Phaser.Scene {
             frameRate: 20,
             repeat: 0
         });
-        /////////////////////////// ORBANIM ////////////////////////////////////////
+        ///////////////////////////////////////// ORBANIM ///////////////////////////////////////////////
+
         this.anims.create({
             key: 'Orbanim',
             frames: this.anims.generateFrameNumbers('Orb', { start: 0, end: 6 }),
@@ -155,65 +161,60 @@ export class Foret extends Phaser.Scene {
             repeat: 0
         });
 
-        ///////////////////////////// DASHANIMS ////////////////////////////////////////
+        /////////////////////////////////////////// DASHANIMS ///////////////////////////////////////////////
+
         this.anims.create({
             key: 'DashanimGauche',
             frames: this.anims.generateFrameNumbers('Dash', { start: 0, end: 6 }),
             frameRate: 8,
-            repeat: 0
+            repeat: -1
         });
+
         this.anims.create({
             key: 'DashanimDroite',
             frames: this.anims.generateFrameNumbers('Dash', { start: 7, end: 13 }),
             frameRate: 8,
-            repeat: 0
+            repeat: -1
         });
+
         this.anims.create({
             key: 'DashanimHaut',
             frames: this.anims.generateFrameNumbers('Dash', { start: 14, end: 21 }),
             frameRate: 8,
-            repeat: 0
+            repeat: -1
         });
 
 
-
-        /////////////////////////// UTILISATEUR INTERFACE ////////////////////////////////////////
-
-        //this.anims.create({
-        //    key: 'vie0',
-        //    frames: this.anims.generateFrameNumbers('UI', { start: 5, end: 5 }),
-        //    frameRate: 1,
-        //    repeat: -1
-        //});
+        ////////////////////////////////// UTILISATEUR INTERFACE ///////////////////////////////////////////////
 
         this.anims.create({
             key: 'vie1',
-            frames: this.anims.generateFrameNumbers('MyInterface', { start: 22, end: 29 }),
-            frameRate: 1,
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 24, end: 31 }),
+            frameRate: 10,
             repeat: -1
         });
         this.anims.create({
             key: 'vie2',
             frames: this.anims.generateFrameNumbers('MyInterface', { start: 16, end: 23 }),
-            frameRate: 1,
+            frameRate: 10,
             repeat: -1
         });
         this.anims.create({
             key: 'vie3',
             frames: this.anims.generateFrameNumbers('MyInterface', { start: 8, end: 15 }),
-            frameRate: 1,
+            frameRate: 10,
             repeat: -1
         });
         this.anims.create({
             key: 'vie4',
             frames: this.anims.generateFrameNumbers('MyInterface', { start: 0, end: 7 }),
-            frameRate: 1,
+            frameRate: 10,
             repeat: -1
         });
         this.anims.create({
             key: 'vie5',
-            frames: this.anims.generateFrameNumbers('MyInterface', { start: 25, end: 25 }),
-            frameRate: 1,
+            frames: this.anims.generateFrameNumbers('MyInterface', { start: 32, end: 32 }),
+            frameRate: 10,
             repeat: -1
         });
 
@@ -228,6 +229,7 @@ export class Foret extends Phaser.Scene {
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;
         this.cameras.main.zoom = 1;
+
     }
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
@@ -240,11 +242,13 @@ export class Foret extends Phaser.Scene {
         }
 
     update(time, delta) {
+
         this.mespointsdevieText.setText(this.mespointsdevie);
 
-      
 
-    
+        if (this.mespointsdevie === 5 ) {
+        this.MyInterface.anims.play('vie5')}
+      
         /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
         var distance = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
         if (distance < 300) {
@@ -291,14 +295,16 @@ export class Foret extends Phaser.Scene {
             if (this.clavier.SHIFT.isDown && this.CDDash == true && this.clavier.D.isDown) {
 
                 this.player.invulnerable = true;
+
                 this.sleep(100).then(() => {
                     setTimeout(()=>{
                     this.player.invulnerable= false
                     },1000);
                     }   
                 )
-                this.player.setVelocityX(800)
-                this.player.anims.play('DashanimDroite', true)
+                this.player.setVelocityX(800);
+                this.player.anims.play('DashanimDroite', true);
+
                 this.CDDash == false;
                 setTimeout(() => {
                     this.CDDash = false
@@ -312,6 +318,7 @@ export class Foret extends Phaser.Scene {
         else if (this.clavier.Z.isDown && this.CDDash == true && this.clavier.SHIFT.isDown) {
 
             this.player.invulnerable = true;
+
                 this.sleep(100).then(() => {
                     setTimeout(()=>{
                     this.player.invulnerable= false
@@ -321,6 +328,7 @@ export class Foret extends Phaser.Scene {
 
             this.player.setVelocityY(-500)
             this.player.anims.play('DashanimHaut', true)
+
             this.CDDash == false;
             setTimeout(() => {
                 this.CDDash = false
@@ -343,18 +351,24 @@ export class Foret extends Phaser.Scene {
 
         ///////////////////////////////////// ORBES ////////////////////////////////////////
 
-        if (this.clavier.O.isDown && this.CanShoot == true) {
-            if (this.clavier.D.isDown) {
-                this.Orbe.create(this.player.x + 50, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
+        if (this.CanShoot == true) {
+            if (this.clavier.RIGHT.isDown) {
+                this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
             }
-            else if (this.clavier.Q.isDown) {
-                this.Orbe.create(this.player.x - 50, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
+            else if (this.clavier.LEFT.isDown) {
+                this.Orbe.create(this.player.x - 30, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
             }
-            else if (this.clavier.Z.isDown) {
-                this.Orbe.create(this.player.x, this.player.y - 50, "Orb").setScale(0.5).setVelocityY(-475);
+            else if (this.clavier.LEFT.isDown && this.clavier.UP.isDown) {
+                this.Orbe.create(this.player.x - 20, this.player.y - 20, "Orb").setScale(0.5).setVelocityX(- 475).setVelocityY(-475);
             }
-            else if (this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x + 50, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
+            else if (this.clavier.UP.isDown) {
+                this.Orbe.create(this.player.x, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475);
+            }
+            else if (this.clavier.UP.isDown , this.clavier.RIGHT.isDown) {
+                this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
+            }
+            else if (this.clavier.DOWN.isDown) {
+                this.Orbe.create(this.player.x , this.player.y , "Orb").setScale(0.5).setVelocityY(+475);
             }
 
             this.CanShoot = false;
@@ -366,7 +380,7 @@ export class Foret extends Phaser.Scene {
         this.Orbe.getChildren().forEach(function (child) {
             child.anims.play('Orbanim', true);
             this.nombreorbes += 1
-        }, this)
+        }, this);
 
         /////////////////////////// ATTAQUES CORPS A CORPS ////////////////////////////////////////
 
@@ -404,51 +418,44 @@ export class Foret extends Phaser.Scene {
         }, this);
 
     }
-    GetHit(){
-        if(this.mespointsdevie == 5){ 
-            this.MyInterface.setTexture('vie5');
-        }
-        else if(this.mespointsdevie == 4){ 
-            this.MyInterface.setTexture('vie4');
-        }
-        else if(this.mespointsdevie == 3){
-     
-            this.MyInterface.setTexture('vie3');
-        }
-        else if(this.mespointsdevie == 2){
-            
-            this.MyInterface.setTexture('vie2');
-        }
-        else if(this.mespointsdevie == 1){
-            this.MyInterface.setTexture('vie1');
-        }
-    }
-    
+
 
     PRENDREDESDEGATSCAFAITMAL(player, enemy){
         if(!this.player.invulnerable){
             
             this.mespointsdevie -= 1;
             this.cameras.main.shake(100, 0.025);
-            this.GetHit = true; 
-                if(this.mespointsdevie === 0){
-                    this.player.setTint( 0xff0000 );
-                    this.physics.pause();
-                    this.scene.start("Menu")
-                }
-
-                this.player.invulnerable = true;
-                this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    this.player.body.allowGravity = true;
-                    },1000);
-                    }   
-                )
+            //this.GetHit = true; 
+            this.player.invulnerable = true;
+            if (this.mespointsdevie === 4) {
+                this.MyInterface.anims.play('vie4', true)
+            }
+            if (this.mespointsdevie === 3) {
+                this.MyInterface.anims.play('vie3', true)
+            }
+            if (this.mespointsdevie === 2) {
+                this.MyInterface.anims.play('vie2', true)
+            }
+            if (this.mespointsdevie === 1) {
+                this.MyInterface.anims.play('vie1', true)
+            }
+            
+            if(this.mespointsdevie === 0){
+                this.player.setTint( 0xff0000 );
+                
+                this.scene.start("Menu")
+            }
+            
+            this.sleep(100).then(() => {
+                setTimeout(()=>{
+                this.player.invulnerable = false
+                this.player.body.allowGravity = true;
+                },1000);
+                }   
+            )
+        
         }
     }
-
-    
 
     sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -457,6 +464,7 @@ export class Foret extends Phaser.Scene {
     ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
 
     enemyHit(Orbe, enemy) {
+        
         enemy.destroy()
     };
 
