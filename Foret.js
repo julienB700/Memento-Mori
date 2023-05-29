@@ -100,14 +100,9 @@ export class Foret extends Phaser.Scene {
         this.physics.add.collider(this.enemy, Sol);
         this.enemy.setCollideWorldBounds(true);
         this.physics.add.overlap(this.player, this.enemy, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-
-        
-        
-       
-
-        
         this.physics.add.collider(this.Orbe, this.enemy, this.enemyHit,null,this);
 
+        
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
         this.mespointsdevie = 5 ;
