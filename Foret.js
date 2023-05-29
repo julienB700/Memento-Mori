@@ -62,7 +62,6 @@ export class Foret extends Phaser.Scene {
 
         const carteDuNiveau = this.add.tilemap("Foret");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
-
         const Sol = carteDuNiveau.createLayer('Sol', tileset);
         Sol.setCollisionByExclusion(-1, true);
 
@@ -72,7 +71,6 @@ export class Foret extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.zoom = 0.8;
-        //this.shakeCamera = this.cameras.add(405, 305, 390, 290);
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
 
@@ -98,10 +96,12 @@ export class Foret extends Phaser.Scene {
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
 
-        this.enemy = this.physics.add.sprite(5 * 32, 25 * 32, "MobSprite");
+        this.enemy = this.physics.add.sprite(25 * 32, 27 * 32, "MobSprite");
         this.physics.add.collider(this.enemy, Sol);
         this.enemy.setCollideWorldBounds(true);
         this.physics.add.overlap(this.player, this.enemy, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+
+        
         
        
 
@@ -234,12 +234,10 @@ export class Foret extends Phaser.Scene {
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
-    TestUi(player, MyInterface){
-        if (player.mespointsdevie == 5){
-            
-            this.player.scene.MyInterface.setTexture('Health75');
-            }
+    PROCHAINESCENE(player, TRANSITION){
+        this.scene.start('Foret', { Player: player, TRANSITION: TRANSITION });
         }
+
 
     update(time, delta) {
 
