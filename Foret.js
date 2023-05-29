@@ -96,13 +96,200 @@ export class Foret extends Phaser.Scene {
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
 
-        this.enemy = this.physics.add.sprite(25 * 32, 27 * 32, "MobSprite");
-        this.physics.add.collider(this.enemy, Sol);
-        this.enemy.setCollideWorldBounds(true);
-        this.physics.add.overlap(this.player, this.enemy, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-        this.physics.add.collider(this.Orbe, this.enemy, this.enemyHit,null,this);
+        this.BAT = this.physics.add.sprite(11 * 32, 18 * 32, "MonstreBat");
+        this.BAT.type = "Bat"
+
+        this.BAT1 = this.physics.add.sprite(21 * 32, 17 * 32, "MonstreBat");
+        this.BAT1.type = "Bat"
+
+        this.BAT2 = this.physics.add.sprite(38 * 32, 17 * 32, "MonstreBat");
+        this.BAT2.type = "Bat"
+
+        this.BAT3 = this.physics.add.sprite(59 * 32, 16 * 32, "MonstreBat");
+        this.BAT3.type = "Bat"
+
+        this.BAT4 = this.physics.add.sprite(73 * 32, 16 * 32, "MonstreBat");
+        this.BAT4.type = "Bat"
+
+        this.BAT5 = this.physics.add.sprite(87 * 32, 19 * 32, "MonstreBat");
+        this.BAT5.type = "Bat"
+
+        this.BAT6 = this.physics.add.sprite(20 * 32, 33 * 32, "MonstreBat");
+        this.BAT6.type = "Bat"
+
+        this.BAT7 = this.physics.add.sprite(2 * 32, 38* 32, "MonstreBat");
+        this.BAT7.type = "Bat"
+
+        this.BAT8 = this.physics.add.sprite(16 * 32, 52 * 32, "MonstreBat");
+        this.BAT8.type = "Bat"
+
+        this.BAT9 = this.physics.add.sprite(4 * 32, 51 * 32, "MonstreBat");
+        this.BAT9.type = "Bat"
+
+        this.BAT10 = this.physics.add.sprite(27 * 32, 53 * 32, "MonstreBat");
+        this.BAT10.type = "Bat"
+
+        this.BAT11 = this.physics.add.sprite(35 * 32, 53 * 32, "MonstreBat");
+        this.BAT11.type = "Bat"
+
+        this.BAT12 = this.physics.add.sprite(35 * 32, 45 * 32, "MonstreBat");
+        this.BAT12.type = "Bat"
+
+        this.BAT13 = this.physics.add.sprite(46 * 32, 54 * 32, "MonstreBat");
+        this.BAT13.type = "Bat"
+
+        this.BAT14 = this.physics.add.sprite(53 * 32, 51 * 32, "MonstreBat");
+        this.BAT14.type = "Bat"
+
+        this.BAT15 = this.physics.add.sprite( 61* 32,  51* 32, "MonstreBat");
+        this.BAT15.type = "Bat"
+
+        this.BAT16 = this.physics.add.sprite( 61* 32,  54* 32, "MonstreBat");
+        this.BAT16.type = "Bat"
+        
+        this.BAT17 = this.physics.add.sprite( 61* 32, 42 * 32, "MonstreBat");
+        this.BAT17.type = "Bat"
+
+        this.BAT18 = this.physics.add.sprite( 71* 32,  49* 32, "MonstreBat");
+        this.BAT18.type = "Bat"
+
+        this.BAT19 = this.physics.add.sprite(72 * 32,  41* 32, "MonstreBat");
+        this.BAT19.type = "Bat"
+
+        this.BAT20 = this.physics.add.sprite( 80* 32, 54 * 32, "MonstreBat");
+        this.BAT20.type = "Bat"
+
+        this.BAT21 = this.physics.add.sprite( 91* 32,  55* 32, "MonstreBat");
+        this.BAT21.type = "Bat"
+
+        this.BAT22 = this.physics.add.sprite( 90* 32,  48* 32, "MonstreBat");
+        this.BAT22.type = "Bat"
+
+        this.BAT23 = this.physics.add.sprite( 95* 32, 41* 32, "MonstreBat");
+        this.BAT23.type = "Bat"
+
+
+
+        /////////////////////////////////////////////// SPAWN ZOMBIE //////////////////////////////////////////////////////
+
+        this.ZOMBIE = this.physics.add.sprite(13 * 32, 28 * 32, "MonstreZombie");
+        this.ZOMBIE.type = "Zombie"
+
+        this.ZOMBIE1 = this.physics.add.sprite(17 * 32, 24 * 32, "MonstreZombie");
+        this.ZOMBIE1.type = "Zombie"
+
+        this.ZOMBIE2 = this.physics.add.sprite(26 * 32, 28 * 32, "MonstreZombie");
+        this.ZOMBIE2.type = "Zombie"
+
+        this.ZOMBIE3 = this.physics.add.sprite(34* 32, 28 * 32, "MonstreZombie");
+        this.ZOMBIE3.type = "Zombie"
+
+        this.ZOMBIE4 = this.physics.add.sprite(45* 32, 28 * 32, "MonstreZombie");
+        this.ZOMBIE4.type = "Zombie"
+        
+        this.ZOMBIE5 = this.physics.add.sprite(55* 32,  28* 32, "MonstreZombie");
+        this.ZOMBIE5.type = "Zombie"
+        
+        this.ZOMBIE6 = this.physics.add.sprite(66* 32, 28* 32, "MonstreZombie");
+        this.ZOMBIE6.type = "Zombie"
+
+        this.ZOMBIE7 = this.physics.add.sprite(74* 32, 28* 32, "MonstreZombie");
+        this.ZOMBIE7.type = "Zombie"
+
+        this.ZOMBIE8 = this.physics.add.sprite(82* 32,  28* 32, "MonstreZombie");
+        this.ZOMBIE8.type = "Zombie"
+
+        this.ZOMBIE9 = this.physics.add.sprite(95* 32,  28* 32, "MonstreZombie");
+        this.ZOMBIE9.type = "Zombie"
+
+        this.ZOMBIE10 = this.physics.add.sprite(28* 32, 35* 32, "MonstreZombie");
+        this.ZOMBIE10.type = "Zombie"
+
+        this.ZOMBIE11 = this.physics.add.sprite(19* 32,  44* 32, "MonstreZombie");
+        this.ZOMBIE11.type = "Zombie"
+
+        this.ZOMBIE12 = this.physics.add.sprite(66* 32,  35* 32, "MonstreZombie");
+        this.ZOMBIE12.type = "Zombie"
+
+        this.ZOMBIE13 = this.physics.add.sprite(74* 32,  35* 32, "MonstreZombie");
+        this.ZOMBIE13.type = "Zombie"
+
+        /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
+
+        this.enemygroup = this.physics.add.group();
+        this.enemygroup.add(this.BAT);
+        this.enemygroup.add(this.BAT1);
+        this.enemygroup.add(this.BAT2);
+        this.enemygroup.add(this.BAT3);
+        this.enemygroup.add(this.BAT4);
+        this.enemygroup.add(this.BAT5);
+        this.enemygroup.add(this.BAT6);
+        this.enemygroup.add(this.BAT7);
+        this.enemygroup.add(this.BAT8);
+        this.enemygroup.add(this.BAT9);
+        this.enemygroup.add(this.BAT10);
+        this.enemygroup.add(this.BAT11);
+        this.enemygroup.add(this.BAT12);
+        this.enemygroup.add(this.BAT13);
+        this.enemygroup.add(this.BAT14);
+        this.enemygroup.add(this.BAT15);
+        this.enemygroup.add(this.BAT16);
+        this.enemygroup.add(this.BAT17);
+        this.enemygroup.add(this.BAT18);
+        this.enemygroup.add(this.BAT19);
+        this.enemygroup.add(this.BAT20);
+        this.enemygroup.add(this.BAT21);
+        this.enemygroup.add(this.BAT22);
+        this.enemygroup.add(this.BAT23);
+
+        this.enemygroup.add(this.ZOMBIE);
+        this.enemygroup.add(this.ZOMBIE1);
+        this.enemygroup.add(this.ZOMBIE2);
+        this.enemygroup.add(this.ZOMBIE3);
+        this.enemygroup.add(this.ZOMBIE4);
+        this.enemygroup.add(this.ZOMBIE5);
+        this.enemygroup.add(this.ZOMBIE6);
+        this.enemygroup.add(this.ZOMBIE7);
+        this.enemygroup.add(this.ZOMBIE8);
+        this.enemygroup.add(this.ZOMBIE9);
+        this.enemygroup.add(this.ZOMBIE10);
+        this.enemygroup.add(this.ZOMBIE11);
+        this.enemygroup.add(this.ZOMBIE12);
+        this.enemygroup.add(this.ZOMBIE13);
+
+
+        this.enemygroup.getChildren().forEach(function (child) {
+
+            if (child.type == "Bat") {
+                child.HP = 5;
+                this.physics.add.collider(child, Sol);
+                child.setCollideWorldBounds(true);
+                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+            }
+
+            else if (child.type == "Zombie") {
+                child.HP = 10;
+                this.physics.add.collider(child, Sol);
+                child.setCollideWorldBounds(true);
+                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
+                child.allowGravity = true;
+            }
+
+            else if (child.type == "Mage") {
+                child.HP = 5;
+                this.physics.add.collider(child, Sol);
+                child.setCollideWorldBounds(true);
+                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
+                child.allowGravity = true;
+            }
+
+        }, this);
 
         
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
         this.mespointsdevie = 5 ;
@@ -115,7 +302,7 @@ export class Foret extends Phaser.Scene {
             repeat: -1
         });
 
-        /////////////////////////// Animations ////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////// Animations ////////////////////////////////////////////////////////////////////
         
         this.anims.create({
             key: 'right',
@@ -243,12 +430,28 @@ export class Foret extends Phaser.Scene {
         this.MyInterface.anims.play('vie5')}
       
         /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
-        var distance = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
-        if (distance < 300) {
-            this.enemy.setVelocityX(this.player.x - this.enemy.x)
-            this.enemy.setVelocityY(this.player.y - this.enemy.y)
-        }
-        else { this.enemy.setVelocity(0, 0) }
+
+        this.enemygroup.getChildren().forEach(function (child) {
+            if (child.type == "Bat") {
+                var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance < 300) {
+                    child.setVelocityX(this.player.x - child.x)
+                    child.setVelocityY(this.player.y - child.y)
+                }
+                else { child.setVelocity(0, 0)}
+            }
+            if (child.type == "Zombie") {
+                var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance < 300) {
+                    child.setVelocityX(this.player.x - child.x)
+                    //child.setVelocityY(this.player.y - child.y)
+                }
+                else { child.setVelocity(0, 0) }
+            }
+        }, this);
+
+        
+
 
         /////////////////////////////////////// TEST ORBE A TETE CHERCHEUSE ///////////////////////////////////////////////////
 
@@ -436,7 +639,7 @@ export class Foret extends Phaser.Scene {
             if(this.mespointsdevie === 0){
                 this.player.setTint( 0xff0000 );
                 
-                this.scene.start("Menu")
+                this.scene.start("Foret")
             }
             
             this.sleep(100).then(() => {
@@ -456,9 +659,15 @@ export class Foret extends Phaser.Scene {
 
     ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
 
-    enemyHit(Orbe, enemy) {
+    enemyHit(enemy, Orbe) {
         
-        enemy.destroy()
+        Orbe.destroy()
+        if (enemy.HP >= 0){
+            enemy.HP -= 1;
+        }
+        else if (enemy.HP <= 0){
+            enemy.destroy()
+        }
     };
 
     
