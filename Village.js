@@ -12,7 +12,7 @@ export class Village extends Phaser.Scene {
         this.CanShootourrelle = true;
         this.CanJump = true;
         this.CanHit = true;
-        this.CanHitMelee = false;
+        this.CanHitMelee = true;
         this.CDDash = true;
         this.CanSummon = true;
         
@@ -128,6 +128,9 @@ export class Village extends Phaser.Scene {
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
 
         /////////////////////////////////////////////// SPAWN BAT //////////////////////////////////////////////////////
+        this.Tir = this.physics.add.group()
+        this.physics.add.overlap(this.player, this.Tir , this.PRENDREDESDEGATSCAFAITMAL, null, this);
+
 
         this.BAT = this.physics.add.sprite(15 * 32, 8 * 32, "MonstreBat");
         this.BAT.type = "Bat"
@@ -240,6 +243,7 @@ export class Village extends Phaser.Scene {
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
             }
 
             else if (child.type == "Zombie") {
@@ -248,6 +252,7 @@ export class Village extends Phaser.Scene {
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
+                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
                 child.allowGravity = true;
             }
 
@@ -258,6 +263,7 @@ export class Village extends Phaser.Scene {
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
                 child.allowGravity = true;
+                child.CanShootourrelle = true;
             }
 
         }, this);
@@ -271,6 +277,12 @@ export class Village extends Phaser.Scene {
             key: 'enemy1',
             frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 0 }),
             frameRate: 8,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'potionanim',
+            frames: this.anims.generateFrameNumbers('Potion', { start: 0, end: 7 }),
+            frameRate: 10,
             repeat: -1
         });
 
@@ -599,6 +611,7 @@ export class Village extends Phaser.Scene {
             /////////////////////////// ATTAQUES CORPS A CORPS A LA FAUX ////////////////////////////////////////
     
             if (this.CanHitMelee == true) {
+                
             if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
                 if (this.clavier.D.isDown) {
                     this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
