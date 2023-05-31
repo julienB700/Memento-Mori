@@ -1,6 +1,7 @@
 import { Menu as Menu } from "./Startscreen.js"
 import { Foret as Foret } from "./Foret.js"
 import { Village as Village } from "./Village.js"
+import { Chateau as Chateau } from "./Chateau.js" 
  
 var config = {
     type: Phaser.AUTO,
@@ -13,7 +14,7 @@ var config = {
         }
     },
     antialias: false,
-    scene: [Menu,Village,Foret],
+    scene: [Menu,Village,Foret,Chateau],
     
     pixelArt : true ,
 

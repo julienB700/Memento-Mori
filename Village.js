@@ -275,6 +275,19 @@ export class Village extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'HEROATTAQUEGAUCHE',
+            frames: this.anims.generateFrameNumbers('player', { start: 16, end: 20 }),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'HEROATTAQUEDROITE',
+            frames: this.anims.generateFrameNumbers('player', { start: 21, end: 25 }),
+            frameRate: 8,
+            repeat: -1
+        });
 
         ///////////////////////////////////////// ATTAQUES /////////////////////////////////////////////////////////////
 
@@ -510,22 +523,24 @@ export class Village extends Phaser.Scene {
         ///////////////////////////////////// ORBES ////////////////////////////////////////
 
         if (this.CanShoot == true) {
-            if (this.clavier.RIGHT.isDown) {
+            if (this.clavier.M.isDown && !this.clavier.O.isDown) {
                 this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
+                this.player.anims.play('HEROATTAQUEDROITE', true);
             }
-            else if (this.clavier.LEFT.isDown) {
+            else if (this.clavier.K.isDown && !this.clavier.O.isDown) {
                 this.Orbe.create(this.player.x - 30, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
+                this.player.anims.play('HEROATTAQUEGAUCHE', true);
             }
-            else if (this.clavier.LEFT.isDown && this.clavier.UP.isDown) {
+            else if (this.clavier.K.isDown && this.clavier.O.isDown) {
                 this.Orbe.create(this.player.x - 20, this.player.y - 20, "Orb").setScale(0.5).setVelocityX(- 475).setVelocityY(-475);
             }
-            else if (this.clavier.UP.isDown) {
+            else if (this.clavier.O.isDown && !this.clavier.M.isDown && !this.clavier.K.isDown) {
                 this.Orbe.create(this.player.x, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475);
             }
-            else if (this.clavier.UP.isDown , this.clavier.RIGHT.isDown) {
+            else if (this.clavier.O.isDown && this.clavier.M.isDown) {
                 this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
             }
-            else if (this.clavier.DOWN.isDown) {
+            else if (this.clavier.L.isDown) {
                 this.Orbe.create(this.player.x , this.player.y , "Orb").setScale(0.5).setVelocityY(+475);
             }
 

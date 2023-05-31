@@ -1609,6 +1609,89 @@
          "y":0
         }, 
         {
+         "draworder":"topdown",
+         "id":12,
+         "name":"Potions",
+         "objects":[
+                {
+                 "class":"",
+                 "height":0,
+                 "id":349,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":864,
+                 "y":672
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":350,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":256,
+                 "y":1344
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":351,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":832,
+                 "y":1504
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":352,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":1056,
+                 "y":1024
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":353,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":1568,
+                 "y":736
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":354,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":896,
+                 "y":864
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3758097189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3758097188, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3758097187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1872,8 +1955,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":349,
+ "nextlayerid":13,
+ "nextobjectid":355,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
