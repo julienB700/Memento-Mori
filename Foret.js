@@ -348,15 +348,15 @@ export class Foret extends Phaser.Scene {
 
         this.anims.create({
             key: 'RightHit',
-            frames: this.anims.generateFrameNumbers('CoupDeFaux', { start: 0, end: 7 }),
-            frameRate: 20,
+            frames: this.anims.generateFrameNumbers('CoupDeFaux', { start: 1, end: 4 }),
+            frameRate: 10,
             repeat: 0
         });
 
         this.anims.create({
             key: 'LeftHit',
-            frames: this.anims.generateFrameNumbers('CoupDeFauxLeft', { start: 0, end: 7 }),
-            frameRate: 20,
+            frames: this.anims.generateFrameNumbers('CoupDeFauxLeft', { start: 1, end: 4 }),
+            frameRate: 10,
             repeat: 0
         });
         ///////////////////////////////////////// ORBANIM ///////////////////////////////////////////////
@@ -631,7 +631,8 @@ export class Foret extends Phaser.Scene {
 
         /////////////////////////// ATTAQUES CORPS A CORPS A LA FAUX ////////////////////////////////////////
 
-        if (this.clavier.P.isDown && this.CanHitMelee == true) {
+        if (this.CanHitMelee == true) {
+        if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
             if (this.clavier.D.isDown) {
                 this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
                 console.log("coupdroit")
@@ -639,7 +640,7 @@ export class Foret extends Phaser.Scene {
             this.CanHitMelee = false
             setTimeout(() => {
                 this.CanHitMelee = true;
-            }, 2000);
+            }, 1000);
             setTimeout(() => {
                 this.Scyth.getChildren()[0].destroy();
             }, 200);
@@ -648,20 +649,20 @@ export class Foret extends Phaser.Scene {
             child.anims.play('RightHit', true);
         }, this)
 
-        if (this.clavier.P.isDown && this.CanHitMelee == true) {
-            if (this.clavier.Q.isDown) {
+        if (this.clavier.P.isDown) {
+            if (this.clavier.Q.isDown && !this.clavier.D.isDown) {
                 this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
                 console.log("coupgauche")
             }
             this.CanHitMelee = false;
             setTimeout(() => {
                 this.CanHitMelee = true;
-            }, 2000);
+            }, 1000);
             setTimeout(() => {
                 this.ScythLeft.getChildren()[0].destroy();
             }, 200);
         }
-        
+        }
         this.ScythLeft.getChildren().forEach(function (child) {
         
             child.anims.play('LeftHit', true);
@@ -760,7 +761,7 @@ export class Foret extends Phaser.Scene {
             this.enemy_invulnerable = true
             setTimeout(() => {
                 this.enemy_invulnerable = false
-            }, 100);
+            }, 200);
         }
         else if (enemy.HP <= 0) {
             //this.Potion.create(this.enemy.x, this.enemy.y, "Soin")
