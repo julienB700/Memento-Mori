@@ -7,13 +7,14 @@ export class Village extends Phaser.Scene {
     constructor() {
         super("Village");
         this.player_invulnerable = false;
+        this.enemy_invulnerable = false;
         this.CanShoot = true;
+        this.CanShootourrelle = true;
         this.CanJump = true;
         this.CanHit = true;
+        this.CanHitMelee = false;
         this.CDDash = true;
         this.CanSummon = true;
-        
-        this.EnemyHP = 5;
         
     }
     init(data) {
@@ -28,6 +29,9 @@ export class Village extends Phaser.Scene {
         this.load.audio('Village', 'assets/Musics/Village.mp3')
         this.load.audio('Deathtalk', 'assets/Audio/youthink.mp3')
 
+
+        this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
+            { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
         this.load.spritesheet('MonstreBat', 'assets/Sprites/MobSprite.png',
@@ -90,6 +94,17 @@ export class Village extends Phaser.Scene {
         this.cameras.main.zoom = 0.8;
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
+
+        this.Potion = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
+        
+        console.log(carteDuNiveau)
+        carteDuNiveau.getObjectLayer('Potions').objects.forEach((potion) => {
+            
+            this.current_potion =  this.Potion.create(potion.x,potion.y,'Potion')
+            
+            this.current_potion.play('potionanim')
+            this.physics.add.overlap(this.player, this.Potion, this.CEFAIRESOIGNERCESTCOOL, null, this);
+          });
 
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
@@ -398,258 +413,330 @@ export class Village extends Phaser.Scene {
         }
 
 
-    update(time, delta) {
+        update(time, delta) {
 
-        this.mespointsdevieText.setText(this.mespointsdevie);
-
-
-        if (this.mespointsdevie === 5 ) {
-        this.MyInterface.anims.play('vie5')}
-      
-        /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
-
-        this.enemygroup.getChildren().forEach(function (child) {
-            if (child.type == "Bat") {
-                var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance < 300) {
-                    child.setVelocityX(this.player.x - child.x)
-                    child.setVelocityY(this.player.y - child.y)
-                }
-                else { child.setVelocity(0, 0)}
+            this.mespointsdevieText.setText(this.mespointsdevie);
+    
+    
+            if (this.mespointsdevie === 5) {
+                this.MyInterface.anims.play('vie5')
             }
-            if (child.type == "Zombie") {
-                var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance < 300) {
-                    child.setVelocityX(this.player.x - child.x)
-                    //child.setVelocityY(this.player.y - child.y)
+    
+            /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
+    
+            this.enemygroup.getChildren().forEach(function (child) {
+    
+                if (child.type == "Bat") {
+                    var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                    if (distance < 300) {
+                        child.setVelocityX(this.player.x - child.x)
+                        child.setVelocityY(this.player.y - child.y)
+                    }
+                    else { child.setVelocity(0, 0) }
                 }
-                else { child.setVelocity(0, 0) }
+    
+                if (child.type == "Zombie") {
+                    var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                    if (distance < 300) {
+                        child.setVelocityX(this.player.x - child.x)
+                        //child.setVelocityY(this.player.y - child.y)
+                    }
+                    else { child.setVelocity(0, 0) }
+                }
+    
+                if (child.type == "Mage") {
+    
+    
+                    const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                    if (distance1 < 200) {
+    
+                        if (child.CanShootourrelle == true) {
+                            this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
+                            child.CanShootourrelle = false
+    
+                            setTimeout(() => {
+                                child.CanShootourrelle = true
+                            }, 1000);
+                        }
+                    }
+                }
+            }, this);
+    
+    
+    
+    
+            /////////////////////////////////////// TEST ORBE A TETE CHERCHEUSE ///////////////////////////////////////////////////
+    
+            /////////////////////////// MOUVEMENT ////////////////////////////////////////
+    
+            if (this.player.body.blocked.down) {
+                this.CanJump = true;
+    
             }
-        }, this);
-
-
-        /////////////////////////////////////// TEST ORBE A TETE CHERCHEUSE ///////////////////////////////////////////////////
-
-        /////////////////////////// MOUVEMENT ////////////////////////////////////////
-
-        if (this.player.body.blocked.down) {
-            this.CanJump = true;
-
-        }
-        if (this.clavier.Q.isDown) {
-            this.player.setVelocityX(-160)
-            this.player.anims.play('left', true)
-            if (this.clavier.SHIFT.isDown && this.CDDash == true && this.clavier.Q.isDown) {
-
-                this.player.invulnerable = true;
-                this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    },1000);
-                    }   
-                )
-                this.player.setVelocityX(-800)
-                this.player.anims.play('DashanimGauche', true)
-                this.CDDash == false;
+            if (this.clavier.Q.isDown) {
+                this.player.setVelocityX(-160)
+                this.player.anims.play('left', true)
+                if (this.clavier.SHIFT.isDown && this.CDDash == true && this.clavier.Q.isDown) {
+    
+                    this.player.invulnerable = true;
+                    this.sleep(100).then(() => {
+                        setTimeout(() => {
+                            this.player.invulnerable = false
+                        }, 1000);
+                    }
+                    )
+                    this.player.setVelocityX(-800)
+                    this.player.anims.play('DashanimGauche', true)
+                    this.CDDash == false;
                     setTimeout(() => {
                         this.CDDash = false
                     }, 350);
                     setTimeout(() => {
                         this.CDDash = true
                     }, 2000);
+                }
+    
             }
-
-        }
-        else if (this.clavier.D.isDown) {
-            this.player.setVelocityX(160);
-            this.player.anims.play('right', true)
-            if (this.clavier.SHIFT.isDown && this.CDDash == true && this.clavier.D.isDown) {
-
+            else if (this.clavier.D.isDown) {
+                this.player.setVelocityX(160);
+                this.player.anims.play('right', true)
+                if (this.clavier.SHIFT.isDown && this.CDDash == true && this.clavier.D.isDown) {
+    
+                    this.player.invulnerable = true;
+    
+                    this.sleep(100).then(() => {
+                        setTimeout(() => {
+                            this.player.invulnerable = false
+                        }, 1000);
+                    }
+                    )
+                    this.player.setVelocityX(800);
+                    this.player.anims.play('DashanimDroite', true);
+    
+                    this.CDDash == false;
+                    setTimeout(() => {
+                        this.CDDash = false
+                    }, 350);
+                    setTimeout(() => {
+                        this.CDDash = true
+                    }, 2000);
+    
+                }
+            }
+            else if (this.clavier.Z.isDown && this.CDDash == true && this.clavier.SHIFT.isDown) {
+    
                 this.player.invulnerable = true;
-
+    
                 this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    },1000);
-                    }   
+                    setTimeout(() => {
+                        this.player.invulnerable = false
+                    }, 1000);
+                }
                 )
-                this.player.setVelocityX(800);
-                this.player.anims.play('DashanimDroite', true);
-
+    
+                this.player.setVelocityY(-500)
+                this.player.anims.play('DashanimHaut', true)
+    
                 this.CDDash == false;
                 setTimeout(() => {
                     this.CDDash = false
-                }, 350);
+                }, 150);
                 setTimeout(() => {
                     this.CDDash = true
-                }, 2000);
-
+                }, 3000);
             }
+            else {
+                this.player.setVelocityX(0)
+            }
+    
+            if (this.clavier.SPACE.isDown && this.CanJump == true && this.player.body.blocked.down) {
+                this.player.setVelocityY(-500);
+                this.CanJump = false;
+                setTimeout(() => {
+                    this.CanJump = true;
+                }, 1000);
+            }
+    
+            ///////////////////////////////////// ORBES ////////////////////////////////////////
+    
+            if (this.CanShoot == true) {
+    
+                if (this.clavier.M.isDown && !this.clavier.O.isDown) {
+                    this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
+                    this.player.anims.play('HEROATTAQUEDROITE', true);
+                }
+                else if (this.clavier.K.isDown && !this.clavier.O.isDown) {
+                    this.Orbe.create(this.player.x - 30, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
+                    this.player.anims.play('HEROATTAQUEGAUCHE', true);
+                }
+                else if (this.clavier.K.isDown && this.clavier.O.isDown) {
+                    this.Orbe.create(this.player.x - 20, this.player.y - 20, "Orb").setScale(0.5).setVelocityX(- 475).setVelocityY(-475);
+                }
+                else if (this.clavier.O.isDown && !this.clavier.M.isDown && !this.clavier.K.isDown) {
+                    this.Orbe.create(this.player.x, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475);
+                }
+                else if (this.clavier.O.isDown && this.clavier.M.isDown) {
+                    this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
+                }
+                else if (this.clavier.L.isDown) {
+                    this.Orbe.create(this.player.x, this.player.y, "Orb").setScale(0.5).setVelocityY(+475);
+                }
+    
+                this.CanShoot = false;
+    
+                setTimeout(() => {
+                    this.CanShoot = true;
+                }, 100);
+            }
+            //!this.clavier.RIGHT.isDown && !this.clavier.LEFT.isDown
+            //
+    
+            this.Orbe.getChildren().forEach(function (child) {
+                child.anims.play('Orbanim', true);
+                this.nombreorbes += 1
+            }, this);
+    
+            /////////////////////////// ATTAQUES CORPS A CORPS A LA FAUX ////////////////////////////////////////
+    
+            if (this.CanHitMelee == true) {
+            if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
+                if (this.clavier.D.isDown) {
+                    this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
+                    console.log("coupdroit")
+                }
+                this.CanHitMelee = false
+                setTimeout(() => {
+                    this.CanHitMelee = true;
+                }, 1000);
+                setTimeout(() => {
+                    this.Scyth.getChildren()[0].destroy();
+                }, 200);
+            }
+            this.Scyth.getChildren().forEach(function (child) {
+                child.anims.play('RightHit', true);
+            }, this)
+    
+            if (this.clavier.P.isDown) {
+                if (this.clavier.Q.isDown && !this.clavier.D.isDown) {
+                    this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    console.log("coupgauche")
+                }
+                this.CanHitMelee = false;
+                setTimeout(() => {
+                    this.CanHitMelee = true;
+                }, 1000);
+                setTimeout(() => {
+                    this.ScythLeft.getChildren()[0].destroy();
+                }, 200);
+            }
+            }
+            this.ScythLeft.getChildren().forEach(function (child) {
+            
+                child.anims.play('LeftHit', true);
+            
+            }, this);
         }
-        else if (this.clavier.Z.isDown && this.CDDash == true && this.clavier.SHIFT.isDown) {
-
-            this.player.invulnerable = true;
-
+    
+        PRENDREDESDEGATSCAFAITMAL(mespointsdevie, enemy) {
+            if (!this.player.invulnerable) {
+                this.player.setTint(0xff0000);
+                this.mespointsdevie -= 1;
+                this.cameras.main.shake(100, 0.025);
+                //this.GetHit = true; 
+                this.player.invulnerable = true;
+                if (this.mespointsdevie === 4) {
+                    this.MyInterface.anims.play('vie4', true)
+                }
+                if (this.mespointsdevie === 3) {
+                    this.MyInterface.anims.play('vie3', true)
+                }
+                if (this.mespointsdevie === 2) {
+                    this.MyInterface.anims.play('vie2', true)
+                }
+                if (this.mespointsdevie === 1) {
+                    this.MyInterface.anims.play('vie1', true)
+                }
+    
+                if (this.mespointsdevie === 0) {
+                    this.player.setTint(0xff0000);
+    
+                    this.scene.start("Village")
+                }
+    
                 this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    },1000);
-                    }   
+                    setTimeout(() => {
+                        this.player.invulnerable = false
+                        this.player.body.allowGravity = true;
+                        this.player.clearTint();
+                    }, 1000);
+                }
                 )
-
-            this.player.setVelocityY(-500)
-            this.player.anims.play('DashanimHaut', true)
-
-            this.CDDash == false;
-            setTimeout(() => {
-                this.CDDash = false
-            }, 150);
-            setTimeout(() => {
-                this.CDDash = true
-            }, 3000);
+    
+            }
         }
-        else {
-            this.player.setVelocityX(0)
+        CEFAIRESOIGNERCESTCOOL(player, Potion) {
+                this.mespointsdevie += 1;
+                this.player.setTint( 0x00CC00 );
+                //this.GetHit = true; 
+                Potion.destroy();
+                this.player.invulnerable = true;
+                if (this.mespointsdevie === 5) {
+                    this.MyInterface.anims.play('vie5', true)
+                }
+                if (this.mespointsdevie === 4) {
+                    this.MyInterface.anims.play('vie4', true)
+                }
+                if (this.mespointsdevie === 3) {
+                    this.MyInterface.anims.play('vie3', true)
+                }
+                if (this.mespointsdevie === 2) {
+                    this.MyInterface.anims.play('vie2', true)
+                }
+                if (this.mespointsdevie === 1) {
+                    this.MyInterface.anims.play('vie1', true)
+                }
+                this.sleep(100).then(() => {
+                    setTimeout(() => {
+                        this.player.clearTint();
+                        this.player.invulnerable = false
+                        this.player.body.allowGravity = true;
+                    }, 500);
+                }
+                )
+            }
+    
+        sleep = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds));
         }
-
-        if (this.clavier.SPACE.isDown && this.CanJump == true) {
-            this.player.setVelocityY(-500);
-            this.CanJump = false;
-            setTimeout(() => {
-                this.CanJump = true;
-            }, 1000);
-        }
-
-        ///////////////////////////////////// ORBES ////////////////////////////////////////
-
-        if (this.CanShoot == true) {
-            if (this.clavier.M.isDown && !this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
-                this.player.anims.play('HEROATTAQUEDROITE', true);
+    
+        ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
+    
+        enemyHit(enemy, Orbe) {
+    
+            Orbe.destroy()
+            if (enemy.HP >= 0) {
+                enemy.HP -= 1;
             }
-            else if (this.clavier.K.isDown && !this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x - 30, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
-                this.player.anims.play('HEROATTAQUEGAUCHE', true);
+            else if (enemy.HP <= 0) {
+                enemy.destroy()
             }
-            else if (this.clavier.K.isDown && this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x - 20, this.player.y - 20, "Orb").setScale(0.5).setVelocityX(- 475).setVelocityY(-475);
-            }
-            else if (this.clavier.O.isDown && !this.clavier.M.isDown && !this.clavier.K.isDown) {
-                this.Orbe.create(this.player.x, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475);
-            }
-            else if (this.clavier.O.isDown && this.clavier.M.isDown) {
-                this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
-            }
-            else if (this.clavier.L.isDown) {
-                this.Orbe.create(this.player.x , this.player.y , "Orb").setScale(0.5).setVelocityY(+475);
-            }
-
-            this.CanShoot = false;
-            setTimeout(() => {
-                this.CanShoot = true;
-            }, 100);
-        }
-
-        this.Orbe.getChildren().forEach(function (child) {
-            child.anims.play('Orbanim', true);
-            this.nombreorbes += 1
-        }, this);
-
-        /////////////////////////// ATTAQUES CORPS A CORPS ////////////////////////////////////////
-
-        if (this.clavier.K.isDown && this.CanHit == true) {
-            if (this.clavier.D.isDown) {
-                this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
-            }
-            this.CanHit = false
-            setTimeout(() => {
-                this.CanHit = true;
-            }, 500);
-            setTimeout(() => {
-                this.Scyth.getChildren()[0].destroy();
-            }, 500);
-        }
-
-        this.Scyth.getChildren().forEach(function (child) {
-            child.anims.play('RightHit', true);
-        }, this)
-
-        if (this.clavier.K.isDown && this.CanHit == true) {
-            if (this.clavier.Q.isDown) {
-                this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
-            }
-            this.CanHit = false
-            setTimeout(() => {
-                this.CanHit = true;
-            }, 500);
-            setTimeout(() => {
-                this.ScythLeft.getChildren()[0].destroy();
-            }, 500);
-        }
-        this.ScythLeft.getChildren().forEach(function (child) {
-            child.anims.play('LeftHit', true);
-        }, this);
-
-        this.feuvert.anims.play ("Feu_vert", true);
-
-    }
-
-
-    PRENDREDESDEGATSCAFAITMAL(player, enemy){
-        if(!this.player.invulnerable){
-            
-            this.mespointsdevie -= 1;
-            this.cameras.main.shake(100, 0.025);
-            //this.GetHit = true; 
-            this.player.invulnerable = true;
-            if (this.mespointsdevie === 4) {
-                this.MyInterface.anims.play('vie4', true)
-            }
-            if (this.mespointsdevie === 3) {
-                this.MyInterface.anims.play('vie3', true)
-            }
-            if (this.mespointsdevie === 2) {
-                this.MyInterface.anims.play('vie2', true)
-            }
-            if (this.mespointsdevie === 1) {
-                this.MyInterface.anims.play('vie1', true)
-            }
-            
-            if(this.mespointsdevie === 0){
-                this.player.setTint( 0xff0000 );
-                this.scene.start("Menu")
-            }
-            
-            this.sleep(100).then(() => {
-
-                setTimeout(()=>{
-                this.player.invulnerable = false
-                this.player.body.allowGravity = true;
-                },1000);
-
-                }   
-            )
+        };
         
-        }
-    }
-
-    sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-    }
-
-    ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
-
-    enemyHit(enemy, Orbe) {
-        
-        Orbe.destroy()
-        if (enemy.HP >= 0){
-            enemy.HP -= 1;
-        }
-        else if (enemy.HP <= 0){
-            enemy.destroy()
-        }
-    };
-
+        enemyHitMelee(enemy, Scyth) {
+    
+          
+            if (enemy.HP >= 0 && this.enemy_invulnerable == false) {
+                enemy.HP -= 5;
+                this.enemy_invulnerable = true
+                setTimeout(() => {
+                    this.enemy_invulnerable = false
+                }, 200);
+            }
+            else if (enemy.HP <= 0) {
+                //this.Potion.create(this.enemy.x, this.enemy.y, "Soin")
+                enemy.destroy()
+            }
+        };
     
 
 }

@@ -5,13 +5,14 @@ export class Chateau extends Phaser.Scene {
     constructor() {
         super("Chateau");
         this.player_invulnerable = false;
+        this.enemy_invulnerable = false;
         this.CanShoot = true;
         this.CanHit = true;
         this.CanHitMelee = true;
+        this.CanShootourrelle = true;
         this.CanJump = true;
         this.CDDash = true;
         this.CanSummon = true;
-        this.EnemyHP = 5;
         this.CanHit = true;
     }
     init(data) {
@@ -31,6 +32,8 @@ export class Chateau extends Phaser.Scene {
         this.load.spritesheet('TIRDEMAGE', 'assets/Sprites/Tir.png',
             { frameWidth: 16, frameHeight: 16 });
 
+        this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
+            { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('BOSS', 'assets/Sprites/MobSprite.png',
             { frameWidth: 80, frameHeight: 80 });
 
@@ -87,6 +90,17 @@ export class Chateau extends Phaser.Scene {
         this.cameras.main.zoom = 0.8;
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
+
+        this.Potion = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
+        
+        console.log(carteDuNiveau)
+        carteDuNiveau.getObjectLayer('Potions').objects.forEach((potion) => {
+            
+            this.current_potion =  this.Potion.create(potion.x,potion.y,'Potion')
+            
+            this.current_potion.play('potionanim')
+            this.physics.add.overlap(this.player, this.Potion, this.CEFAIRESOIGNERCESTCOOL, null, this);
+          });
 
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
@@ -531,37 +545,51 @@ export class Chateau extends Phaser.Scene {
         this.mespointsdevieText.setText(this.mespointsdevie);
 
 
-        if (this.mespointsdevie === 5 ) {
-        this.MyInterface.anims.play('vie5')}
-      
+        if (this.mespointsdevie === 5) {
+            this.MyInterface.anims.play('vie5')
+        }
+
         /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
 
         this.enemygroup.getChildren().forEach(function (child) {
+
             if (child.type == "Bat") {
                 var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance < 400) {
+                if (distance < 300) {
                     child.setVelocityX(this.player.x - child.x)
                     child.setVelocityY(this.player.y - child.y)
                 }
-                else { child.setVelocity(0, 0)}
+                else { child.setVelocity(0, 0) }
             }
+
             if (child.type == "Zombie") {
                 var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance < 400) {
+                if (distance < 300) {
                     child.setVelocityX(this.player.x - child.x)
+                    //child.setVelocityY(this.player.y - child.y)
                 }
                 else { child.setVelocity(0, 0) }
             }
-            if (child.type == "BOSS") {
-                var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance < 500) {
-                    child.setVelocityX(this.player.x - child.x)
+
+            if (child.type == "Mage") {
+
+
+                const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance1 < 200) {
+
+                    if (child.CanShootourrelle == true) {
+                        this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
+                        child.CanShootourrelle = false
+
+                        setTimeout(() => {
+                            child.CanShootourrelle = true
+                        }, 1000);
+                    }
                 }
-                else { child.setVelocity(0, 0) }
             }
         }, this);
 
-        
+
 
 
         /////////////////////////////////////// TEST ORBE A TETE CHERCHEUSE ///////////////////////////////////////////////////
@@ -579,20 +607,20 @@ export class Chateau extends Phaser.Scene {
 
                 this.player.invulnerable = true;
                 this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    },1000);
-                    }   
+                    setTimeout(() => {
+                        this.player.invulnerable = false
+                    }, 1000);
+                }
                 )
                 this.player.setVelocityX(-800)
                 this.player.anims.play('DashanimGauche', true)
                 this.CDDash == false;
-                    setTimeout(() => {
-                        this.CDDash = false
-                    }, 350);
-                    setTimeout(() => {
-                        this.CDDash = true
-                    }, 2000);
+                setTimeout(() => {
+                    this.CDDash = false
+                }, 350);
+                setTimeout(() => {
+                    this.CDDash = true
+                }, 2000);
             }
 
         }
@@ -604,10 +632,10 @@ export class Chateau extends Phaser.Scene {
                 this.player.invulnerable = true;
 
                 this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    },1000);
-                    }   
+                    setTimeout(() => {
+                        this.player.invulnerable = false
+                    }, 1000);
+                }
                 )
                 this.player.setVelocityX(800);
                 this.player.anims.play('DashanimDroite', true);
@@ -626,12 +654,12 @@ export class Chateau extends Phaser.Scene {
 
             this.player.invulnerable = true;
 
-                this.sleep(100).then(() => {
-                    setTimeout(()=>{
-                    this.player.invulnerable= false
-                    },1000);
-                    }   
-                )
+            this.sleep(100).then(() => {
+                setTimeout(() => {
+                    this.player.invulnerable = false
+                }, 1000);
+            }
+            )
 
             this.player.setVelocityY(-500)
             this.player.anims.play('DashanimHaut', true)
@@ -648,7 +676,7 @@ export class Chateau extends Phaser.Scene {
             this.player.setVelocityX(0)
         }
 
-        if (this.clavier.SPACE.isDown && this.CanJump == true) {
+        if (this.clavier.SPACE.isDown && this.CanJump == true && this.player.body.blocked.down) {
             this.player.setVelocityY(-500);
             this.CanJump = false;
             setTimeout(() => {
@@ -659,6 +687,7 @@ export class Chateau extends Phaser.Scene {
         ///////////////////////////////////// ORBES ////////////////////////////////////////
 
         if (this.CanShoot == true) {
+
             if (this.clavier.M.isDown && !this.clavier.O.isDown) {
                 this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
                 this.player.anims.play('HEROATTAQUEDROITE', true);
@@ -677,10 +706,11 @@ export class Chateau extends Phaser.Scene {
                 this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
             }
             else if (this.clavier.L.isDown) {
-                this.Orbe.create(this.player.x , this.player.y , "Orb").setScale(0.5).setVelocityY(+475);
+                this.Orbe.create(this.player.x, this.player.y, "Orb").setScale(0.5).setVelocityY(+475);
             }
 
             this.CanShoot = false;
+
             setTimeout(() => {
                 this.CanShoot = true;
             }, 100);
@@ -693,9 +723,10 @@ export class Chateau extends Phaser.Scene {
             this.nombreorbes += 1
         }, this);
 
-        /////////////////////////// ATTAQUES CORPS A CORPS ////////////////////////////////////////
+        /////////////////////////// ATTAQUES CORPS A CORPS A LA FAUX ////////////////////////////////////////
 
-        if (this.clavier.P.isDown && this.CanHitMelee == true) {
+        if (this.CanHitMelee == true) {
+        if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
             if (this.clavier.D.isDown) {
                 this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
                 console.log("coupdroit")
@@ -703,40 +734,41 @@ export class Chateau extends Phaser.Scene {
             this.CanHitMelee = false
             setTimeout(() => {
                 this.CanHitMelee = true;
-            }, 2000);
+            }, 1000);
             setTimeout(() => {
                 this.Scyth.getChildren()[0].destroy();
             }, 200);
         }
-
         this.Scyth.getChildren().forEach(function (child) {
             child.anims.play('RightHit', true);
         }, this)
 
-        if (this.clavier.P.isDown && this.CanHitMelee == true) {
-            if (this.clavier.Q.isDown) {
+        if (this.clavier.P.isDown) {
+            if (this.clavier.Q.isDown && !this.clavier.D.isDown) {
                 this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
                 console.log("coupgauche")
             }
             this.CanHitMelee = false;
             setTimeout(() => {
                 this.CanHitMelee = true;
-            }, 2000);
+            }, 1000);
             setTimeout(() => {
                 this.ScythLeft.getChildren()[0].destroy();
             }, 200);
         }
+        }
         this.ScythLeft.getChildren().forEach(function (child) {
+        
             child.anims.play('LeftHit', true);
+        
         }, this);
-
     }
 
 
     PRENDREDESDEGATSCAFAITMAL(player, enemy){
         if(!this.player.invulnerable){
-            
             this.mespointsdevie -= 1;
+            this.player.setTint( 0xff0000 );
             this.cameras.main.shake(100, 0.025);
             //this.GetHit = true; 
             this.player.invulnerable = true;
@@ -761,6 +793,7 @@ export class Chateau extends Phaser.Scene {
             
             this.sleep(100).then(() => {
                 setTimeout(()=>{
+                this.player.clearTint();
                 this.player.invulnerable = false
                 this.player.body.allowGravity = true;
                 },1000);
@@ -769,6 +802,37 @@ export class Chateau extends Phaser.Scene {
         
         }
     }
+
+CEFAIRESOIGNERCESTCOOL(player, Potion) {
+            this.mespointsdevie += 1;
+            this.player.setTint( 0x00CC00 );
+            //this.GetHit = true; 
+            Potion.destroy();
+            this.player.invulnerable = true;
+            if (this.mespointsdevie === 5) {
+                this.MyInterface.anims.play('vie5', true)
+            }
+            if (this.mespointsdevie === 4) {
+                this.MyInterface.anims.play('vie4', true)
+            }
+            if (this.mespointsdevie === 3) {
+                this.MyInterface.anims.play('vie3', true)
+            }
+            if (this.mespointsdevie === 2) {
+                this.MyInterface.anims.play('vie2', true)
+            }
+            if (this.mespointsdevie === 1) {
+                this.MyInterface.anims.play('vie1', true)
+            }
+            this.sleep(100).then(() => {
+                setTimeout(() => {
+                    this.player.clearTint();
+                    this.player.invulnerable = false
+                    this.player.body.allowGravity = true;
+                }, 500);
+            }
+            )
+        }
 
     sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -788,10 +852,15 @@ export class Chateau extends Phaser.Scene {
     };
     enemyHitMelee(enemy, Scyth) {
         
-        if (enemy.HP >= 0){
+        if (enemy.HP >= 0 && this.enemy_invulnerable == false) {
             enemy.HP -= 5;
+            this.enemy_invulnerable = true
+            setTimeout(() => {
+                this.enemy_invulnerable = false
+            }, 200);
         }
-        else if (enemy.HP <= 0){
+        else if (enemy.HP <= 0) {
+            //this.Potion.create(this.enemy.x, this.enemy.y, "Soin")
             enemy.destroy()
         }
     };

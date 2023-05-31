@@ -10,9 +10,10 @@ export class Foret extends Phaser.Scene {
         this.CanShootourrelle = true;
         this.CanJump = true;
         this.CanHit = true;
+        this.CanHitMelee = true;
         this.CDDash = true;
         this.CanSummon = true;
-        this.CanHitMelee = true;
+        
        
 
     }
@@ -709,6 +710,7 @@ export class Foret extends Phaser.Scene {
     }
     CEFAIRESOIGNERCESTCOOL(player, Potion) {
             this.mespointsdevie += 1;
+            this.player.setTint( 0x00CC00 );
             //this.GetHit = true; 
             Potion.destroy();
             this.player.invulnerable = true;
@@ -729,9 +731,10 @@ export class Foret extends Phaser.Scene {
             }
             this.sleep(100).then(() => {
                 setTimeout(() => {
+                    this.player.clearTint();
                     this.player.invulnerable = false
                     this.player.body.allowGravity = true;
-                }, 1000);
+                }, 500);
             }
             )
         }
