@@ -114,9 +114,6 @@ export class Foret extends Phaser.Scene {
         this.Scyth = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
         this.ScythLeft = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
 
-        //this.SpriteHitBox = this.physics.add.sprite(10 * 32, 25 * 32, 'SpriteHitBox').setImmovable(true);
-        //this.SpriteHitBox.body.setAllowGravity(false);
-
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
 
         this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
@@ -262,16 +259,17 @@ export class Foret extends Phaser.Scene {
         this.enemygroup.getChildren().forEach(function (child) {
 
             if (child.type == "Bat") {
-                child.HP = 10;
+                child.HP = 5;
                 this.physics.add.collider(child, Sol);
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL, null, this);
                 this.physics.add.collider(this.Orbe, child, this.enemyHit, null, this);
                 this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
+                child.setGravityY(-700)
             }
 
             else if (child.type == "Zombie") {
-                child.HP = 15;
+                child.HP = 10;
                 this.physics.add.collider(child, Sol);
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL, null, this);
@@ -281,7 +279,7 @@ export class Foret extends Phaser.Scene {
             }
 
             else if (child.type == "Mage") {
-                child.HP = 15;
+                child.HP = 10;
                 this.physics.add.collider(child, Sol);
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL, null, this);
@@ -482,7 +480,7 @@ export class Foret extends Phaser.Scene {
 
 
                 const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance1 < 200) {
+                if (distance1 < 400) {
 
                     if (child.CanShootourrelle == true) {
                         this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
@@ -633,43 +631,44 @@ export class Foret extends Phaser.Scene {
         /////////////////////////// ATTAQUES CORPS A CORPS A LA FAUX ////////////////////////////////////////
 
         if (this.CanHitMelee == true) {
-        if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
-            if (this.clavier.D.isDown) {
-                this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
-                console.log("coupdroit")
+                
+            if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
+                if (this.clavier.D.isDown) {
+                    this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
+                    console.log("coupdroit")
+                }
+                this.CanHitMelee = false
+                setTimeout(() => {
+                    this.CanHitMelee = true;
+                }, 1000);
+                setTimeout(() => {
+                    this.Scyth.getChildren()[0].destroy();
+                }, 200);
             }
-            this.CanHitMelee = false
-            setTimeout(() => {
-                this.CanHitMelee = true;
-            }, 1000);
-            setTimeout(() => {
-                this.Scyth.getChildren()[0].destroy();
-            }, 200);
-        }
-        this.Scyth.getChildren().forEach(function (child) {
-            child.anims.play('RightHit', true);
-        }, this)
-
-        if (this.clavier.P.isDown) {
-            if (this.clavier.Q.isDown && !this.clavier.D.isDown) {
-                this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
-                console.log("coupgauche")
+            this.Scyth.getChildren().forEach(function (child) {
+                child.anims.play('RightHit', true);
+            }, this)
+    
+            if (this.clavier.P.isDown && !this.clavier.D.isDown) {
+                if (this.clavier.Q.isDown) {
+                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    console.log("coupgauche")
+                }
+                this.CanHitMelee = false;
+                setTimeout(() => {
+                    this.CanHitMelee = true;
+                }, 1000);
+                setTimeout(() => {
+                    this.Scyth.getChildren()[0].destroy();
+                }, 200);
             }
-            this.CanHitMelee = false;
-            setTimeout(() => {
-                this.CanHitMelee = true;
-            }, 1000);
-            setTimeout(() => {
-                this.ScythLeft.getChildren()[0].destroy();
-            }, 200);
+            }
+            this.Scyth.getChildren().forEach(function (child) {
+            
+                child.anims.play('LeftHit', true);
+            
+            }, this);
         }
-        }
-        this.ScythLeft.getChildren().forEach(function (child) {
-        
-            child.anims.play('LeftHit', true);
-        
-        }, this);
-    }
 
     PRENDREDESDEGATSCAFAITMAL(mespointsdevie, enemy) {
         if (!this.player.invulnerable) {
@@ -756,11 +755,12 @@ export class Foret extends Phaser.Scene {
         }
     };
     
-    enemyHitMelee(enemy, Scyth) {
+    enemyHitMelee(enemy) {
 
       
         if (enemy.HP >= 0 && this.enemy_invulnerable == false) {
             enemy.HP -= 5;
+            console.log("touché -5hp")
             this.enemy_invulnerable = true
             setTimeout(() => {
                 this.enemy_invulnerable = false
@@ -771,7 +771,7 @@ export class Foret extends Phaser.Scene {
             enemy.destroy()
         }
     };
-
+    
 
 }
 var carte_ref

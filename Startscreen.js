@@ -20,14 +20,12 @@ export class Menu extends Phaser.Scene {
         var musique = this.sound.add('Intro', { loop: false });
             musique.play();
 
-        this.image = this.add.image
-        this.image = this.add.image(449, 224, '4P')
+    
+        this.add.image(449, 224, '4P')
 
-        this.image = this.add.image
-        this.image = this.add.image(449, 224, '3P')
+        this.add.image(449, 224, '3P')
 
-        this.image = this.add.image
-        this.image = this.add.image(449, 224, 'titre')
+        this.add.image(449, 224, 'titre')
 
         var button = this.add.sprite(449 ,270, 'Button1');
         button.setInteractive();

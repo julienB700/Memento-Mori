@@ -347,6 +347,7 @@ export class Chateau extends Phaser.Scene {
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
                 this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
                 this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
+                child.setGravityY(-700)
 
             }
 
@@ -358,12 +359,11 @@ export class Chateau extends Phaser.Scene {
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);
                 this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
                 this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
- 
                 child.allowGravity = true;
             }
 
             else if (child.type == "Mage") {
-                child.HP = 5;
+                child.HP = 10;
                 this.physics.add.collider(child, Sol);
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
@@ -466,21 +466,21 @@ export class Chateau extends Phaser.Scene {
 
         this.anims.create({
             key: 'DashanimGauche',
-            frames: this.anims.generateFrameNumbers('Dash', { start: 0, end: 6 }),
+            frames: this.anims.generateFrameNumbers('Dash', { start: 5, end: 10 }),
             frameRate: 8,
             repeat: -1
         });
 
         this.anims.create({
             key: 'DashanimDroite',
-            frames: this.anims.generateFrameNumbers('Dash', { start: 7, end: 13 }),
+            frames: this.anims.generateFrameNumbers('Dash', { start: 0, end: 4 }),
             frameRate: 8,
             repeat: -1
         });
 
         this.anims.create({
             key: 'DashanimHaut',
-            frames: this.anims.generateFrameNumbers('Dash', { start: 14, end: 21 }),
+            frames: this.anims.generateFrameNumbers('Dash', { start: 11, end: 15 }),
             frameRate: 8,
             repeat: -1
         });
@@ -726,43 +726,44 @@ export class Chateau extends Phaser.Scene {
         /////////////////////////// ATTAQUES CORPS A CORPS A LA FAUX ////////////////////////////////////////
 
         if (this.CanHitMelee == true) {
-        if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
-            if (this.clavier.D.isDown) {
-                this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
-                console.log("coupdroit")
+                
+            if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
+                if (this.clavier.D.isDown) {
+                    this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
+                    console.log("coupdroit")
+                }
+                this.CanHitMelee = false
+                setTimeout(() => {
+                    this.CanHitMelee = true;
+                }, 1000);
+                setTimeout(() => {
+                    this.Scyth.getChildren()[0].destroy();
+                }, 200);
             }
-            this.CanHitMelee = false
-            setTimeout(() => {
-                this.CanHitMelee = true;
-            }, 1000);
-            setTimeout(() => {
-                this.Scyth.getChildren()[0].destroy();
-            }, 200);
-        }
-        this.Scyth.getChildren().forEach(function (child) {
-            child.anims.play('RightHit', true);
-        }, this)
-
-        if (this.clavier.P.isDown) {
-            if (this.clavier.Q.isDown && !this.clavier.D.isDown) {
-                this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
-                console.log("coupgauche")
+            this.Scyth.getChildren().forEach(function (child) {
+                child.anims.play('RightHit', true);
+            }, this)
+    
+            if (this.clavier.P.isDown && !this.clavier.D.isDown) {
+                if (this.clavier.Q.isDown) {
+                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    console.log("coupgauche")
+                }
+                this.CanHitMelee = false;
+                setTimeout(() => {
+                    this.CanHitMelee = true;
+                }, 1000);
+                setTimeout(() => {
+                    this.Scyth.getChildren()[0].destroy();
+                }, 200);
             }
-            this.CanHitMelee = false;
-            setTimeout(() => {
-                this.CanHitMelee = true;
-            }, 1000);
-            setTimeout(() => {
-                this.ScythLeft.getChildren()[0].destroy();
-            }, 200);
+            }
+            this.Scyth.getChildren().forEach(function (child) {
+            
+                child.anims.play('LeftHit', true);
+            
+            }, this);
         }
-        }
-        this.ScythLeft.getChildren().forEach(function (child) {
-        
-            child.anims.play('LeftHit', true);
-        
-        }, this);
-    }
 
 
     PRENDREDESDEGATSCAFAITMAL(player, enemy){
@@ -850,7 +851,7 @@ CEFAIRESOIGNERCESTCOOL(player, Potion) {
             enemy.destroy()
         }
     };
-    enemyHitMelee(enemy, Scyth) {
+    enemyHitMelee(enemy) {
         
         if (enemy.HP >= 0 && this.enemy_invulnerable == false) {
             enemy.HP -= 5;

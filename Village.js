@@ -36,8 +36,12 @@ export class Village extends Phaser.Scene {
             { frameWidth: 32, frameHeight: 30*32 });
         this.load.spritesheet('MonstreBat', 'assets/Sprites/MobSprite.png',
             { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('MAGE', 'assets/Sprites/MAGE.png',
+            { frameWidth: 32, frameHeight: 64 });
         this.load.spritesheet('MonstreZombie', 'assets/Sprites/ZOMBIE_PLACEHOLDER.png',
             { frameWidth: 32, frameHeight: 64 });
+
+
         this.load.spritesheet('Dash', 'assets/Sprites/Dash.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('player', 'assets/Sprites/Player.png',
@@ -56,6 +60,8 @@ export class Village extends Phaser.Scene {
         this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
             { frameWidth: 64, frameHeight: 64 });
 
+        this.load.spritesheet ('Scythpickup', 'assets/Sprites/ScythePickup.png',
+            {frameWidth: 64, frameHeight: 64 });
 
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
     }
@@ -63,7 +69,7 @@ export class Village extends Phaser.Scene {
     create() {
 
         this.clavier = this.input.keyboard.createCursorKeys('up,down,left,right');
-        this.clavier = this.input.keyboard.addKeys('K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
+        this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
         this.add.image(800, 800, "Background_Village");
         this.physics.world.setBounds(0, 0, 50*32, 50*32);
 
@@ -75,11 +81,30 @@ export class Village extends Phaser.Scene {
         // Joue la musique
         musique.play();
 
-        this.feuvert = this.physics.add.sprite(16, 35*32, "FEU_VERT")
+       // Nouveau ///////////////////////////////////// FEU VERT ////////////////////////////////////////////////////////
+
+        this.anims.create({
+            key: 'Feu_vert',
+            frames: this.anims.generateFrameNumbers('FEU_VERT', { start: 0, end: 14 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
 
         this.feuvertgroup = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
-        this.feuvertgroup.add(this.feuvert);
 
+        this.feuvertgroup.create(16, 35*32, "FEU_VERT");
+
+        const msldfmlkdsfklmds = this.physics.add.sprite(49*32, 35*32+16, "FEU_VERT").setFlipX(true);
+
+        this.feuvertgroup.add(msldfmlkdsfklmds);
+
+
+        this.feuvertgroup.children.each(feuvert => {
+            feuvert.anims.play("Feu_vert");
+        })
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
         const carteDuNiveau = this.add.tilemap("Village");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
         const Sol = carteDuNiveau.createLayer('Sol', tileset);
@@ -105,13 +130,45 @@ export class Village extends Phaser.Scene {
             this.current_potion.play('potionanim')
             this.physics.add.overlap(this.player, this.Potion, this.CEFAIRESOIGNERCESTCOOL, null, this);
           });
-
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
         this.Orbe = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
         this.physics.add.collider(this.Orbe, Sol, function (Orbe, Sol) {
             Orbe.destroy();
         });
+
+
+        ///////////////////////////////////// OBSTACLE //////////////
+
+        this.obstacles = this.physics.add.group();
+        const obstacles = carteDuNiveau.getObjectLayer("Obstacles");
+        obstacles.objects.forEach(obstacle => {
+            this.obstacles.create(obstacle.x, obstacle.y, "Obstacle");
+            console.log(obstacle)
+        })
+            //obstacle.anims.play("FeuAnim");
+
+        this.obstacles.children.each(obstacle => {
+            //console.log(obstacle)
+            /*
+            if (obstacle.properties[0].value){
+                const PI = 3.141592654;
+
+                switch (obstacle.properties[1].value){
+                    case "haut":
+                        obstacle.setFlipY(true);
+                        break;
+                    case "droite":
+                        obstacle.setRotation(PI / 2);
+                        obstacle.setFlipX(true);
+                        break;
+                    case "gauche":
+                        obstacle.setRotation(-PI / 2);
+                        obstacle.setFlipX(true);
+                        break;
+                }
+            }*/
+        })
 
         ////////////////////////////////////////////// LA FAUX /////////////////////////////////////////////////////////////
 
@@ -131,6 +188,8 @@ export class Village extends Phaser.Scene {
         this.Tir = this.physics.add.group()
         this.physics.add.overlap(this.player, this.Tir , this.PRENDREDESDEGATSCAFAITMAL, null, this);
 
+        this.MAGE = this.physics.add.sprite(41 * 32, 39 * 32, "MAGE");
+        this.MAGE.type = "Mage"
 
         this.BAT = this.physics.add.sprite(15 * 32, 8 * 32, "MonstreBat");
         this.BAT.type = "Bat"
@@ -208,6 +267,8 @@ export class Village extends Phaser.Scene {
         /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
 
         this.enemygroup = this.physics.add.group();
+        this.enemygroup.add(this.MAGE);
+
         this.enemygroup.add(this.BAT);
         this.enemygroup.add(this.BAT1);
         this.enemygroup.add(this.BAT2);
@@ -244,6 +305,7 @@ export class Village extends Phaser.Scene {
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
                 this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
+                child.setGravityY(-700)
             }
 
             else if (child.type == "Zombie") {
@@ -257,11 +319,13 @@ export class Village extends Phaser.Scene {
             }
 
             else if (child.type == "Mage") {
-                child.HP = 5;
+                child.HP = 10;
                 this.physics.add.collider(child, Sol);
                 child.setCollideWorldBounds(true);
                 this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
+                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
+                child.setImmovable (true);
                 child.allowGravity = true;
                 child.CanShootourrelle = true;
             }
@@ -286,6 +350,12 @@ export class Village extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'ScythAnim',
+            frames: this.anims.generateFrameNumbers('Scythpickup', { start: 0, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        });
         /////////////////////////// Animations ////////////////////////////////////////////////////////////////////
         
         this.anims.create({
@@ -344,21 +414,21 @@ export class Village extends Phaser.Scene {
 
         this.anims.create({
             key: 'DashanimGauche',
-            frames: this.anims.generateFrameNumbers('Dash', { start: 0, end: 6 }),
+            frames: this.anims.generateFrameNumbers('Dash', { start: 5, end: 10 }),
             frameRate: 8,
             repeat: -1
         });
 
         this.anims.create({
             key: 'DashanimDroite',
-            frames: this.anims.generateFrameNumbers('Dash', { start: 7, end: 13 }),
+            frames: this.anims.generateFrameNumbers('Dash', { start: 0, end: 4 }),
             frameRate: 8,
             repeat: -1
         });
 
         this.anims.create({
             key: 'DashanimHaut',
-            frames: this.anims.generateFrameNumbers('Dash', { start: 14, end: 21 }),
+            frames: this.anims.generateFrameNumbers('Dash', { start: 11, end: 15 }),
             frameRate: 8,
             repeat: -1
         });
@@ -410,12 +480,7 @@ export class Village extends Phaser.Scene {
         this.cameras.main.zoom = 1;
 
 
-        this.anims.create({
-            key: 'Feu_vert',
-            frames: this.anims.generateFrameNumbers('FEU_VERT', { start: 0, end: 14 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        
     }
     
 
@@ -460,7 +525,7 @@ export class Village extends Phaser.Scene {
     
     
                     const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                    if (distance1 < 200) {
+                    if (distance1 < 400) {
     
                         if (child.CanShootourrelle == true) {
                             this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
@@ -629,9 +694,9 @@ export class Village extends Phaser.Scene {
                 child.anims.play('RightHit', true);
             }, this)
     
-            if (this.clavier.P.isDown) {
-                if (this.clavier.Q.isDown && !this.clavier.D.isDown) {
-                    this.ScythLeft.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+            if (this.clavier.P.isDown && !this.clavier.D.isDown) {
+                if (this.clavier.Q.isDown) {
+                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
                     console.log("coupgauche")
                 }
                 this.CanHitMelee = false;
@@ -639,17 +704,19 @@ export class Village extends Phaser.Scene {
                     this.CanHitMelee = true;
                 }, 1000);
                 setTimeout(() => {
-                    this.ScythLeft.getChildren()[0].destroy();
+                    this.Scyth.getChildren()[0].destroy();
                 }, 200);
             }
             }
-            this.ScythLeft.getChildren().forEach(function (child) {
+            this.Scyth.getChildren().forEach(function (child) {
             
                 child.anims.play('LeftHit', true);
             
             }, this);
         }
     
+ 
+
         PRENDREDESDEGATSCAFAITMAL(mespointsdevie, enemy) {
             if (!this.player.invulnerable) {
                 this.player.setTint(0xff0000);
@@ -725,7 +792,7 @@ export class Village extends Phaser.Scene {
         ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
     
         enemyHit(enemy, Orbe) {
-    
+            
             Orbe.destroy()
             if (enemy.HP >= 0) {
                 enemy.HP -= 1;
@@ -735,13 +802,14 @@ export class Village extends Phaser.Scene {
             }
         };
         
-        enemyHitMelee(enemy, Scyth) {
-    
-          
+        enemyHitMelee(enemy) {
+
             if (enemy.HP >= 0 && this.enemy_invulnerable == false) {
                 enemy.HP -= 5;
+                
                 this.enemy_invulnerable = true
                 setTimeout(() => {
+        
                     this.enemy_invulnerable = false
                 }, 200);
             }
