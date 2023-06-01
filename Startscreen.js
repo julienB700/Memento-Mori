@@ -17,16 +17,21 @@ export class Menu extends Phaser.Scene {
     }
 
     create() {
+
+        //this.pointer = setOrigin(0.5,0.5)
+
         var musique = this.sound.add('Intro', { loop: false });
             musique.play();
 
+        this.fourthplan = this.add.image(449, 224, '4P').setScale(1.2)
+      
+        this.thirdplan = this.add.image(0, 0, '3P').setScale(1.2)
+        
+        this.titre = this.add.image(449, 224, 'titre');
+        
+        this.Firstplan = this.add.image(449, 224 , '1P').setScale(1.2);
+
     
-        this.add.image(449, 224, '4P')
-
-        this.add.image(449, 224, '3P')
-
-        this.add.image(449, 224, 'titre')
-
         var button = this.add.sprite(449 ,270, 'Button1');
         button.setInteractive();
         button.once('pointerdown', () => {
@@ -44,17 +49,31 @@ export class Menu extends Phaser.Scene {
             this.Startgame();
         });
 
-
-        this.image = this.add.image
-        this.image = this.add.image(449, 224 , '1P')
-
-        
     }
     update() {
+  // Get the current position of the pointer
+        const pointer = this.input.activePointer;
+        const pointerX = pointer.x;
+        const pointerY = pointer.y;
+
+        // Calculate the amount to scroll for each layer based on the pointer's position
+        const scrollX = pointerX * 0.05;
+        const scrollY = pointerY * 0.05;
+
+        // Set the scroll factors and scroll the layers
+        this.thirdplan.x = pointerX * 0.3;
+        this.thirdplan.y = pointerY * 0.3;
+    
+        this.titre.x = pointerX * 0.5;
+        this.titre.y = pointerY * 0.5;
+
+        this.Firstplan.x = pointerX * 0.8;
+        this.Firstplan.y = pointerY * 0.8;
+
 
     }
     Startgame() {
-        this.scene.start('Foret')
+        this.scene.start('Chateau')
 
     }
 }

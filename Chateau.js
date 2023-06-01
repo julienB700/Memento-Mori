@@ -49,6 +49,11 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('Transi', 'assets/Sprites/Transi.png',
             { frameWidth: 64, frameHeight: 80 });
+
+        this.load.spritesheet('TransiBig', 'assets/Sprites/TransiBig.png',
+            { frameWidth: 128, frameHeight: 80 });
+
+
         this.load.spritesheet('SummonSprites', 'assets/Sprites/SummonSprites.png',
             { frameWidth: 64, frameHeight: 64 });
 
@@ -59,11 +64,14 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
             { frameWidth: 64, frameHeight: 64 });
-
+        this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
+            { frameWidth: 32, frameHeight: 30*32 });
 
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
+
     }
 
+    
     create() {
 
         this.clavier = this.input.keyboard.createCursorKeys('up,down,left,right');
@@ -121,6 +129,10 @@ export class Chateau extends Phaser.Scene {
 
         this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
         this.SpritesTransition = this.transition.create(99 * 32, 27.8 * 32, 'Transi')
+
+        this.transitionBig = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
+        this.SpritesTransitionBig = this.transitionBig.create(10 * 32, 52.8 * 32, 'TransiBig')
+        
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
         this.Tir = this.physics.add.group()
@@ -521,8 +533,8 @@ export class Chateau extends Phaser.Scene {
 
         /////////////////////////// TRANSITION ////////////////////////////////////////
         this.anims.create({
-            key: 'Transi',
-            frames: this.anims.generateFrameNumbers('Transi', { start: 0, end: 7 }),
+            key: 'TransiBig',
+            frames: this.anims.generateFrameNumbers('TransiBig', { start: 0, end: 7 }),
             frameRate: 10,
             repeat: -1
         });

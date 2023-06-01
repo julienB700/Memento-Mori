@@ -59,7 +59,9 @@ export class Foret extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
             { frameWidth: 64, frameHeight: 64 });
-
+        
+        this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
+            { frameWidth: 32, frameHeight: 30*32 });
 
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
     }
