@@ -6,7 +6,8 @@ var spawny;
 export class Village extends Phaser.Scene {
     constructor() {
         super("Village");
-        this.player_invulnerable = false;
+        this.player_invulnerable = true;
+
         this.enemy_invulnerable = false;
         this.CanShoot = true;
         this.CanShootourrelle = true;
@@ -30,16 +31,19 @@ export class Village extends Phaser.Scene {
         this.load.audio('Deathtalk', 'assets/Audio/Death1rst.mp3')
         this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
 
+
+        this.load.spritesheet('Souls', 'assets/Sprites/SoulsPickups.png',
+            { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
             { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
-        this.load.spritesheet('MonstreBat', 'assets/Sprites/MobSprite.png',
+        this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
             { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('MAGE', 'assets/Sprites/MAGE.png',
-            { frameWidth: 32, frameHeight: 64 });
-        this.load.spritesheet('MonstreZombie', 'assets/Sprites/ZOMBIE_PLACEHOLDER.png',
-            { frameWidth: 32, frameHeight: 64 });
+        this.load.spritesheet('Maganime', 'assets/Sprites/Mage_Final.png',
+            { frameWidth: 64, frameHeight: 80 });
+        this.load.spritesheet('Zombanime', 'assets/Sprites/Zombie.png',
+            { frameWidth: 42, frameHeight: 74 });
 
 
         this.load.spritesheet('Dash', 'assets/Sprites/Dash.png',
@@ -63,7 +67,7 @@ export class Village extends Phaser.Scene {
         this.load.spritesheet ('Scythpickup', 'assets/Sprites/ScythePickup.png',
             {frameWidth: 64, frameHeight: 64 });
 
-        this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
+        
     }
 
     create() {
@@ -120,6 +124,14 @@ export class Village extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
 
+        ///////////////////////////////////////// Potion ////////////////////////////////////////////////////////////////////
+        this.anims.create({
+            key: 'potionanim',
+            frames: this.anims.generateFrameNumbers('Potion', { start: 0, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        });
+    
         this.Potion = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
         
         console.log(carteDuNiveau)
@@ -130,6 +142,27 @@ export class Village extends Phaser.Scene {
             this.current_potion.play('potionanim')
             this.physics.add.overlap(this.player, this.Potion, this.CEFAIRESOIGNERCESTCOOL, null, this);
           });
+          
+        ///////////////////////////////////////// SOULS ////////////////////////////////////////////////////////////////////
+
+        this.anims.create({
+            key: 'SoulsAnim',
+            frames: this.anims.generateFrameNumbers('Souls', { start: 0, end: 12 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        this.Soul = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
+        
+        console.log(carteDuNiveau)
+        carteDuNiveau.getObjectLayer('Souls').objects.forEach((Soul) => {
+
+            this.current_Soul =  this.Soul.create(Soul.x,Soul.y,'Souls')
+
+            this.current_Soul.play('SoulsAnim')
+            this.physics.add.overlap(this.player, this.Soul, this.CEFAIRESOIGNERCESTCOOL, null, this);
+          });
+
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
         this.Orbe = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
@@ -146,28 +179,9 @@ export class Village extends Phaser.Scene {
             this.obstacles.create(obstacle.x, obstacle.y, "Obstacle");
             console.log(obstacle)
         })
-            //obstacle.anims.play("FeuAnim");
 
         this.obstacles.children.each(obstacle => {
-            //console.log(obstacle)
-            /*
-            if (obstacle.properties[0].value){
-                const PI = 3.141592654;
-
-                switch (obstacle.properties[1].value){
-                    case "haut":
-                        obstacle.setFlipY(true);
-                        break;
-                    case "droite":
-                        obstacle.setRotation(PI / 2);
-                        obstacle.setFlipX(true);
-                        break;
-                    case "gauche":
-                        obstacle.setRotation(-PI / 2);
-                        obstacle.setFlipX(true);
-                        break;
-                }
-            }*/
+            
         })
 
         ////////////////////////////////////////////// LA FAUX /////////////////////////////////////////////////////////////
@@ -184,82 +198,104 @@ export class Village extends Phaser.Scene {
         /////////////////////////////////////////////// SPAWN BAT //////////////////////////////////////////////////////
         this.Tir = this.physics.add.group()
         this.physics.add.overlap(this.player, this.Tir , this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        
+        this.anims.create({
+            key: 'Maganim',
+            frames: this.anims.generateFrameNumbers('Maganime', { start: 0, end: 4 }),
+            frameRate: 5,
+            repeat: -1
+        });
 
-        this.MAGE = this.physics.add.sprite(41 * 32, 39 * 32, "MAGE");
-        this.MAGE.type = "Mage"
+        this.Maganime = this.physics.add.sprite(41 * 32, 39 * 32, "Maganim").setSize(30,70).setOffset(10,10);
+        this.Maganime.type = "Mage"
 
-        this.BAT = this.physics.add.sprite(15 * 32, 8 * 32, "MonstreBat");
+        this.anims.create({
+            key: 'Batanim',
+            frames: this.anims.generateFrameNumbers('Batanime', { start: 0, end: 5 }),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.BAT = this.physics.add.sprite(15 * 32, 8 * 32, "Batanim");
         this.BAT.type = "Bat"
 
-        this.BAT1 = this.physics.add.sprite(44 * 32, 6 * 32, "MonstreBat");
+        this.BAT1 = this.physics.add.sprite(44 * 32, 6 * 32, "Batanim");
         this.BAT1.type = "Bat"
 
-        this.BAT2 = this.physics.add.sprite(30 * 32, 9 * 32, "MonstreBat");
+        this.BAT2 = this.physics.add.sprite(30 * 32, 9 * 32, "Batanim");
         this.BAT2.type = "Bat"
 
-        this.BAT3 = this.physics.add.sprite(23 * 32, 19 * 32, "MonstreBat");
+        this.BAT3 = this.physics.add.sprite(23 * 32, 19 * 32, "Batanim");
         this.BAT3.type = "Bat"
 
-        this.BAT4 = this.physics.add.sprite(12 * 32, 22 * 32, "MonstreBat");
+        this.BAT4 = this.physics.add.sprite(12 * 32, 22 * 32, "Batanim");
         this.BAT4.type = "Bat"
 
-        this.BAT5 = this.physics.add.sprite(6 * 32, 28 * 32, "MonstreBat");
+        this.BAT5 = this.physics.add.sprite(6 * 32, 28 * 32, "Batanim");
         this.BAT5.type = "Bat"
 
-        this.BAT6 = this.physics.add.sprite(20 * 32, 36 * 32, "MonstreBat");
+        this.BAT6 = this.physics.add.sprite(20 * 32, 36 * 32, "Batanim");
         this.BAT6.type = "Bat"
 
-        this.BAT7 = this.physics.add.sprite(7 * 32, 40* 32, "MonstreBat");
+        this.BAT7 = this.physics.add.sprite(7 * 32, 40* 32, "Batanim");
         this.BAT7.type = "Bat"
 
-        this.BAT8 = this.physics.add.sprite(19 * 32, 44 * 32, "MonstreBat");
+        this.BAT8 = this.physics.add.sprite(19 * 32, 44 * 32, "Batanim");
         this.BAT8.type = "Bat"
 
-        this.BAT9 = this.physics.add.sprite(32 * 32, 43 * 32, "MonstreBat");
+        this.BAT9 = this.physics.add.sprite(32 * 32, 43 * 32, "Batanim");
         this.BAT9.type = "Bat"
 
-        this.BAT10 = this.physics.add.sprite(37 * 32, 34 * 32, "MonstreBat");
+        this.BAT10 = this.physics.add.sprite(37 * 32, 34 * 32, "Batanim");
         this.BAT10.type = "Bat"
 
         /////////////////////////////////////////////// SPAWN ZOMBIE //////////////////////////////////////////////////////
 
-        this.ZOMBIE = this.physics.add.sprite(14 * 32, 15 * 32, "MonstreZombie");
+        this.anims.create({
+            key: 'Zombanim',
+            frames: this.anims.generateFrameNumbers('Zombanime', { start: 0, end: 3 }),
+            
+            frameRate: 5,
+            repeat: -1
+        });
+
+        this.ZOMBIE = this.physics.add.sprite(14 * 32, 15 * 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE.type = "Zombie"
 
-        this.ZOMBIE1 = this.physics.add.sprite(21 * 32, 15 * 32, "MonstreZombie");
+        this.ZOMBIE1 = this.physics.add.sprite(21 * 32, 15 * 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE1.type = "Zombie"
 
-        this.ZOMBIE2 = this.physics.add.sprite(28 * 32, 15 * 32, "MonstreZombie");
+        this.ZOMBIE2 = this.physics.add.sprite(28 * 32, 15 * 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE2.type = "Zombie"
 
-        this.ZOMBIE3 = this.physics.add.sprite(36* 32, 15 * 32, "MonstreZombie");
+        this.ZOMBIE3 = this.physics.add.sprite(36* 32, 15 * 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE3.type = "Zombie"
 
-        this.ZOMBIE4 = this.physics.add.sprite(9* 32, 24 * 32, "MonstreZombie");
+        this.ZOMBIE4 = this.physics.add.sprite(9* 32, 24 * 32, "Zombanim").setSize(30,65).setOffset(10,10)
         this.ZOMBIE4.type = "Zombie"
         
-        this.ZOMBIE5 = this.physics.add.sprite(14* 32, 31 * 32, "MonstreZombie");
+        this.ZOMBIE5 = this.physics.add.sprite(14* 32, 31 * 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE5.type = "Zombie"
         
-        this.ZOMBIE6 = this.physics.add.sprite(190* 32, 45* 32, "MonstreZombie");
+        this.ZOMBIE6 = this.physics.add.sprite(190* 32, 45* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE6.type = "Zombie"
 
-        this.ZOMBIE7 = this.physics.add.sprite(35* 32, 45* 32, "MonstreZombie");
+        this.ZOMBIE7 = this.physics.add.sprite(35* 32, 45* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE7.type = "Zombie"
 
-        this.ZOMBIE8 = this.physics.add.sprite(42* 32,  31* 32, "MonstreZombie");
+        this.ZOMBIE8 = this.physics.add.sprite(42* 32,  31* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE8.type = "Zombie"
 
-        this.ZOMBIE9 = this.physics.add.sprite(46* 32,  45* 32, "MonstreZombie");
+        this.ZOMBIE9 = this.physics.add.sprite(46* 32,  45* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE9.type = "Zombie"
 
-        this.ZOMBIE10 = this.physics.add.sprite(48* 32, 41* 32, "MonstreZombie");
+        this.ZOMBIE10 = this.physics.add.sprite(48* 32, 41* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE10.type = "Zombie"
 
-        this.ZOMBIE11 = this.physics.add.sprite(48* 32,  29* 32, "MonstreZombie");
+        this.ZOMBIE11 = this.physics.add.sprite(48* 32,  29* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE11.type = "Zombie"
 
-        this.ZOMBIE12 = this.physics.add.sprite(43* 32,  23* 32, "MonstreZombie");
+        this.ZOMBIE12 = this.physics.add.sprite(43* 32,  23* 32, "Zombanim").setSize(30,65).setOffset(10,10);
         this.ZOMBIE12.type = "Zombie"
 
         
@@ -267,7 +303,7 @@ export class Village extends Phaser.Scene {
 
         this.enemygroup = this.physics.add.group();
         
-        this.enemygroup.add(this.MAGE);
+        this.enemygroup.add(this.Maganime);
 
         this.enemygroup.add(this.BAT);
         this.enemygroup.add(this.BAT1);
@@ -307,17 +343,18 @@ export class Village extends Phaser.Scene {
             if (child.type == "Bat") {
                 child.HP = 5;
                 child.setGravityY(-700)
+                child.anims.play("Batanim");
             }
 
             else if (child.type == "Zombie") {
                 child.HP = 10;
-                
+                child.anims.play("Zombanim");
             }
 
             else if (child.type == "Mage") {
                 child.HP = 10;
                 child.CanShootourrelle = true;
-                
+                child.anims.play("Maganim");
             }
             else if (child.type == "BOSS") {
                 child.HP = 50;
@@ -328,6 +365,7 @@ export class Village extends Phaser.Scene {
                 child.HP = 20; 
                 child.setGravityY(-700)
                 child.CanShootourrelle = true;
+                child.anims.play("Batanim");
             }
 
         }, this);
@@ -337,18 +375,9 @@ export class Village extends Phaser.Scene {
         this.mespointsdevie = 5 ;
         this.mespointsdevieText=this.add.text(375,133,this.mespointsdevie,{fontSize:'20px',fill:'#fff'}).setScale(1).setScrollFactor(0);
         
-        this.anims.create({
-            key: 'enemy1',
-            frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 0 }),
-            frameRate: 8,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'potionanim',
-            frames: this.anims.generateFrameNumbers('Potion', { start: 0, end: 7 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        
+
+        
 
         this.anims.create({
             key: 'ScythAnim',
@@ -356,6 +385,8 @@ export class Village extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+
         /////////////////////////// Animations ////////////////////////////////////////////////////////////////////
         
         this.anims.create({
@@ -478,7 +509,7 @@ export class Village extends Phaser.Scene {
         this.transition = this.physics.add.group({ allowGravity : false, collideWorldBounds: true});
         this.SpritesTransition = this.transition.create(49*32, 14.7*32, 'Transi')
         this.physics.add.overlap(this.player, this.transition, this.PROCHAINESCENE,null,this);
-
+        this.SpritesTransition.anims.play('Transi', true)
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;

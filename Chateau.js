@@ -27,8 +27,8 @@ export class Chateau extends Phaser.Scene {
         this.load.audio('Village', 'assets/Musics/Village.mp3')
         this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
 
-        this.load.spritesheet('MAGE', 'assets/Sprites/MAGE.png',
-            { frameWidth: 32, frameHeight: 64 });
+        this.load.spritesheet('Maganime', 'assets/Sprites/Mage_Final.png',
+            { frameWidth: 64, frameHeight: 80 });
         this.load.spritesheet('TIRDEMAGE', 'assets/Sprites/Tir.png',
             { frameWidth: 16, frameHeight: 16 });
 
@@ -37,10 +37,11 @@ export class Chateau extends Phaser.Scene {
         this.load.spritesheet('BOSS', 'assets/Sprites/MobSprite.png',
             { frameWidth: 80, frameHeight: 80 });
 
-        this.load.spritesheet('MobSprite', 'assets/Sprites/MobSprite.png',
+        this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
             { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('MonstreZombie', 'assets/Sprites/ZOMBIE_PLACEHOLDER.png',
-            { frameWidth: 32, frameHeight: 64 });
+            
+        this.load.spritesheet('Zombanime', 'assets/Sprites/Zombie.png',
+            { frameWidth: 42, frameHeight: 74 });
         this.load.spritesheet('Dash', 'assets/Sprites/Dash.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('player', 'assets/Sprites/Player.png',
@@ -99,6 +100,16 @@ export class Chateau extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
 
+
+        /////////////////////////// Potion ////////////////////////////////////////
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
+            frameRate: 8,
+            repeat: -1
+        });
+
         this.Potion = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
         
         console.log(carteDuNiveau)
@@ -110,6 +121,27 @@ export class Chateau extends Phaser.Scene {
             this.physics.add.overlap(this.player, this.Potion, this.CEFAIRESOIGNERCESTCOOL, null, this);
           });
 
+
+        this.anims.create({
+            key: 'SoulsAnim',
+            frames: this.anims.generateFrameNumbers('Souls', { start: 0, end: 12 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        /////////////////////////// Souls ////////////////////////////////////////
+
+
+        this.Soul = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
+        
+        console.log(carteDuNiveau)
+        carteDuNiveau.getObjectLayer('Souls').objects.forEach((Soul) => {
+
+            this.current_Soul =  this.Soul.create(Soul.x,Soul.y,'Souls')
+
+            this.current_Soul.play('SoulsAnim')
+            this.physics.add.overlap(this.player, this.Soul, this.CEFAIRESOIGNERCESTCOOL, null, this);
+          });
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
         this.Orbe = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
@@ -135,195 +167,210 @@ export class Chateau extends Phaser.Scene {
         this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "MAGE");
         this.MAGE.type = "Mage"
 
-        
-        this.BAT = this.physics.add.sprite(9 * 32, 31 * 32, "MonstreBat");
+        this.anims.create({
+            key: 'Batanim',
+            frames: this.anims.generateFrameNumbers('Batanime', { start: 0, end: 5 }),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.BAT = this.physics.add.sprite(9 * 32, 31 * 32, "Batanim");
         this.BAT.type = "Bat"
-        this.BAT1 = this.physics.add.sprite(13 * 32, 34 * 32, "MonstreBat");
+        this.BAT1 = this.physics.add.sprite(13 * 32, 34 * 32, "Batanim");
         this.BAT1.type = "Bat"
-        this.BAT2 = this.physics.add.sprite(18 * 32, 33 * 32, "MonstreBat");
+        this.BAT2 = this.physics.add.sprite(18 * 32, 33 * 32, "Batanim");
         this.BAT2.type = "Bat"
-        this.BAT3 = this.physics.add.sprite(23 * 32, 34 * 32, "MonstreBat");
+        this.BAT3 = this.physics.add.sprite(23 * 32, 34 * 32, "Batanim");
         this.BAT3.type = "Bat"
 
-        this.BAT4 = this.physics.add.sprite(44 * 34, 34 * 32, "MonstreBat");
+        this.BAT4 = this.physics.add.sprite(44 * 34, 34 * 32, "Batanim");
         this.BAT4.type = "Bat"
-        this.BAT5 = this.physics.add.sprite(58 * 32, 34* 32, "MonstreBat");
+        this.BAT5 = this.physics.add.sprite(58 * 32, 34* 32, "Batanim");
         this.BAT5.type = "Bat"
-        this.BAT6 = this.physics.add.sprite(70 * 32, 34 * 32, "MonstreBat");
+        this.BAT6 = this.physics.add.sprite(70 * 32, 34 * 32, "Batanim");
         this.BAT6.type = "Bat"
-        this.BAT7 = this.physics.add.sprite(80 * 32, 34* 32, "MonstreBat");
+        this.BAT7 = this.physics.add.sprite(80 * 32, 34* 32, "Batanim");
         this.BAT7.type = "Bat"
-        this.BAT8 = this.physics.add.sprite(91 * 32, 34* 32, "MonstreBat");
+        this.BAT8 = this.physics.add.sprite(91 * 32, 34* 32, "Batanim");
         this.BAT8.type = "Bat"
 
-        this.BAT9 = this.physics.add.sprite(39 * 32, 43 * 32, "MonstreBat");
+        this.BAT9 = this.physics.add.sprite(39 * 32, 43 * 32, "Batanim");
         this.BAT9.type = "Bat"
-        this.BAT10 = this.physics.add.sprite(45 * 32, 46* 32, "MonstreBat");
+        this.BAT10 = this.physics.add.sprite(45 * 32, 46* 32, "Batanim");
         this.BAT10.type = "Bat"
 
-        this.BAT11 = this.physics.add.sprite(57 * 32, 48 * 32, "MonstreBat");
+        this.BAT11 = this.physics.add.sprite(57 * 32, 48 * 32, "Batanim");
         this.BAT11.type = "Bat"
-        this.BAT12 = this.physics.add.sprite(66 * 32, 48 * 32, "MonstreBat");
+        this.BAT12 = this.physics.add.sprite(66 * 32, 48 * 32, "Batanim");
         this.BAT12.type = "Bat"
-        this.BAT13 = this.physics.add.sprite(75 * 32, 48 * 32, "MonstreBat");
+        this.BAT13 = this.physics.add.sprite(75 * 32, 48 * 32, "Batanim");
         this.BAT13.type = "Bat"
-        this.BAT14 = this.physics.add.sprite(89 * 32, 48 * 32, "MonstreBat");
+        this.BAT14 = this.physics.add.sprite(89 * 32, 48 * 32, "Batanim");
         this.BAT14.type = "Bat"
 
-        this.BAT15 = this.physics.add.sprite( 39* 32, 66 * 32, "MonstreBat");
+        this.BAT15 = this.physics.add.sprite( 39* 32, 66 * 32, "Batanim");
         this.BAT15.type = "Bat"
 
-        this.BAT16 = this.physics.add.sprite( 30* 32, 65* 32, "MonstreBat");
+        this.BAT16 = this.physics.add.sprite( 30* 32, 65* 32, "Batanim");
         this.BAT16.type = "Bat"
         
-        this.BAT17 = this.physics.add.sprite(71* 32, 76* 32, "MonstreBat");
+        this.BAT17 = this.physics.add.sprite(71* 32, 76* 32, "Batanim");
         this.BAT17.type = "Bat"
-        this.BAT18 = this.physics.add.sprite( 87* 32,  77* 32, "MonstreBat");
+        this.BAT18 = this.physics.add.sprite( 87* 32,  77* 32, "Batanim");
         this.BAT18.type = "Bat"
 
-        this.BAT19 = this.physics.add.sprite(71* 32, 86* 32, "MonstreBat");
+        this.BAT19 = this.physics.add.sprite(71* 32, 86* 32, "Batanim");
         this.BAT19.type = "Bat"
 
-        this.BAT20 = this.physics.add.sprite( 70* 32,94 * 32, "MonstreBat");
+        this.BAT20 = this.physics.add.sprite( 70* 32,94 * 32, "Batanim");
         this.BAT20.type = "Bat"
 
-        this.BAT21 = this.physics.add.sprite( 80* 32, 94* 32, "MonstreBat");
+        this.BAT21 = this.physics.add.sprite( 80* 32, 94* 32, "Batanim");
         this.BAT21.type = "Bat"
 
-        this.BAT22 = this.physics.add.sprite( 87* 32, 94* 32, "MonstreBat");
+        this.BAT22 = this.physics.add.sprite( 87* 32, 94* 32, "Batanim");
         this.BAT22.type = "Bat"
 
-        this.BAT23 = this.physics.add.sprite( 35* 32, 80* 32, "MonstreBat");
+        this.BAT23 = this.physics.add.sprite( 35* 32, 80* 32, "Batanim");
         this.BAT23.type = "Bat"
 
-        this.BAT24 = this.physics.add.sprite( 17* 32,77 * 32, "MonstreBat");
+        this.BAT24 = this.physics.add.sprite( 17* 32,77 * 32, "Batanim");
         this.BAT24.type = "Bat"
-        this.BAT25 = this.physics.add.sprite( 14* 32, 60* 32, "MonstreBat");
+        this.BAT25 = this.physics.add.sprite( 14* 32, 60* 32, "Batanim");
         this.BAT25.type = "Bat"
-        this.BAT26 = this.physics.add.sprite( 16* 32,47 * 32, "MonstreBat");
+        this.BAT26 = this.physics.add.sprite( 16* 32,47 * 32, "Batanim");
         this.BAT26.type = "Bat"
-        this.BAT27 = this.physics.add.sprite( 3* 32, 47* 32, "MonstreBat");
+        this.BAT27 = this.physics.add.sprite( 3* 32, 47* 32, "Batanim");
         this.BAT27.type = "Bat"
-        this.BAT28 = this.physics.add.sprite( 44* 32, 94* 32, "MonstreBat");
+        this.BAT28 = this.physics.add.sprite( 44* 32, 94* 32, "Batanim");
         this.BAT28.type = "Bat"
-        this.BAT29 = this.physics.add.sprite( 28* 32, 94* 32, "MonstreBat");
+        this.BAT29 = this.physics.add.sprite( 28* 32, 94* 32, "Batanim");
         this.BAT29.type = "Bat"
-        this.BAT30 = this.physics.add.sprite( 13* 32, 94* 32, "MonstreBat");
+        this.BAT30 = this.physics.add.sprite( 13* 32, 94* 32, "Batanim");
         this.BAT30.type = "Bat"
-        this.BAT31 = this.physics.add.sprite( 6* 32, 71* 32, "MonstreBat");
+        this.BAT31 = this.physics.add.sprite( 6* 32, 71* 32, "Batanim");
         this.BAT31.type = "Bat"
-        this.BAT32 = this.physics.add.sprite(2* 32,94* 32, "MonstreBat");
+        this.BAT32 = this.physics.add.sprite(2* 32,94* 32, "Batanim");
         this.BAT32.type = "Bat"
 
-        //this.BAT33 = this.physics.add.sprite( * 32, * 32, "MonstreBat");
+        //this.BAT33 = this.physics.add.sprite( * 32, * 32, "Batanim");
         //this.BAT33.type = "Bat"
 
 
 
         /////////////////////////////////////////////// SPAWN ZOMBIE //////////////////////////////////////////////////////
-        this.ZOMBIE0 = this.physics.add.sprite(20 * 32, 38 * 32, "MonstreZombie");
+       
+        this.anims.create({
+            key: 'Zombanim',
+            frames: this.anims.generateFrameNumbers('Zombanime', { start: 0, end: 3 }),
+            
+            frameRate: 5,
+            repeat: -1
+        });
+       
+        this.ZOMBIE0 = this.physics.add.sprite(20 * 32, 38 * 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE0.type = "Zombie"
 
-        this.ZOMBIE = this.physics.add.sprite(13 * 32, 38 * 32, "MonstreZombie");
+        this.ZOMBIE = this.physics.add.sprite(13 * 32, 38 * 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE.type = "Zombie"
 
-        this.ZOMBIE1 = this.physics.add.sprite(17 * 32, 38 * 32, "MonstreZombie");
+        this.ZOMBIE1 = this.physics.add.sprite(17 * 32, 38 * 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE1.type = "Zombie"
 
-        this.ZOMBIE2 = this.physics.add.sprite(19 * 32, 38 * 32, "MonstreZombie");
+        this.ZOMBIE2 = this.physics.add.sprite(19 * 32, 38 * 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE2.type = "Zombie"
 
-        this.ZOMBIE3 = this.physics.add.sprite(43* 32, 38 * 32, "MonstreZombie");
+        this.ZOMBIE3 = this.physics.add.sprite(43* 32, 38 * 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE3.type = "Zombie"
 
-        this.ZOMBIE4 = this.physics.add.sprite(46* 32, 38 * 32, "MonstreZombie");
+        this.ZOMBIE4 = this.physics.add.sprite(46* 32, 38 * 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE4.type = "Zombie"
         
-        this.ZOMBIE5 = this.physics.add.sprite(50* 32,  38* 32, "MonstreZombie");
+        this.ZOMBIE5 = this.physics.add.sprite(50* 32,  38* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE5.type = "Zombie"
         
-        this.ZOMBIE6 = this.physics.add.sprite(62* 32, 38* 32, "MonstreZombie");
+        this.ZOMBIE6 = this.physics.add.sprite(62* 32, 38* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE6.type = "Zombie"
 
-        this.ZOMBIE7 = this.physics.add.sprite(65* 32, 38* 32, "MonstreZombie");
+        this.ZOMBIE7 = this.physics.add.sprite(65* 32, 38* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE7.type = "Zombie"
 
-        this.ZOMBIE8 = this.physics.add.sprite(68* 32,  38* 32, "MonstreZombie");
+        this.ZOMBIE8 = this.physics.add.sprite(68* 32,  38* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE8.type = "Zombie"
 
-        this.ZOMBIE9 = this.physics.add.sprite(43* 32,  53* 32, "MonstreZombie");
+        this.ZOMBIE9 = this.physics.add.sprite(43* 32,  53* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE9.type = "Zombie"
 
-        this.ZOMBIE10 = this.physics.add.sprite(51* 32, 53* 32, "MonstreZombie");
+        this.ZOMBIE10 = this.physics.add.sprite(51* 32, 53* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE10.type = "Zombie"
 
-        this.ZOMBIE11 = this.physics.add.sprite(57* 32,  53* 32, "MonstreZombie");
+        this.ZOMBIE11 = this.physics.add.sprite(57* 32,  53* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE11.type = "Zombie"
 
-        this.ZOMBIE12 = this.physics.add.sprite(63* 32,  53* 32, "MonstreZombie");
+        this.ZOMBIE12 = this.physics.add.sprite(63* 32,  53* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE12.type = "Zombie"
 
-        this.ZOMBIE13 = this.physics.add.sprite(70* 32,  53* 32, "MonstreZombie");
+        this.ZOMBIE13 = this.physics.add.sprite(70* 32,  53* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE13.type = "Zombie"
 
 
-        this.ZOMBIE14 = this.physics.add.sprite(92* 32,  53* 32, "MonstreZombie");
+        this.ZOMBIE14 = this.physics.add.sprite(92* 32,  53* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE14.type = "Zombie"
 
-        this.ZOMBIE15 = this.physics.add.sprite(41* 32,  70* 32, "MonstreZombie");
+        this.ZOMBIE15 = this.physics.add.sprite(41* 32,  70* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE15.type = "Zombie"
 
-        this.ZOMBIE16 = this.physics.add.sprite(36* 32,  70* 32, "MonstreZombie");
+        this.ZOMBIE16 = this.physics.add.sprite(36* 32,  70* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE16.type = "Zombie"
 
-        this.ZOMBIE17 = this.physics.add.sprite(32* 32,  70* 32, "MonstreZombie");
+        this.ZOMBIE17 = this.physics.add.sprite(32* 32,  70* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE17.type = "Zombie"
 
-        this.ZOMBIE18 = this.physics.add.sprite(25* 32,  70* 32, "MonstreZombie");
+        this.ZOMBIE18 = this.physics.add.sprite(25* 32,  70* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE18.type = "Zombie"
 
-        this.ZOMBIE19 = this.physics.add.sprite(66* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE19 = this.physics.add.sprite(66* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE19.type = "Zombie"
 
-        this.ZOMBIE20 = this.physics.add.sprite(68* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE20 = this.physics.add.sprite(68* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE20.type = "Zombie"
-        this.ZOMBIE21 = this.physics.add.sprite(72* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE21 = this.physics.add.sprite(72* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE21.type = "Zombie"
-        this.ZOMBIE22 = this.physics.add.sprite(76* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE22 = this.physics.add.sprite(76* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE22.type = "Zombie"
-        this.ZOMBIE23 = this.physics.add.sprite(80* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE23 = this.physics.add.sprite(80* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE23.type = "Zombie"
-        this.ZOMBIE24 = this.physics.add.sprite(80* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE24 = this.physics.add.sprite(80* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE24.type = "Zombie"
 
-        this.ZOMBIE25 = this.physics.add.sprite(48* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE25 = this.physics.add.sprite(48* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE25.type = "Zombie"
-        this.ZOMBIE26 = this.physics.add.sprite(42* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE26 = this.physics.add.sprite(42* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE26.type = "Zombie"
-        this.ZOMBIE27 = this.physics.add.sprite(38* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE27 = this.physics.add.sprite(38* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE27.type = "Zombie"
-        this.ZOMBIE28 = this.physics.add.sprite(34* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE28 = this.physics.add.sprite(34* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE28.type = "Zombie"
-        this.ZOMBIE29 = this.physics.add.sprite(25* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE29 = this.physics.add.sprite(25* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE29.type = "Zombie"
-        this.ZOMBIE30 = this.physics.add.sprite(15* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE30 = this.physics.add.sprite(15* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE30.type = "Zombie"
-        this.ZOMBIE31 = this.physics.add.sprite(6* 32,  97* 32, "MonstreZombie");
+        this.ZOMBIE31 = this.physics.add.sprite(6* 32,  97* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE31.type = "Zombie"
 
 
-        this.ZOMBIE32 = this.physics.add.sprite(1* 32,  89* 32, "MonstreZombie");
+        this.ZOMBIE32 = this.physics.add.sprite(1* 32,  89* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE32.type = "Zombie"
-        this.ZOMBIE33 = this.physics.add.sprite(8* 32,  84* 32, "MonstreZombie");
+        this.ZOMBIE33 = this.physics.add.sprite(8* 32,  84* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE33.type = "Zombie"
 
-        this.ZOMBIE34= this.physics.add.sprite(1* 32,  80* 32, "MonstreZombie");
+        this.ZOMBIE34= this.physics.add.sprite(1* 32,  80* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE34.type = "Zombie"
 
-        this.ZOMBIE35 = this.physics.add.sprite(8* 32,  75* 32, "MonstreZombie");
+        this.ZOMBIE35 = this.physics.add.sprite(8* 32,  75* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE35.type = "Zombie"
 
-        this.ZOMBIE36 = this.physics.add.sprite(8* 32,  62* 32, "MonstreZombie");
+        this.ZOMBIE36 = this.physics.add.sprite(8* 32,  62* 32, "MonstreZombie").setSize(30,65).setOffset(10,10);
         this.ZOMBIE36.type = "Zombie"
 
         /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
@@ -331,10 +378,10 @@ export class Chateau extends Phaser.Scene {
         this.BOSS = this.physics.add.sprite(35* 32, 15* 32, "BOSS");
         this.BOSS.type = "BOSS"
 
-        this.BOSSBAT1 = this.physics.add.sprite(26* 32, 14* 32, "MonstreBat");
+        this.BOSSBAT1 = this.physics.add.sprite(26* 32, 14* 32, "Batanim");
         this.BOSSBAT1.type = "BOSSBAT"
 
-        this.BOSSBAT2 = this.physics.add.sprite(42* 32, 14* 32, "MonstreBat");
+        this.BOSSBAT2 = this.physics.add.sprite(42* 32, 14* 32, "Batanim");
         this.BOSSBAT2.type = "BOSSBAT"
 
 
@@ -361,17 +408,18 @@ export class Chateau extends Phaser.Scene {
             if (child.type == "Bat") {
                 child.HP = 5;
                 child.setGravityY(-700)
+                child.anims.play("Batanim");
             }
 
             else if (child.type == "Zombie") {
                 child.HP = 10;
-                
+                child.anims.play("Zombanim");
             }
 
             else if (child.type == "Mage") {
                 child.HP = 10;
                 child.CanShootourrelle = true;
-                
+                child.anims.play("Maganim");
             }
             else if (child.type == "BOSS") {
                 child.HP = 50;
@@ -402,12 +450,7 @@ export class Chateau extends Phaser.Scene {
 
         //////////////////////////////////////// Animations ////////////////////////////////////////////////////////////////////
         
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 6 }),
-            frameRate: 8,
-            repeat: -1
-        });
+        
 
         this.anims.create({
             key: 'left',
@@ -521,7 +564,7 @@ export class Chateau extends Phaser.Scene {
         this.transitionBig = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
         this.SpritesTransitionBig = this.transitionBig.create(10 * 32, 52.8 * 32, 'TransiBig')
         this.physics.add.overlap(this.player, this.transitionBig, this.PROCHAINESCENE,null,this);
-        
+        this.SpritesTransitionBig.anims.play('Transi', true)
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;
