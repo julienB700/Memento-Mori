@@ -328,14 +328,19 @@ export class Chateau extends Phaser.Scene {
 
         /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
         
-        this.BOSS = this.physics.add.sprite(35* 32, 10* 32, "BOSS");
+        this.BOSS = this.physics.add.sprite(35* 32, 15* 32, "BOSS");
         this.BOSS.type = "BOSS"
 
+        this.BOSSBAT1 = this.physics.add.sprite(26* 32, 14* 32, "MonstreBat");
+        this.BOSSBAT1.type = "BOSSBAT"
+
+        this.BOSSBAT2 = this.physics.add.sprite(42* 32, 14* 32, "MonstreBat");
+        this.BOSSBAT2.type = "BOSSBAT"
 
 
         this.enemygroup = this.physics.add.group();
         this.enemygroup.add(this.BOSS);
-
+        this.enemygroup.add(this.BOSSBAT1);this.enemygroup.add(this.BOSSBAT2);
         this.enemygroup.add(this.MAGE);
 
         this.enemygroup.add(this.BAT);this.enemygroup.add(this.BAT1);this.enemygroup.add(this.BAT2);this.enemygroup.add(this.BAT3);this.enemygroup.add(this.BAT4);this.enemygroup.add(this.BAT5);this.enemygroup.add(this.BAT6);this.enemygroup.add(this.BAT7);this.enemygroup.add(this.BAT8);this.enemygroup.add(this.BAT9);this.enemygroup.add(this.BAT10);this.enemygroup.add(this.BAT11);this.enemygroup.add(this.BAT12);this.enemygroup.add(this.BAT13);this.enemygroup.add(this.BAT14);this.enemygroup.add(this.BAT15);this.enemygroup.add(this.BAT16);this.enemygroup.add(this.BAT17);this.enemygroup.add(this.BAT18);this.enemygroup.add(this.BAT19);this.enemygroup.add(this.BAT20);this.enemygroup.add(this.BAT21);this.enemygroup.add(this.BAT22);this.enemygroup.add(this.BAT23);
@@ -394,14 +399,15 @@ export class Chateau extends Phaser.Scene {
                 
             }
 
-            //else if (child.type == "BOSSMELEE") {
-            //    child.HP = 50;
-            //    this.physics.add.collider(child, Sol);
-            //    child.setCollideWorldBounds(true);
-            //    this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-            //    this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
-            //    child.allowGravity = true;
-            //}
+            else if (child.type == "BOSSBAT") {
+                child.HP = 20;
+                this.physics.add.collider(child, Sol);
+                child.setCollideWorldBounds(true);
+                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
+                child.setGravityY(-700)
+                child.CanShootourrelle = true;
+            }
 
         }, this);
 
@@ -604,28 +610,44 @@ export class Chateau extends Phaser.Scene {
                 }
             }
 
-            //if (child.type == "Boss") {
-            //    const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-            //    if (distance1 < 300) {
-//
-            //        if (child.CanShootourrelle == true) {
-            //            this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
-            //            child.CanShootourrelle = false
-//
-            //            setTimeout(() => {
-            //                child.CanShootourrelle = true
-            //            }, 500);
-            //        }
-            //    }
-            //}
+            if (child.type == "BOSS") {
+                const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance1 < 500) {
 
-            if (child.type == "Boss") {
+                    if (child.CanShootourrelle == true) {
+                        this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
+                        child.CanShootourrelle = false
+
+                        setTimeout(() => {
+                            child.CanShootourrelle = true
+                        }, 500);
+                    }
+                }
+            }
+
+            if (child.type == "BOSS") {
+
                 var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
                 if (distance < 300) {
                     child.setVelocityX(this.player.x - child.x)
                     child.setVelocityY(this.player.y - child.y)
                 }
                 else { child.setVelocity(0, 0) }
+            }
+            
+            if (child.type == "BOSSBAT") {
+                const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance1 < 500) {
+
+                    if (child.CanShootourrelle == true) {
+                        this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
+                        child.CanShootourrelle = false
+
+                        setTimeout(() => {
+                            child.CanShootourrelle = true
+                        }, 500);
+                    }
+                }
             }
 
         }, this);
