@@ -351,60 +351,35 @@ export class Chateau extends Phaser.Scene {
 
 
         this.enemygroup.getChildren().forEach(function (child) {
+            child.setCollideWorldBounds(true);
+            this.physics.add.collider(child, Sol);
+            this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+            this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+            this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
+            this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
 
             if (child.type == "Bat") {
                 child.HP = 5;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
-                this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
                 child.setGravityY(-700)
-
             }
 
             else if (child.type == "Zombie") {
                 child.HP = 10;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
-                this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
-                child.allowGravity = true;
+                
             }
 
             else if (child.type == "Mage") {
                 child.HP = 10;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
-                this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
                 child.CanShootourrelle = true;
-                child.allowGravity = true;
+                
             }
             else if (child.type == "BOSS") {
                 child.HP = 50;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
-                this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
                 child.CanShootourrelle = true;
-                child.allowGravity = true;
-                
             }
 
             else if (child.type == "BOSSBAT") {
-                child.HP = 20;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
+                child.HP = 20; 
                 child.setGravityY(-700)
                 child.CanShootourrelle = true;
             }
@@ -594,7 +569,7 @@ export class Chateau extends Phaser.Scene {
             }
 
             if (child.type == "Mage") {
-
+                child.setVelocityX(0);
 
                 const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
                 if (distance1 < 200) {
@@ -636,6 +611,8 @@ export class Chateau extends Phaser.Scene {
             }
             
             if (child.type == "BOSSBAT") {
+                child.setVelocityX(0);
+
                 const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
                 if (distance1 < 500) {
 
@@ -826,6 +803,15 @@ export class Chateau extends Phaser.Scene {
                 child.anims.play('LeftHit', true);
             
             }, this);
+
+            //if (this.clavier.SHIFT.isDown && !this.clavier.Q.isDown && !this.clavier.D.isDown && !this.clavier.Z.isDown) {
+            //    this.player_invulnerable = true 
+            //    this.player.setTint(0xffff00)
+            //}
+            //if(this.clavier.Q.isDown || this.clavier.SPACE.isDown || this.clavier.D.isDown){
+            //    this.player_invulnerable = false 
+            //    this.player.clearTint();
+            //}
         }
 
 

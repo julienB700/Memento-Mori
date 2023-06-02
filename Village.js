@@ -261,9 +261,12 @@ export class Village extends Phaser.Scene {
 
         this.ZOMBIE12 = this.physics.add.sprite(43* 32,  23* 32, "MonstreZombie");
         this.ZOMBIE12.type = "Zombie"
+
+        
         /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
 
         this.enemygroup = this.physics.add.group();
+        
         this.enemygroup.add(this.MAGE);
 
         this.enemygroup.add(this.BAT);
@@ -294,36 +297,36 @@ export class Village extends Phaser.Scene {
 
 
         this.enemygroup.getChildren().forEach(function (child) {
+            child.setCollideWorldBounds(true);
+            this.physics.add.collider(child, Sol);
+            this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+            this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+            this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
+            this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
 
             if (child.type == "Bat") {
                 child.HP = 5;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
                 child.setGravityY(-700)
             }
 
             else if (child.type == "Zombie") {
                 child.HP = 10;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
-                child.allowGravity = true;
+                
             }
 
             else if (child.type == "Mage") {
                 child.HP = 10;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
-                child.setImmovable (true);
-                child.allowGravity = true;
+                child.CanShootourrelle = true;
+                
+            }
+            else if (child.type == "BOSS") {
+                child.HP = 50;
+                child.CanShootourrelle = true;
+            }
+
+            else if (child.type == "BOSSBAT") {
+                child.HP = 20; 
+                child.setGravityY(-700)
                 child.CanShootourrelle = true;
             }
 
@@ -715,6 +718,15 @@ export class Village extends Phaser.Scene {
                 child.anims.play('LeftHit', true);
             
             }, this);
+
+            //if (this.clavier.SHIFT.isDown && !this.clavier.Q.isDown && !this.clavier.D.isDown && !this.clavier.Z.isDown) {
+            //    this.player_invulnerable = true 
+            //    this.player.setTint(0xffff00)
+            //}
+            //if(this.clavier.Q.isDown || this.clavier.SPACE.isDown || this.clavier.D.isDown){
+            //    this.player_invulnerable = false 
+            //    this.player.clearTint();
+            //}
         }
     
  

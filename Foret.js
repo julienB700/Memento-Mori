@@ -246,6 +246,17 @@ export class Foret extends Phaser.Scene {
         this.ZOMBIE13 = this.physics.add.sprite(74 * 32, 35 * 32, "MonstreZombie");
         this.ZOMBIE13.type = "Zombie"
 
+        this.BOSSBAT1 = this.physics.add.sprite(31* 32, 17* 32, "MonstreBat");
+        this.BOSSBAT1.type = "BOSSBAT"
+
+        this.BOSSBAT2 = this.physics.add.sprite(50* 32, 17* 32, "MonstreBat");
+        this.BOSSBAT2.type = "BOSSBAT"
+
+        this.BOSSBAT3 = this.physics.add.sprite(66* 32, 17* 32, "MonstreBat");
+        this.BOSSBAT3.type = "BOSSBAT"
+
+        this.BOSSBAT4 = this.physics.add.sprite(84* 32, 17* 32, "MonstreBat");
+        this.BOSSBAT4.type = "BOSSBAT"
         /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
 
 
@@ -255,41 +266,43 @@ export class Foret extends Phaser.Scene {
 
         this.enemygroup.add(this.MAGE);
 
+        this.enemygroup.add(this.BOSSBAT1);this.enemygroup.add(this.BOSSBAT2);this.enemygroup.add(this.BOSSBAT3);this.enemygroup.add(this.BOSSBAT4);
+
 
         this.enemygroup.getChildren().forEach(function (child) {
+            child.setCollideWorldBounds(true);
+            this.physics.add.collider(child, Sol);
+            this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
+            this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+            this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
+            this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
 
             if (child.type == "Bat") {
                 child.HP = 5;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL, null, this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit, null, this);
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
                 child.setGravityY(-700)
             }
 
             else if (child.type == "Zombie") {
                 child.HP = 10;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL, null, this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit, null, this);
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
-                child.allowGravity = true;
+                
             }
 
             else if (child.type == "Mage") {
                 child.HP = 10;
-                this.physics.add.collider(child, Sol);
-                child.setCollideWorldBounds(true);
-                this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL, null, this);
-                this.physics.add.collider(this.Orbe, child, this.enemyHit, null, this);
-                this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee, null, this);
-                child.allowGravity = true;
+                child.CanShootourrelle = true;
+                
+            }
+            else if (child.type == "BOSS") {
+                child.HP = 50;
                 child.CanShootourrelle = true;
             }
 
-            
+            else if (child.type == "BOSSBAT") {
+                child.HP = 20; 
+                child.setGravityY(-700)
+                child.CanShootourrelle = true;
+            }
+
         }, this);
 
 
@@ -498,6 +511,24 @@ export class Foret extends Phaser.Scene {
                     }
                 }
             }
+            
+            if (child.type == "BOSSBAT") {
+                child.setVelocityX(0);
+
+                const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance1 < 320) {
+
+                    if (child.CanShootourrelle == true) {
+                        this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
+                        child.CanShootourrelle = false
+
+                        setTimeout(() => {
+                            child.CanShootourrelle = true
+                        }, 300);
+                    }
+                }
+            }
+
         }, this);
 
 
@@ -674,15 +705,26 @@ export class Foret extends Phaser.Scene {
                 child.anims.play('LeftHit', true);
             
             }, this);
+
+
+            //if (this.clavier.SHIFT.isDown && !this.clavier.Q.isDown && !this.clavier.D.isDown && !this.clavier.Z.isDown) {
+            //    this.player_invulnerable = true 
+            //    this.player.setTint(0xffff00)
+            //}
+            //if(this.clavier.Q.isDown || this.clavier.SPACE.isDown || this.clavier.D.isDown){
+            //    this.player_invulnerable = false 
+            //    this.player.clearTint();
+            //}
         }
 
+    
     PRENDREDESDEGATSCAFAITMAL(mespointsdevie, enemy) {
-        if (!this.player.invulnerable) {
+        if (!this.player_invulnerable) {
             this.player.setTint(0xff0000);
             this.mespointsdevie -= 1;
             this.cameras.main.shake(100, 0.025);
             //this.GetHit = true; 
-            this.player.invulnerable = true;
+            this.player_invulnerable = true;
             if (this.mespointsdevie === 4) {
                 this.MyInterface.anims.play('vie4', true)
             }
@@ -704,7 +746,7 @@ export class Foret extends Phaser.Scene {
 
             this.sleep(100).then(() => {
                 setTimeout(() => {
-                    this.player.invulnerable = false
+                    this.player_invulnerable = false
                     this.player.body.allowGravity = true;
                     this.player.clearTint();
                 }, 1000);
