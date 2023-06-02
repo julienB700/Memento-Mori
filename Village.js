@@ -27,8 +27,8 @@ export class Village extends Phaser.Scene {
         this.load.image("Background_Village", "assets/maps/Background-Village.png");
         this.load.image("phaser_assets", "assets/maps/tileset1.png");
         this.load.audio('Village', 'assets/Musics/Village.mp3')
-        this.load.audio('Deathtalk', 'assets/Audio/youthink.mp3')
-
+        this.load.audio('Deathtalk', 'assets/Audio/Death1rst.mp3')
+        this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
 
         this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
             { frameWidth: 32, frameHeight: 32 });
@@ -685,12 +685,14 @@ export class Village extends Phaser.Scene {
             if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
                 if (this.clavier.D.isDown) {
                     this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
+                    var musique = this.sound.add('Attack', { loop: false });
+                    musique.play();
                     console.log("coupdroit")
                 }
                 this.CanHitMelee = false
                 setTimeout(() => {
                     this.CanHitMelee = true;
-                }, 1000);
+                }, 500);
                 setTimeout(() => {
                     this.Scyth.getChildren()[0].destroy();
                 }, 200);
@@ -702,12 +704,14 @@ export class Village extends Phaser.Scene {
             if (this.clavier.P.isDown && !this.clavier.D.isDown) {
                 if (this.clavier.Q.isDown) {
                     this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    var musique = this.sound.add('Attack', { loop: false });
+                    musique.play();
                     console.log("coupgauche")
                 }
                 this.CanHitMelee = false;
                 setTimeout(() => {
                     this.CanHitMelee = true;
-                }, 1000);
+                }, 500);
                 setTimeout(() => {
                     this.Scyth.getChildren()[0].destroy();
                 }, 200);

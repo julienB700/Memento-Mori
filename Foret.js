@@ -27,6 +27,7 @@ export class Foret extends Phaser.Scene {
         this.load.image("Background_foret", "assets/maps/Background-Foret.png");
         this.load.image("phaser_assets", "assets/maps/tileset1.png");
         this.load.audio('Village', 'assets/Musics/Village.mp3')
+        this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
 
         this.load.spritesheet('MAGE', 'assets/Sprites/MAGE.png',
             { frameWidth: 32, frameHeight: 64 });
@@ -73,9 +74,9 @@ export class Foret extends Phaser.Scene {
         this.add.image(1600, 960, "Background_foret");
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
-        var musique = this.sound.add('Village', { loop: false });
-        // Joue la musique
-        musique.play();
+        //var musique = this.sound.add('Village', { loop: false });
+        //// Joue la musique
+        //musique.play();
 
         const carteDuNiveau = this.add.tilemap("Foret");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
@@ -672,12 +673,14 @@ export class Foret extends Phaser.Scene {
             if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
                 if (this.clavier.D.isDown) {
                     this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
+                    var musique = this.sound.add('Attack', { loop: false });
+                    musique.play();
                     console.log("coupdroit")
                 }
                 this.CanHitMelee = false
                 setTimeout(() => {
                     this.CanHitMelee = true;
-                }, 1000);
+                }, 500);
                 setTimeout(() => {
                     this.Scyth.getChildren()[0].destroy();
                 }, 200);
@@ -689,12 +692,14 @@ export class Foret extends Phaser.Scene {
             if (this.clavier.P.isDown && !this.clavier.D.isDown) {
                 if (this.clavier.Q.isDown) {
                     this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    var musique = this.sound.add('Attack', { loop: false });
+                    musique.play();
                     console.log("coupgauche")
                 }
                 this.CanHitMelee = false;
                 setTimeout(() => {
                     this.CanHitMelee = true;
-                }, 1000);
+                }, 500);
                 setTimeout(() => {
                     this.Scyth.getChildren()[0].destroy();
                 }, 200);
