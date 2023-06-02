@@ -177,10 +177,7 @@ export class Village extends Phaser.Scene {
 
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
 
-        this.transition = this.physics.add.group({ allowGravity : false, collideWorldBounds: true});
-        this.SpritesTransition = this.transition.create(49*32, 14.7*32, 'Transi')
-        this.physics.add.overlap(this.player, this.transition, this.PROCHAINESCENE,null,this);
-
+        
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
 
@@ -474,6 +471,11 @@ export class Village extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        this.transition = this.physics.add.group({ allowGravity : false, collideWorldBounds: true});
+        this.SpritesTransition = this.transition.create(49*32, 14.7*32, 'Transi')
+        this.physics.add.overlap(this.player, this.transition, this.PROCHAINESCENE,null,this);
+
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;

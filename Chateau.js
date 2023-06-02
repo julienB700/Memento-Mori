@@ -127,18 +127,12 @@ export class Chateau extends Phaser.Scene {
 
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
 
-        this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
-        this.SpritesTransition = this.transition.create(99 * 32, 27.8 * 32, 'Transi')
-
-        this.transitionBig = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
-        this.SpritesTransitionBig = this.transitionBig.create(10 * 32, 52.8 * 32, 'TransiBig')
-        
-
+       
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
         this.Tir = this.physics.add.group()
         this.physics.add.overlap(this.player, this.Tir , this.PRENDREDESDEGATSCAFAITMAL, null, this);
 
-        this.MAGE = this.physics.add.sprite(11 * 32, 28 * 32, "MAGE");
+        this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "MAGE");
         this.MAGE.type = "Mage"
 
         
@@ -342,6 +336,8 @@ export class Chateau extends Phaser.Scene {
         this.enemygroup = this.physics.add.group();
         this.enemygroup.add(this.BOSS);
 
+        this.enemygroup.add(this.MAGE);
+
         this.enemygroup.add(this.BAT);this.enemygroup.add(this.BAT1);this.enemygroup.add(this.BAT2);this.enemygroup.add(this.BAT3);this.enemygroup.add(this.BAT4);this.enemygroup.add(this.BAT5);this.enemygroup.add(this.BAT6);this.enemygroup.add(this.BAT7);this.enemygroup.add(this.BAT8);this.enemygroup.add(this.BAT9);this.enemygroup.add(this.BAT10);this.enemygroup.add(this.BAT11);this.enemygroup.add(this.BAT12);this.enemygroup.add(this.BAT13);this.enemygroup.add(this.BAT14);this.enemygroup.add(this.BAT15);this.enemygroup.add(this.BAT16);this.enemygroup.add(this.BAT17);this.enemygroup.add(this.BAT18);this.enemygroup.add(this.BAT19);this.enemygroup.add(this.BAT20);this.enemygroup.add(this.BAT21);this.enemygroup.add(this.BAT22);this.enemygroup.add(this.BAT23);
         this.enemygroup.add(this.BAT24);this.enemygroup.add(this.BAT25);this.enemygroup.add(this.BAT26);this.enemygroup.add(this.BAT27);this.enemygroup.add(this.BAT28);this.enemygroup.add(this.BAT29);this.enemygroup.add(this.BAT30);this.enemygroup.add(this.BAT31);this.enemygroup.add(this.BAT32);
 
@@ -382,7 +378,7 @@ export class Chateau extends Phaser.Scene {
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this); 
                 this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
                 this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
-
+                child.CanShootourrelle = true;
                 child.allowGravity = true;
             }
             else if (child.type == "BOSS") {
@@ -393,7 +389,9 @@ export class Chateau extends Phaser.Scene {
                 this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);
                 this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
                 this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
-
+                child.CanShootourrelle = true;
+                child.allowGravity = true;
+                
             }
 
             //else if (child.type == "BOSSMELEE") {
@@ -533,11 +531,16 @@ export class Chateau extends Phaser.Scene {
 
         /////////////////////////// TRANSITION ////////////////////////////////////////
         this.anims.create({
-            key: 'TransiBig',
+            key: 'TransiBigAnim',
             frames: this.anims.generateFrameNumbers('TransiBig', { start: 0, end: 7 }),
             frameRate: 10,
             repeat: -1
         });
+
+        this.transitionBig = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
+        this.SpritesTransitionBig = this.transitionBig.create(10 * 32, 52.8 * 32, 'TransiBig')
+        this.physics.add.overlap(this.player, this.transitionBig, this.PROCHAINESCENE,null,this);
+        
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;
@@ -547,12 +550,13 @@ export class Chateau extends Phaser.Scene {
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
-    PROCHAINESCENE(player, TRANSITION){
-        this.scene.start('Chateau', { Player: player, TRANSITION: TRANSITION });
+    PROCHAINESCENE(){
+        this.scene.start('Chateau', { x: 60 * 32, y: 23 * 32 });
         }
 
-
+//{ x: 36 * 32, y: 38 * 32 }
     update(time, delta) {
+        //this.transitionBig.anims.play("TransiBigAnim")
 
         this.mespointsdevieText.setText(this.mespointsdevie);
 
@@ -599,6 +603,31 @@ export class Chateau extends Phaser.Scene {
                     }
                 }
             }
+
+            //if (child.type == "Boss") {
+            //    const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+            //    if (distance1 < 300) {
+//
+            //        if (child.CanShootourrelle == true) {
+            //            this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)
+            //            child.CanShootourrelle = false
+//
+            //            setTimeout(() => {
+            //                child.CanShootourrelle = true
+            //            }, 500);
+            //        }
+            //    }
+            //}
+
+            if (child.type == "Boss") {
+                var distance = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
+                if (distance < 300) {
+                    child.setVelocityX(this.player.x - child.x)
+                    child.setVelocityY(this.player.y - child.y)
+                }
+                else { child.setVelocity(0, 0) }
+            }
+
         }, this);
 
 

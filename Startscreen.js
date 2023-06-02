@@ -25,7 +25,7 @@ export class Menu extends Phaser.Scene {
 
         this.fourthplan = this.add.image(449, 224, '4P').setScale(1.2)
       
-        this.thirdplan = this.add.image(0, 0, '3P').setScale(1.2)
+        this.thirdplan = this.add.image(449, 224, '3P').setScale(1.2)
         
         this.titre = this.add.image(449, 224, 'titre');
         
@@ -57,18 +57,18 @@ export class Menu extends Phaser.Scene {
         const pointerY = pointer.y;
 
         // Calculate the amount to scroll for each layer based on the pointer's position
-        const scrollX = pointerX * 0.05;
-        const scrollY = pointerY * 0.05;
+        const scrollX = pointerX + 0.05;
+        const scrollY = pointerY + 0.05;
 
         // Set the scroll factors and scroll the layers
-        this.thirdplan.x = pointerX * 0.3;
-        this.thirdplan.y = pointerY * 0.3;
+        this.thirdplan.x = pointerX * 2;
+        this.thirdplan.y = pointerY * 2;
     
-        this.titre.x = pointerX * 0.5;
-        this.titre.y = pointerY * 0.5;
+        this.titre.x = pointerX + 0.5;
+        this.titre.y = pointerY + 0.5;
 
-        this.Firstplan.x = pointerX * 0.8;
-        this.Firstplan.y = pointerY * 0.8;
+        this.Firstplan.x = pointerX + 0.8;
+        this.Firstplan.y = pointerY + 0.8;
 
 
     }

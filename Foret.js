@@ -14,7 +14,7 @@ export class Foret extends Phaser.Scene {
         this.CDDash = true;
         this.CanSummon = true;
         
-       
+        this.SoulsCounter = 0;
 
     }
     init(data) {
@@ -118,9 +118,7 @@ export class Foret extends Phaser.Scene {
 
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
 
-        this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
-        this.SpritesTransition = this.transition.create(99 * 32, 27.8 * 32, 'Transi');
-        this.physics.add.overlap(this.player, this.transition, this.PROCHAINESCENE, null, this);
+        
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
         this.Tir = this.physics.add.group()
@@ -433,6 +431,12 @@ export class Foret extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+        
+        this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
+        this.SpritesTransition = this.transition.create(99 * 32, 27.8 * 32, 'Transi');
+        this.physics.add.overlap(this.player, this.transition, this.PROCHAINESCENE, null, this);
+    
+
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;
@@ -442,7 +446,7 @@ export class Foret extends Phaser.Scene {
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
-    PROCHAINESCENE(player, TRANSITION) {
+    PROCHAINESCENE() {
         this.scene.start('Chateau', { x: 0 * 32, y: 38 * 32 });
     }
 
