@@ -1,4 +1,6 @@
 //import { Mob as Mob} from "./Mob.js"
+const WIDTH = 896;
+const HEIGHT = 448;
 
 var spawnx;
 var spawny;

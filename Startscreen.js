@@ -78,7 +78,7 @@ export class Menu extends Phaser.Scene {
 
     }
     Startgame() {
-        this.scene.start('Village')
+        this.scene.start('Chateau')
 
     }
 }

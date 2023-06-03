@@ -1,6 +1,9 @@
 var spawnx;
 var spawny;
 
+const WIDTH = 896;
+const HEIGHT = 448;
+
 export class Chateau extends Phaser.Scene {
     constructor() {
         super("Chateau");
@@ -27,21 +30,21 @@ export class Chateau extends Phaser.Scene {
         this.load.audio('Village', 'assets/Musics/Village.mp3')
         this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
 
+        this.load.spritesheet('Souls', 'assets/Sprites/SoulsPickups.png',
+            { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('Maganime', 'assets/Sprites/Mage_Final.png',
             { frameWidth: 64, frameHeight: 80 });
         this.load.spritesheet('TIRDEMAGE', 'assets/Sprites/Tir.png',
             { frameWidth: 16, frameHeight: 16 });
-
         this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
             { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('BOSS', 'assets/Sprites/MobSprite.png',
-            { frameWidth: 80, frameHeight: 80 });
 
         this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
             { frameWidth: 32, frameHeight: 32 });
-            
         this.load.spritesheet('Zombanime', 'assets/Sprites/Zombie.png',
             { frameWidth: 42, frameHeight: 74 });
+        this.load.spritesheet('BossIldeAnim', 'assets/Sprites/Boss_Idle.png',
+            { frameWidth: 100, frameHeight: 100});
         this.load.spritesheet('Dash', 'assets/Sprites/Dash.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('player', 'assets/Sprites/Player.png',
@@ -50,24 +53,19 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('Transi', 'assets/Sprites/Transi.png',
             { frameWidth: 64, frameHeight: 80 });
-
         this.load.spritesheet('TransiBig', 'assets/Sprites/TransiBig.png',
             { frameWidth: 128, frameHeight: 80 });
-
-
         this.load.spritesheet('SummonSprites', 'assets/Sprites/SummonSprites.png',
             { frameWidth: 64, frameHeight: 64 });
-
         this.load.spritesheet('MyInterface', 'assets/Sprites/UI-5-vie.png', 
             { frameWidth: 237, frameHeight: 86 });
-
         this.load.spritesheet('CoupDeFaux', 'assets/Sprites/ScytheHit.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
-
+        
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
 
     }
@@ -121,6 +119,7 @@ export class Chateau extends Phaser.Scene {
             this.physics.add.overlap(this.player, this.Potion, this.CEFAIRESOIGNERCESTCOOL, null, this);
           });
 
+        /////////////////////////// Souls ////////////////////////////////////////
 
         this.anims.create({
             key: 'SoulsAnim',
@@ -128,9 +127,6 @@ export class Chateau extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-
-        /////////////////////////// Souls ////////////////////////////////////////
-
 
         this.Soul = this.physics.add.group({ allowGravity: false, collideWorldBounds: false })
         
@@ -164,7 +160,14 @@ export class Chateau extends Phaser.Scene {
         this.Tir = this.physics.add.group()
         this.physics.add.overlap(this.player, this.Tir , this.PRENDREDESDEGATSCAFAITMAL, null, this);
 
-        this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "MAGE");
+        this.anims.create({
+            key: 'Maganim',
+            frames: this.anims.generateFrameNumbers('Maganime', { start: 0, end: 5 }),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "Maganim");
         this.MAGE.type = "Mage"
 
         this.anims.create({
@@ -375,13 +378,21 @@ export class Chateau extends Phaser.Scene {
 
         /////////////////////////////////////////////// SPAWN GROUPE //////////////////////////////////////////////////////
         
-        this.BOSS = this.physics.add.sprite(35* 32, 15* 32, "BOSS");
+        this.anims.create({
+            key: 'BossIldeAnime',
+            frames: this.anims.generateFrameNumbers('BossIldeAnim', { start: 0, end: 3 }),
+            
+            frameRate: 5,
+            repeat: -1
+        });
+
+        this.BOSS = this.physics.add.sprite(35* 32, 15* 32, "BossIldeAnime").setScale(4).setSize(16,50).setOffset(40,30);
         this.BOSS.type = "BOSS"
 
-        this.BOSSBAT1 = this.physics.add.sprite(26* 32, 14* 32, "Batanim");
+        this.BOSSBAT1 = this.physics.add.sprite(26* 32, 14* 32, "Batanim").setScale(3).setSize(32,32).setOffset(0,0);
         this.BOSSBAT1.type = "BOSSBAT"
 
-        this.BOSSBAT2 = this.physics.add.sprite(42* 32, 14* 32, "Batanim");
+        this.BOSSBAT2 = this.physics.add.sprite(42* 32, 14* 32, "Batanim").setScale(3).setSize(32,32).setOffset(0,0);
         this.BOSSBAT2.type = "BOSSBAT"
 
 
@@ -424,12 +435,14 @@ export class Chateau extends Phaser.Scene {
             else if (child.type == "BOSS") {
                 child.HP = 50;
                 child.CanShootourrelle = true;
+                child.anims.play("BossIldeAnime");
             }
 
             else if (child.type == "BOSSBAT") {
                 child.HP = 20; 
                 child.setGravityY(-700)
                 child.CanShootourrelle = true;
+                child.anims.play("Batanim");
             }
 
         }, this);

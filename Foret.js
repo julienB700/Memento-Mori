@@ -1,3 +1,6 @@
+const WIDTH = 896;
+const HEIGHT = 448;
+
 var spawnx;
 var spawny;
 
@@ -27,22 +30,20 @@ export class Foret extends Phaser.Scene {
         this.load.image("Background_foret", "assets/maps/Background-Foret.png");
         this.load.image("phaser_assets", "assets/maps/tileset1.png");
         this.load.audio('Village', 'assets/Musics/Village.mp3')
-        this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
+        this.load.audio('Attack', 'assets/Audio/Attacksound.wav');
 
+        this.load.spritesheet('Souls', 'assets/Sprites/SoulsPickups.png',
+            { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('Maganime', 'assets/Sprites/Mage_Final.png',
             { frameWidth: 64, frameHeight: 80 });
         this.load.spritesheet('TIRDEMAGE', 'assets/Sprites/Tir.png',
             { frameWidth: 16, frameHeight: 16 });
-
-            
         this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
             { frameWidth: 32, frameHeight: 32 });
-
-            this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
+        this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
             { frameWidth: 32, frameHeight: 32 });
-            this.load.spritesheet('Zombanime', 'assets/Sprites/Zombie.png',
+        this.load.spritesheet('Zombanime', 'assets/Sprites/Zombie.png',
             { frameWidth: 42, frameHeight: 74 });
-
         this.load.spritesheet('Dash', 'assets/Sprites/Dash.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('player', 'assets/Sprites/Player.png',
@@ -53,25 +54,35 @@ export class Foret extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 80 });
         this.load.spritesheet('SummonSprites', 'assets/Sprites/SummonSprites.png',
             { frameWidth: 64, frameHeight: 64 });
-
         this.load.spritesheet('MyInterface', 'assets/Sprites/UI-5-vie.png',
             { frameWidth: 237, frameHeight: 86 });
         this.load.spritesheet('CoupDeFaux', 'assets/Sprites/ScytheHit.png',
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
             { frameWidth: 64, frameHeight: 64 });
-        
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
-
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
+
+        this.load.image("PremierPlan", "assets/Backgrounds/Background-Foret-Grotte_premier.png");
+        this.load.image("SecondPlan", "assets/Backgrounds/Background-Foret-Grotte_second.png");
+        this.load.image("TroisiemePlan", "assets/Backgrounds/Background-Foret-Grotte_troisieme.png");
+        this.load.image("QuatriemePlan", "assets/Backgrounds/Background-Foret-Quatrieme.png");
+
     }
+
 
     create() {
 
         this.clavier = this.input.keyboard.createCursorKeys('up,down,left,right');
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
-        this.add.image(1600, 960, "Background_foret");
+        //this.add.image(1600, 960, "Background_foret")
+
+        this.PremierPlan = this.add.image(WIDTH / 2, HEIGHT / 2, "PremierPlan").setScale(1.1);
+        this.SecondPlan = this.add.image(WIDTH / 2, HEIGHT / 2, "SecondPlan").setScale(1.1);
+        this.TroisiemePlan = this.add.image(WIDTH / 2, HEIGHT / 2, "TrosiemePlan").setScale(1.1);
+        this.QuatriemePlan = this.add.image(WIDTH / 2, HEIGHT / 2, "QuatriemePlan").setScale(1.1);
+
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
         //var musique = this.sound.add('Village', { loop: false });
@@ -354,6 +365,7 @@ export class Foret extends Phaser.Scene {
                 child.HP = 20; 
                 child.setGravityY(-700)
                 child.CanShootourrelle = true;
+                child.anims.play("Batanim");
             }
 
         }, this);
@@ -513,6 +525,22 @@ export class Foret extends Phaser.Scene {
 
 
     update(time, delta) {
+
+        const mx = this.player.x;
+        const my = this.player.y;
+    
+        // Set the scroll factors and scroll the layers
+        this.PremierPlan.x = WIDTH / 2 + (mx / 100);
+        this.PremierPlan.y = HEIGHT / 2 + (my / 100);
+
+        this.SecondPlan.x = WIDTH / 2 + (mx / 250);
+        this.SecondPlan.y = HEIGHT / 2 + (my / 250);
+
+        this.TroisiemePlan.x = WIDTH / 2 + (mx / 310);
+        this.TroisiemePlan.y = HEIGHT / 2 + (my / 310);
+
+        this.QuatriemePlan.x = WIDTH / 2 + (mx / 500);
+        this.QuatriemePlan.y = HEIGHT / 2 + (my / 500);
 
         this.mespointsdevieText.setText(this.mespointsdevie);
 
