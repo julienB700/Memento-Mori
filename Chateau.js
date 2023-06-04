@@ -167,7 +167,7 @@ export class Chateau extends Phaser.Scene {
             repeat: -1
         });
 
-        this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "Maganim");
+        this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "Maganim").setSize(30,70).setOffset(10,10);
         this.MAGE.type = "Mage"
 
         this.anims.create({
