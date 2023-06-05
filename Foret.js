@@ -62,6 +62,8 @@ export class Foret extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
+        this.load.spritesheet('FEU_VERT2', 'assets/Sprites/Feu_Vert32.png',
+            { frameWidth: 64, frameHeight: 32 });
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
 
         this.load.image("PremierPlan", "assets/Backgrounds/Background-Foret-Grotte_premier.png");
@@ -78,16 +80,67 @@ export class Foret extends Phaser.Scene {
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
         //this.add.image(1600, 960, "Background_foret")
 
-        this.PremierPlan = this.add.image(WIDTH / 2, HEIGHT / 2, "PremierPlan").setScale(1.1);
-        this.SecondPlan = this.add.image(WIDTH / 2, HEIGHT / 2, "SecondPlan").setScale(1.1);
-        this.TroisiemePlan = this.add.image(WIDTH / 2, HEIGHT / 2, "TrosiemePlan").setScale(1.1);
-        this.QuatriemePlan = this.add.image(WIDTH / 2, HEIGHT / 2, "QuatriemePlan").setScale(1.1);
-
+        this.QuatriemePlan = this.add.image(1600, 960, "QuatriemePlan");
+        this.TroisiemePlan = this.add.image(1600, 960, "TrosiemePlan");
+        this.SecondPlan = this.add.image(1600, 960, "SecondPlan");
+        this.PremierPlan = this.add.image(1600, 960, "PremierPlan");
+        
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
         //var musique = this.sound.add('Village', { loop: false });
         //// Joue la musique
         //musique.play();
+
+
+        this.anims.create({
+            key: 'Feu_vert',
+            frames: this.anims.generateFrameNumbers('FEU_VERT', { start: 0, end: 14 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        
+        this.feuvertgroup = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
+        const Feu_Vert1 = this.physics.add.sprite(15*32, 59*32+16, "FEU_VERT").setAngle(-90).setSize(30*32,32);
+        const Feu_Vert2 = this.physics.add.sprite(45*32, 59*32+16, "FEU_VERT").setAngle(-90).setSize(30*32,32);
+        const Feu_Vert3 = this.physics.add.sprite(60*32, 59*32+16, "FEU_VERT").setAngle(-90).setSize(30*32,32);
+        const Feu_Vert4 = this.physics.add.sprite(85*32, 59*32+16, "FEU_VERT").setAngle(-90).setSize(30*32,32);
+
+        this.feuvertgroup.add(Feu_Vert1);this.feuvertgroup.add(Feu_Vert2);this.feuvertgroup.add(Feu_Vert3);this.feuvertgroup.add(Feu_Vert4);
+
+        this.feuvertgroup.children.each(feuvert => {
+            feuvert.anims.play("Feu_vert");
+            //this.physics.add.overlap(this.player, this.feuvertgroup, this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        });
+
+        this.anims.create({
+            key: 'Feu_vert2',
+            frames: this.anims.generateFrameNumbers('FEU_VERT2', { start: 0, end: 6 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.feuvertgroup2 = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
+        const Feu_Vert2b = this.physics.add.sprite(1*32, 46*32+16, "FEU_VERT2");
+        const Feu_Vert3b = this.physics.add.sprite(3*32, 46*32+16, "FEU_VERT2");
+        const Feu_Vert4b = this.physics.add.sprite(5*32, 46*32+16, "FEU_VERT2");
+        const Feu_Vert5 = this.physics.add.sprite(7*32, 46*32+16, "FEU_VERT2");
+        const Feu_Vert6 = this.physics.add.sprite(77*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert7 = this.physics.add.sprite(79*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert8 = this.physics.add.sprite(81*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert9 = this.physics.add.sprite(83*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert10 = this.physics.add.sprite(85*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert11 = this.physics.add.sprite(86*32, 81*32+16, "FEU_VERT2");
+
+        this.feuvertgroup2.add(Feu_Vert2b);this.feuvertgroup2.add(Feu_Vert3b);this.feuvertgroup2.add(Feu_Vert4b);this.feuvertgroup2.add(Feu_Vert5);this.feuvertgroup2.add(Feu_Vert6);this.feuvertgroup2.add(Feu_Vert7);this.feuvertgroup2.add(Feu_Vert8);this.feuvertgroup2.add(Feu_Vert9);this.feuvertgroup2.add(Feu_Vert10);this.feuvertgroup2.add(Feu_Vert11);
+        this.feuvertgroup2.children.each(feuvert2 => {
+            feuvert2.anims.play("Feu_vert2");
+            //this.physics.add.overlap(this.player, this.feuvertgroup2, this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        });
+
+
+        ///////////////////////////////////////////////////////////////
+
 
         const carteDuNiveau = this.add.tilemap("Foret");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
@@ -157,7 +210,8 @@ export class Foret extends Phaser.Scene {
         this.ScythLeft = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
 
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
-
+        this.physics.add.overlap(this.player, this.feuvertgroup, this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        this.physics.add.overlap(this.player, this.feuvertgroup2, this.PRENDREDESDEGATSCAFAITMAL, null, this);
         
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
@@ -178,7 +232,7 @@ export class Foret extends Phaser.Scene {
             repeat: -1
         });
 
-        this.MAGE = this.physics.add.sprite(8 * 32, 28 * 32, "Maganim").setSize(30,70).setOffset(10,10);
+        this.MAGE = this.physics.add.sprite(89 * 32, 50 * 32, "Maganim").setSize(30,70).setOffset(10,10);
         this.MAGE.type = "Mage"
 
 
@@ -526,21 +580,21 @@ export class Foret extends Phaser.Scene {
 
     update(time, delta) {
 
-        const mx = this.player.x;
-        const my = this.player.y;
-    
-        // Set the scroll factors and scroll the layers
-        this.PremierPlan.x = WIDTH / 2 + (mx / 100);
-        this.PremierPlan.y = HEIGHT / 2 + (my / 100);
-
-        this.SecondPlan.x = WIDTH / 2 + (mx / 250);
-        this.SecondPlan.y = HEIGHT / 2 + (my / 250);
-
-        this.TroisiemePlan.x = WIDTH / 2 + (mx / 310);
-        this.TroisiemePlan.y = HEIGHT / 2 + (my / 310);
-
-        this.QuatriemePlan.x = WIDTH / 2 + (mx / 500);
-        this.QuatriemePlan.y = HEIGHT / 2 + (my / 500);
+        //const mx = this.player.x;
+        //const my = this.player.y;
+    //
+        //// Set the scroll factors and scroll the layers
+        //this.PremierPlan.x = WIDTH / 2 + (mx / 100);
+        //this.PremierPlan.y = HEIGHT / 2 + (my / 100);
+//
+        //this.SecondPlan.x = WIDTH / 2 + (mx / 250);
+        //this.SecondPlan.y = HEIGHT / 2 + (my / 250);
+//
+        //this.TroisiemePlan.x = WIDTH / 2 + (mx / 310);
+        //this.TroisiemePlan.y = HEIGHT / 2 + (my / 310);
+//
+        //this.QuatriemePlan.x = WIDTH / 2 + (mx / 500);
+        //this.QuatriemePlan.y = HEIGHT / 2 + (my / 500);
 
         this.mespointsdevieText.setText(this.mespointsdevie);
 
@@ -592,7 +646,7 @@ export class Foret extends Phaser.Scene {
                 child.setVelocityX(0);
 
                 const distance1 = Phaser.Math.Distance.Between(child.x, child.y, this.player.x, this.player.y);
-                if (distance1 < 320) {
+                if (distance1 < 350) {
 
                     if (child.CanShootourrelle == true) {
                         this.Tir.create(child.x, child.y, "Orb").setScale(0.5,0.5).setVelocityX(this.player.x - child.x).setVelocityY(this.player.y - child.y).body.setAllowGravity(false)

@@ -27,11 +27,12 @@ export class Village extends Phaser.Scene {
     preload() {
 
         this.load.tilemapTiledJSON("Village", "assets/maps/VILLAGE.json");
-        this.load.image("Background_Village", "assets/maps/Background-Village.png");
+        this.load.image("Background_Village", "assets/Backgrounds/Background_Village_2.png");
         this.load.image("phaser_assets", "assets/maps/tileset1.png");
-        this.load.audio('Village', 'assets/Musics/Village.mp3')
-        this.load.audio('Deathtalk', 'assets/Audio/Death1rst.mp3')
-        this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
+        this.load.audio('Village', 'assets/Musics/Village.mp3');
+        this.load.audio('Village2', 'assets/Musics/Combat2.mp3');
+        this.load.audio('Deathtalk', 'assets/Audio/Death1rst.mp3');
+        this.load.audio('Attack', 'assets/Audio/Attacksound.wav');
 
 
         this.load.spritesheet('Souls', 'assets/Sprites/SoulsPickups.png',
@@ -40,6 +41,8 @@ export class Village extends Phaser.Scene {
             { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
+        this.load.spritesheet('FEU_VERT2', 'assets/Sprites/Feu_Vert32.png',
+            { frameWidth: 64, frameHeight: 32 });
         this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
             { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('Maganime', 'assets/Sprites/Mage_Final.png',
@@ -79,7 +82,7 @@ export class Village extends Phaser.Scene {
         this.add.image(800, 800, "Background_Village");
         this.physics.world.setBounds(0, 0, 50*32, 50*32);
 
-        var musique = this.sound.add('Village', { loop: false });
+        var musique = this.sound.add('Village2', { loop: false });
         // Joue la musique
         musique.play();
         // Définit la musique en pause
@@ -101,14 +104,23 @@ export class Village extends Phaser.Scene {
 
         this.feuvertgroup.create(16, 35*32, "FEU_VERT");
 
-        const msldfmlkdsfklmds = this.physics.add.sprite(49*32, 35*32+16, "FEU_VERT").setFlipX(true);
+        const Feu_Vert1 = this.physics.add.sprite(49*32+16, 35*32, "FEU_VERT").setFlipX(true);
+        const Feu_Vert1b = this.physics.add.sprite(49*32+16, 31*32, "FEU_VERT").setFlipX(true);
+        const Feu_Vert2 = this.physics.add.sprite(15*32, 49*32+16, "FEU_VERT").setAngle(-90).setSize(29*32,32);
+        const Feu_Vert3 = this.physics.add.sprite(35*32, 49*32+16, "FEU_VERT").setAngle(-90).setSize(29*32,32);
 
-        this.feuvertgroup.add(msldfmlkdsfklmds);
+        this.feuvertgroup.add(Feu_Vert1);
+        this.feuvertgroup.add(Feu_Vert1b);
+        this.feuvertgroup.add(Feu_Vert2);
+        this.feuvertgroup.add(Feu_Vert3);
 
 
         this.feuvertgroup.children.each(feuvert => {
             feuvert.anims.play("Feu_vert");
+            
         })
+
+        
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         const carteDuNiveau = this.add.tilemap("Village");
@@ -120,6 +132,7 @@ export class Village extends Phaser.Scene {
         /////////////////////////// PLAYER ////////////////////////////////////////
 
         this.player = this.physics.add.sprite(1*32, 12*32,"player").setSize(20,50).setOffset(30,20);
+        //1*32, 12*32
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.zoom = 0.8;
@@ -192,7 +205,7 @@ export class Village extends Phaser.Scene {
         this.ScythLeft = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
 
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
-
+        this.physics.add.overlap(this.player, this.feuvertgroup, this.PRENDREDESDEGATSCAFAITMAL, null, this);
         
 
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////

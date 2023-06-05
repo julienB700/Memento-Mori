@@ -65,6 +65,8 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
+        this.load.spritesheet('FEU_VERT2', 'assets/Sprites/Feu_Vert32.png',
+            { frameWidth: 64, frameHeight: 32 });
         
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
 
@@ -82,9 +84,11 @@ export class Chateau extends Phaser.Scene {
         //// Joue la musique
         //musique.play();
 
+        
+
+
         const carteDuNiveau = this.add.tilemap("Chateau");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
-        const BG = carteDuNiveau.createLayer('bg1', tileset);
         const Sol = carteDuNiveau.createLayer('Sol', tileset);
         
         Sol.setCollisionByExclusion(-1, true);
@@ -132,9 +136,7 @@ export class Chateau extends Phaser.Scene {
         
         console.log(carteDuNiveau)
         carteDuNiveau.getObjectLayer('Souls').objects.forEach((Soul) => {
-
             this.current_Soul =  this.Soul.create(Soul.x,Soul.y,'Souls')
-
             this.current_Soul.play('SoulsAnim')
             this.physics.add.overlap(this.player, this.Soul, this.CEFAIRESOIGNERCESTCOOL, null, this);
           });
@@ -154,8 +156,48 @@ export class Chateau extends Phaser.Scene {
         //this.SpriteHitBox.body.setAllowGravity(false);
 
         /////////////////////////////////////////////// TRANSITION //////////////////////////////////////////////////////
+        this.anims.create({
+            key: 'Feu_vert',
+            frames: this.anims.generateFrameNumbers('FEU_VERT', { start: 0, end: 14 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
+        this.anims.create({
+            key: 'Feu_vert2',
+            frames: this.anims.generateFrameNumbers('FEU_VERT2', { start: 0, end: 6 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.feuvertgroup = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
+        const Feu_Vert1 = this.physics.add.sprite(25*32, 89*32+16, "FEU_VERT").setAngle(-90).setSize(30*32,32);
+        this.feuvertgroup.add(Feu_Vert1);
+        this.feuvertgroup.children.each(feuvert => {
+            feuvert.anims.play("Feu_vert");
+            //this.physics.add.overlap(this.player, this.feuvertgroup, this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        })
        
+        this.feuvertgroup2 = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
+        const Feu_Vert2 = this.physics.add.sprite(69*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert3 = this.physics.add.sprite(71*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert4 = this.physics.add.sprite(73*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert5 = this.physics.add.sprite(75*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert6 = this.physics.add.sprite(77*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert7 = this.physics.add.sprite(79*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert8 = this.physics.add.sprite(81*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert9 = this.physics.add.sprite(83*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert10 = this.physics.add.sprite(85*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert11 = this.physics.add.sprite(86*32, 81*32+16, "FEU_VERT2");
+
+        this.feuvertgroup2.add(Feu_Vert2);this.feuvertgroup2.add(Feu_Vert3);this.feuvertgroup2.add(Feu_Vert4);this.feuvertgroup2.add(Feu_Vert5);this.feuvertgroup2.add(Feu_Vert6);this.feuvertgroup2.add(Feu_Vert7);this.feuvertgroup2.add(Feu_Vert8);this.feuvertgroup2.add(Feu_Vert9);this.feuvertgroup2.add(Feu_Vert10);this.feuvertgroup2.add(Feu_Vert11)
+        this.feuvertgroup2.children.each(feuvert2 => {
+            feuvert2.anims.play("Feu_vert2");
+            //this.physics.add.overlap(this.player, this.feuvertgroup2, this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        })
+       
+        this.physics.add.overlap(this.player, this.feuvertgroup, this.PRENDREDESDEGATSCAFAITMAL, null, this);
+        this.physics.add.overlap(this.player, this.feuvertgroup2, this.PRENDREDESDEGATSCAFAITMAL, null, this);
         /////////////////////////////////////////////// SPAWN MONSTRE //////////////////////////////////////////////////////
         this.Tir = this.physics.add.group()
         this.physics.add.overlap(this.player, this.Tir , this.PRENDREDESDEGATSCAFAITMAL, null, this);
@@ -588,7 +630,7 @@ export class Chateau extends Phaser.Scene {
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
     PROCHAINESCENE(){
-        this.scene.start('Chateau', { x: 60 * 32, y: 23 * 32 });
+        this.scene.start('Chateau', {x: 36 * 32, y: 38 * 32});
         }
 
 //{ x: 36 * 32, y: 38 * 32 }
