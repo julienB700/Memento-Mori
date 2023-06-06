@@ -25,7 +25,7 @@ export class Chateau extends Phaser.Scene {
     preload() {
 
         this.load.tilemapTiledJSON("Chateau", "assets/maps/Chateau.json");
-        this.load.image("Background_Chateau", "assets/maps/Background-Chateau.png");
+        this.load.image("Background_Chateau", "assets/Backgrounds/Background_Chateau.png");
         this.load.image("phaser_assets", "assets/maps/tileset1.png");
         this.load.audio('Village', 'assets/Musics/Village.mp3')
         this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
@@ -80,6 +80,9 @@ export class Chateau extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, 100 * 99, 99 * 32);
 
+        this.add.image(3200, 3200, "Background_Chateau")
+
+
         //var musique = this.sound.add('Village', { loop: false });
         //// Joue la musique
         //musique.play();
@@ -99,6 +102,7 @@ export class Chateau extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.zoom = 0.8;
+        this.cameras.main.setBounds(0, 0, 3200, 3200);
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
 
@@ -209,8 +213,10 @@ export class Chateau extends Phaser.Scene {
             repeat: -1
         });
 
-        this.MAGE = this.physics.add.sprite(3* 32, 38 * 32, "Maganim").setSize(30,70).setOffset(10,10);
+        this.MAGE = this.physics.add.sprite(91* 32, 38 * 32, "Maganim").setSize(30,70).setOffset(10,10);
         this.MAGE.type = "Mage"
+        this.MAGE1 = this.physics.add.sprite(54* 32, 98 * 32, "Maganim").setSize(30,70).setOffset(10,10);
+        this.MAGE1.type = "Mage"
 
         this.anims.create({
             key: 'Batanim',
@@ -441,7 +447,7 @@ export class Chateau extends Phaser.Scene {
         this.enemygroup = this.physics.add.group();
         this.enemygroup.add(this.BOSS);
         this.enemygroup.add(this.BOSSBAT1);this.enemygroup.add(this.BOSSBAT2);
-        this.enemygroup.add(this.MAGE);
+        this.enemygroup.add(this.MAGE);this.enemygroup.add(this.MAGE1);
 
         this.enemygroup.add(this.BAT);this.enemygroup.add(this.BAT1);this.enemygroup.add(this.BAT2);this.enemygroup.add(this.BAT3);this.enemygroup.add(this.BAT4);this.enemygroup.add(this.BAT5);this.enemygroup.add(this.BAT6);this.enemygroup.add(this.BAT7);this.enemygroup.add(this.BAT8);this.enemygroup.add(this.BAT9);this.enemygroup.add(this.BAT10);this.enemygroup.add(this.BAT11);this.enemygroup.add(this.BAT12);this.enemygroup.add(this.BAT13);this.enemygroup.add(this.BAT14);this.enemygroup.add(this.BAT15);this.enemygroup.add(this.BAT16);this.enemygroup.add(this.BAT17);this.enemygroup.add(this.BAT18);this.enemygroup.add(this.BAT19);this.enemygroup.add(this.BAT20);this.enemygroup.add(this.BAT21);this.enemygroup.add(this.BAT22);this.enemygroup.add(this.BAT23);
         this.enemygroup.add(this.BAT24);this.enemygroup.add(this.BAT25);this.enemygroup.add(this.BAT26);this.enemygroup.add(this.BAT27);this.enemygroup.add(this.BAT28);this.enemygroup.add(this.BAT29);this.enemygroup.add(this.BAT30);this.enemygroup.add(this.BAT31);this.enemygroup.add(this.BAT32);

@@ -81,9 +81,9 @@ export class Foret extends Phaser.Scene {
         //this.add.image(1600, 960, "Background_foret")
 
         this.QuatriemePlan = this.add.image(1600, 960, "QuatriemePlan");
-        this.TroisiemePlan = this.add.image(1600, 960, "TroisiemePlan").setScrollFactor(0.85,1);;
-        this.SecondPlan = this.add.image(1600, 960, "SecondPlan").setScrollFactor(0.90,1);;
-        this.PremierPlan = this.add.image(1600, 960, "PremierPlan").setScrollFactor(0.95,1);
+        this.TroisiemePlan = this.add.image(1600, 960, "TroisiemePlan").setScrollFactor(0.80,1);
+        this.SecondPlan = this.add.image(1600, 960, "SecondPlan").setScrollFactor(0.90,1);
+        this.PremierPlan = this.add.image(1600, 960, "PremierPlan").setScrollFactor(0.98,1);
         
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
@@ -155,7 +155,9 @@ export class Foret extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.zoom = 0.8;
+        this.cameras.main.setBounds(0, 0, 3200, 1920);
         this.cameras.main.startFollow(this.player);
+        //this.cameras.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, Sol);
         
 

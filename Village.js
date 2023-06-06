@@ -136,6 +136,7 @@ export class Village extends Phaser.Scene {
         this.player.setCollideWorldBounds(true);
 
         this.cameras.main.zoom = 0.8;
+        this.cameras.main.setBounds(0, 0, 1600, 1600);
         this.cameras.main.startFollow(this.player);
         this.physics.add.collider(this.player, Sol);
 
