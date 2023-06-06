@@ -81,9 +81,9 @@ export class Foret extends Phaser.Scene {
         //this.add.image(1600, 960, "Background_foret")
 
         this.QuatriemePlan = this.add.image(1600, 960, "QuatriemePlan");
-        this.TroisiemePlan = this.add.image(1600, 960, "TrosiemePlan");
-        this.SecondPlan = this.add.image(1600, 960, "SecondPlan");
-        this.PremierPlan = this.add.image(1600, 960, "PremierPlan");
+        this.TroisiemePlan = this.add.image(1600, 960, "TroisiemePlan").setScrollFactor(0.85,1);;
+        this.SecondPlan = this.add.image(1600, 960, "SecondPlan").setScrollFactor(0.90,1);;
+        this.PremierPlan = this.add.image(1600, 960, "PremierPlan").setScrollFactor(0.95,1);
         
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
@@ -125,12 +125,13 @@ export class Foret extends Phaser.Scene {
         const Feu_Vert3b = this.physics.add.sprite(3*32, 46*32+16, "FEU_VERT2");
         const Feu_Vert4b = this.physics.add.sprite(5*32, 46*32+16, "FEU_VERT2");
         const Feu_Vert5 = this.physics.add.sprite(7*32, 46*32+16, "FEU_VERT2");
-        const Feu_Vert6 = this.physics.add.sprite(77*32, 81*32+16, "FEU_VERT2");
-        const Feu_Vert7 = this.physics.add.sprite(79*32, 81*32+16, "FEU_VERT2");
-        const Feu_Vert8 = this.physics.add.sprite(81*32, 81*32+16, "FEU_VERT2");
-        const Feu_Vert9 = this.physics.add.sprite(83*32, 81*32+16, "FEU_VERT2");
-        const Feu_Vert10 = this.physics.add.sprite(85*32, 81*32+16, "FEU_VERT2");
-        const Feu_Vert11 = this.physics.add.sprite(86*32, 81*32+16, "FEU_VERT2");
+        const Feu_Vert6 = this.physics.add.sprite(9*32, 46*32+16, "FEU_VERT2");
+        const Feu_Vert7 = this.physics.add.sprite(11*32, 46*32+16, "FEU_VERT2");
+        const Feu_Vert8 = this.physics.add.sprite(37*32, 50*32+16, "FEU_VERT2");
+        const Feu_Vert9 = this.physics.add.sprite(40*32, 50*32+16, "FEU_VERT2");
+
+        const Feu_Vert10 = this.physics.add.sprite(34*32, 50*32+16, "FEU_VERT2");
+        const Feu_Vert11 = this.physics.add.sprite(33*32, 50*32+16, "FEU_VERT2");
 
         this.feuvertgroup2.add(Feu_Vert2b);this.feuvertgroup2.add(Feu_Vert3b);this.feuvertgroup2.add(Feu_Vert4b);this.feuvertgroup2.add(Feu_Vert5);this.feuvertgroup2.add(Feu_Vert6);this.feuvertgroup2.add(Feu_Vert7);this.feuvertgroup2.add(Feu_Vert8);this.feuvertgroup2.add(Feu_Vert9);this.feuvertgroup2.add(Feu_Vert10);this.feuvertgroup2.add(Feu_Vert11);
         this.feuvertgroup2.children.each(feuvert2 => {
@@ -194,7 +195,7 @@ export class Foret extends Phaser.Scene {
             this.current_Soul =  this.Soul.create(Soul.x,Soul.y,'Souls')
 
             this.current_Soul.play('SoulsAnim')
-            this.physics.add.overlap(this.player, this.Soul, this.CEFAIRESOIGNERCESTCOOL, null, this);
+            this.physics.add.overlap(this.player, this.Soul, this.JERECUPERELAMEDESGENS, null, this);
           });
 
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
@@ -429,7 +430,9 @@ export class Foret extends Phaser.Scene {
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
         this.mespointsdevie = 5;
-        this.mespointsdevieText = this.add.text(375, 133, this.mespointsdevie, { fontSize: '20px', fill: '#fff' }).setScale(1).setScrollFactor(0);
+        this.messouls = 0;
+        this.mespointsdevieText = this.add.text(280, 75, this.mespointsdevie, { fontSize: '20px', fill: '#fff' }).setScale(1).setScrollFactor(0);
+        this.SoulsText = this.add.text(50, 120, this.messouls, { fontSize: '20px', fill: '#fff' }).setScale(1).setScrollFactor(0);
 
         this.anims.create({
             key: 'enemy1',
@@ -566,6 +569,9 @@ export class Foret extends Phaser.Scene {
 
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
+        this.MyInterfaceSouls = this.physics.add.sprite(30, 120, "Souls").setScale(1).setScrollFactor(0);
+        this.MyInterfaceSouls.body.allowGravity = false;
+        this.MyInterfaceSouls.anims.play('SoulsAnim', true)
         this.MyInterface.body.allowGravity = false;
         this.cameras.main.zoom = 1;
 
@@ -707,10 +713,11 @@ export class Foret extends Phaser.Scene {
                     setTimeout(() => {
                         this.player.invulnerable = false
                     }, 1000);
-                }
-                )
-                this.player.setVelocityX(800);
+                })
+                
                 this.player.anims.play('DashanimDroite', true);
+                this.player.setVelocityX(800);
+                
 
                 this.CDDash == false;
                 setTimeout(() => {
@@ -722,7 +729,7 @@ export class Foret extends Phaser.Scene {
 
             }
         }
-        else if (this.clavier.Z.isDown && this.CDDash == true && this.clavier.SHIFT.isDown) {
+        else if (this.clavier.Z.isDown && this.CDDash && this.clavier.SHIFT.isDown) {
 
             this.player.invulnerable = true;
 
@@ -744,8 +751,11 @@ export class Foret extends Phaser.Scene {
                 this.CDDash = true
             }, 3000);
         }
+
         else {
+          
             this.player.setVelocityX(0)
+
         }
 
         if (this.clavier.SPACE.isDown && this.CanJump == true && this.player.body.blocked.down) {
@@ -850,7 +860,16 @@ export class Foret extends Phaser.Scene {
             //    this.player.clearTint();
             //}
         }
-
+        //JERECUPERELAMEDESGENS(Soul){
+        //    this.messouls += 1;
+        //    Soul.destroy();
+        //    //if (this.messouls == 5){
+        //    //    
+        //    //}
+//
+        //
+//
+        //}
     
     PRENDREDESDEGATSCAFAITMAL(mespointsdevie, enemy) {
         if (!this.player_invulnerable) {
@@ -936,6 +955,8 @@ export class Foret extends Phaser.Scene {
             enemy.destroy()
         }
     };
+
+
     
     enemyHitMelee(enemy) {
 
