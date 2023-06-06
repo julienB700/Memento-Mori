@@ -72,10 +72,6 @@ export class Menu extends Phaser.Scene {
         this.titre.x = WIDTH / 2 + (mx / 100);
         this.titre.y = HEIGHT / 2 + (my / 100);
 
-        //this.button.x = WIDTH / 2 + (mx / 600);
-        //this.button.y = HEIGHT / 2 + (my / 600);
-
-
     }
     Startgame() {
         this.scene.start('Foret')

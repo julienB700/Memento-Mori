@@ -586,29 +586,12 @@ export class Foret extends Phaser.Scene {
 
     update(time, delta) {
 
-        //const mx = this.player.x;
-        //const my = this.player.y;
-    //
-        //// Set the scroll factors and scroll the layers
-        //this.PremierPlan.x = WIDTH / 2 + (mx / 100);
-        //this.PremierPlan.y = HEIGHT / 2 + (my / 100);
-//
-        //this.SecondPlan.x = WIDTH / 2 + (mx / 250);
-        //this.SecondPlan.y = HEIGHT / 2 + (my / 250);
-//
-        //this.TroisiemePlan.x = WIDTH / 2 + (mx / 310);
-        //this.TroisiemePlan.y = HEIGHT / 2 + (my / 310);
-//
-        //this.QuatriemePlan.x = WIDTH / 2 + (mx / 500);
-        //this.QuatriemePlan.y = HEIGHT / 2 + (my / 500);
-
         this.mespointsdevieText.setText(this.mespointsdevie);
-
+        //this.messouls.setText(this.messouls);
 
         if (this.mespointsdevie === 5) {
             this.MyInterface.anims.play('vie5')
         }
-
         /////////////////////////////////////// ENEMIE A TETE CHERCHEUSE ///////////////////////////////////////////////////
 
         this.enemygroup.getChildren().forEach(function (child) {
