@@ -70,6 +70,10 @@ export class Chateau extends Phaser.Scene {
         
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
 
+        this.load.image("PremierPlan", "assets/Backgrounds/bgc1.png");
+        this.load.image("SecondPlan", "assets/Backgrounds/bgc2.png");
+        this.load.image("TroisiemePlan", "assets/Backgrounds/bgc3.png");
+        
     }
 
     
@@ -79,16 +83,10 @@ export class Chateau extends Phaser.Scene {
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
 
         this.physics.world.setBounds(0, 0, 100 * 99, 99 * 32);
-
-        this.add.image(3200, 3200, "Background_Chateau")
-
-
-        //var musique = this.sound.add('Village', { loop: false });
-        //// Joue la musique
-        //musique.play();
-
         
-
+        this.TroisiemePlan = this.add.image(3200, 3200, "TroisiemePlan").setScrollFactor(0.80,1);
+        this.SecondPlan = this.add.image(3200, 3200, "SecondPlan").setScrollFactor(0.90,1);
+        this.PremierPlan = this.add.image(3200, 3200, "PremierPlan").setScrollFactor(0.98,1);
 
         const carteDuNiveau = this.add.tilemap("Chateau");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
