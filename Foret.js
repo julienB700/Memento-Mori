@@ -432,8 +432,8 @@ export class Foret extends Phaser.Scene {
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
         this.mespointsdevie = 5;
-        this.messouls = 0;
         this.mespointsdevieText = this.add.text(280, 75, this.mespointsdevie, { fontSize: '20px', fill: '#fff' }).setScale(1).setScrollFactor(0);
+        this.messouls = 0;
         this.SoulsText = this.add.text(50, 120, this.messouls, { fontSize: '20px', fill: '#fff' }).setScale(1).setScrollFactor(0);
 
         this.anims.create({
@@ -442,8 +442,6 @@ export class Foret extends Phaser.Scene {
             frameRate: 8,
             repeat: -1
         });
-
-        
 
         //////////////////////////////////////// Animations ////////////////////////////////////////////////////////////////////
 
@@ -567,16 +565,15 @@ export class Foret extends Phaser.Scene {
         this.transition = this.physics.add.group({ allowGravity: false, collideWorldBounds: true });
         this.SpritesTransition = this.transition.create(99 * 32, 27.8 * 32, 'Transi');
         this.physics.add.overlap(this.player, this.transition, this.PROCHAINESCENE, null, this);
-        this.SpritesTransition.anims.play('Transi', true)
-
+        this.SpritesTransition.anims.play('Transi', true);
 
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterfaceSouls = this.physics.add.sprite(30, 120, "Souls").setScale(1).setScrollFactor(0);
         this.MyInterfaceSouls.body.allowGravity = false;
-        this.MyInterfaceSouls.anims.play('SoulsAnim', true)
+        this.MyInterfaceSouls.anims.play('SoulsAnim', true);
         this.MyInterface.body.allowGravity = false;
-        this.cameras.main.zoom = 1;
 
+        this.cameras.main.zoom = 1;
     }
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
@@ -585,11 +582,10 @@ export class Foret extends Phaser.Scene {
         this.scene.start('Chateau', { x: 0 * 32, y: 38 * 32 });
     }
 
-
     update(time, delta) {
 
         this.mespointsdevieText.setText(this.mespointsdevie);
-        //this.messouls.setText(this.messouls);
+        this.SoulsText.setText(this.SoulsText);
 
         if (this.mespointsdevie === 5) {
             this.MyInterface.anims.play('vie5')
@@ -919,6 +915,7 @@ export class Foret extends Phaser.Scene {
             Soul.destroy();
             this.player.setTint(0x9900FF);
             if (this.messouls == 5){
+                this.messouls == 0;
                 this.mespointsdevie += 1;
             }
             this.sleep(100).then(() => {

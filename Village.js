@@ -398,10 +398,8 @@ export class Village extends Phaser.Scene {
 
         this.mespointsdevie = 5 ;
         this.mespointsdevieText=this.add.text(375,133,this.mespointsdevie,{fontSize:'20px',fill:'#fff'}).setScale(1).setScrollFactor(0);
-        
-        
-
-        
+        this.messouls = 0;
+        this.SoulsText = this.add.text(50, 120, this.messouls, { fontSize: '20px', fill: '#fff' }).setScale(1).setScrollFactor(0);
 
         this.anims.create({
             key: 'ScythAnim',
@@ -553,6 +551,7 @@ export class Village extends Phaser.Scene {
         update(time, delta) {
 
             this.mespointsdevieText.setText(this.mespointsdevie);
+            this.SoulsText.setText(this.SoulsText);
     
     
             if (this.mespointsdevie === 5) {
@@ -863,7 +862,22 @@ export class Village extends Phaser.Scene {
         }
     
         ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
-    
+        JERECUPERELAMEDESGENS(player, Soul){
+            this.messouls += 1;
+            Soul.destroy();
+            this.player.setTint(0x9900FF);
+            if (this.messouls == 5){
+                this.messouls == 0;
+                this.mespointsdevie += 1;
+            }
+            this.sleep(100).then(() => {
+                setTimeout(() => {
+                    this.player.clearTint();
+                }, 500);
+            }
+            )
+
+        }
         enemyHit(enemy, Orbe) {
             
             Orbe.destroy()
