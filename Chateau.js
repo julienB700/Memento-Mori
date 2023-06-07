@@ -548,6 +548,7 @@ export class Chateau extends Phaser.Scene {
             frameRate: 25,
             repeat: 0
         });
+
         ///////////////////////////////////////// ORBANIM ///////////////////////////////////////////////
 
         this.anims.create({
@@ -895,7 +896,7 @@ export class Chateau extends Phaser.Scene {
     
             if (this.clavier.P.isDown && !this.clavier.D.isDown) {
                 if (this.clavier.Q.isDown) {
-                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFaux");
+                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFaux").setFlipX(true);
                     var musique = this.sound.add('Attack', { loop: false });
                     musique.play();
                     console.log("coupgauche")

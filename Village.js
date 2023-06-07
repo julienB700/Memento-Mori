@@ -759,7 +759,7 @@ export class Village extends Phaser.Scene {
     
             if (this.clavier.P.isDown && !this.clavier.D.isDown) {
                 if (this.clavier.Q.isDown) {
-                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFaux").setFlipX(true);
                     var musique = this.sound.add('Attack', { loop: false });
                     musique.play();
                     console.log("coupgauche")
