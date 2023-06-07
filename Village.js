@@ -90,7 +90,7 @@ export class Village extends Phaser.Scene {
         this.SecondPlan = this.add.image(800, 800, "SecondPlan").setScrollFactor(0.85,1);
         this.PremierPlan = this.add.image(800, 800, "PremierPlan").setScrollFactor(0.90,1);
 
-        var musique = this.sound.add('Village2', { loop: false });
+        var musique = this.sound.add('Village2', { loop: true });
         // Joue la musique
         musique.play();
         // Définit la musique en pause

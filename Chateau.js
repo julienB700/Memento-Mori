@@ -479,7 +479,7 @@ export class Chateau extends Phaser.Scene {
                 child.anims.play("Maganim");
             }
             else if (child.type == "BOSS") {
-                child.HP = 50;
+                child.HP = 100;
                 child.CanShootourrelle = true;
                 child.anims.play("BossIldeAnime");
             }
