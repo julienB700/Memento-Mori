@@ -38,7 +38,9 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('Potion', 'assets/Sprites/PotionDeSoin.png',
             { frameWidth: 32, frameHeight: 32 });
-
+        
+        this.load.spritesheet('CraneDeFeu', 'assets/Sprites/CraneDeFeu.png',
+            { frameWidth: 64, frameHeight: 43 });
         this.load.spritesheet('Batanime', 'assets/Sprites/Bat.png',
             { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('Zombanime', 'assets/Sprites/Zombie.png',
@@ -143,6 +145,11 @@ export class Chateau extends Phaser.Scene {
             this.physics.add.overlap(this.player, this.Soul, this.JERECUPERELAMEDESGENS, null, this);
           });
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
+        
+        this.CDF = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
+        this.physics.add.collider(this.CDF, Sol, function (CDF, Sol) {
+            CDF.destroy();
+        });
 
         this.Orbe = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
         this.physics.add.collider(this.Orbe, Sol, function (Orbe, Sol) {
@@ -458,7 +465,7 @@ export class Chateau extends Phaser.Scene {
             child.setCollideWorldBounds(true);
             this.physics.add.collider(child, Sol);
             this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-            this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+            this.physics.add.collider(this.CDF, child, this.enemyHit,null,this);    
             this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
             this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
 
@@ -827,26 +834,26 @@ export class Chateau extends Phaser.Scene {
         ///////////////////////////////////// ORBES ////////////////////////////////////////
 
         if (this.CanShoot == true) {
-
+    
             if (this.clavier.M.isDown && !this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
+                this.CDF.create(this.player.x + 30, this.player.y, "CraneDeFeu").setScale(0.85).setVelocityX(350);
                 this.player.anims.play('HEROATTAQUEDROITE', true);
             }
             else if (this.clavier.K.isDown && !this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x - 30, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
+                this.CDF.create(this.player.x - 30, this.player.y, "CraneDeFeu").setScale(0.85).setVelocityX(- 350).setFlipX(true);
                 this.player.anims.play('HEROATTAQUEGAUCHE', true);
             }
             else if (this.clavier.K.isDown && this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x - 20, this.player.y - 20, "Orb").setScale(0.5).setVelocityX(- 475).setVelocityY(-475);
+                this.CDF.create(this.player.x - 20, this.player.y - 20, "CraneDeFeu").setScale(0.85).setVelocityX(- 350).setVelocityY(-350).setFlipX(true).setAngle(45);
             }
             else if (this.clavier.O.isDown && !this.clavier.M.isDown && !this.clavier.K.isDown) {
-                this.Orbe.create(this.player.x, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475);
+                this.CDF.create(this.player.x, this.player.y - 30, "CraneDeFeu").setScale(0.85).setVelocityY(-350).setAngle(-90);
             }
             else if (this.clavier.O.isDown && this.clavier.M.isDown) {
-                this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
+                this.CDF.create(this.player.x + 30, this.player.y - 30, "CraneDeFeu").setScale(0.85).setVelocityY(-350).setVelocityX(350).setAngle(-45);
             }
             else if (this.clavier.L.isDown) {
-                this.Orbe.create(this.player.x, this.player.y, "Orb").setScale(0.5).setVelocityY(+475);
+                this.CDF.create(this.player.x, this.player.y, "CraneDeFeu").setScale(0.85).setVelocityY(+350).setAngle(90);
             }
 
             this.CanShoot = false;
@@ -855,6 +862,10 @@ export class Chateau extends Phaser.Scene {
                 this.CanShoot = true;
             }, 100);
         }
+        this.CDF.getChildren().forEach(function (child) {
+            child.anims.play('Crananim', true);
+            //this.nombreorbes += 1
+        }, this);
         //!this.clavier.RIGHT.isDown && !this.clavier.LEFT.isDown
         //
 
@@ -1009,13 +1020,13 @@ CEFAIRESOIGNERCESTCOOL(player, Potion) {
         )
 
     }
-    enemyHit(enemy, Orbe) {
-        
-        Orbe.destroy()
-        if (enemy.HP >= 0){
+    enemyHit(enemy, CDF) {
+            
+        CDF.destroy()
+        if (enemy.HP >= 0) {
             enemy.HP -= 1;
         }
-        else if (enemy.HP <= 0){
+        else if (enemy.HP <= 0) {
             enemy.destroy()
         }
     };

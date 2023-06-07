@@ -65,7 +65,8 @@ export class Foret extends Phaser.Scene {
         this.load.spritesheet('FEU_VERT2', 'assets/Sprites/Feu_Vert32.png',
             { frameWidth: 64, frameHeight: 32 });
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
-
+        this.load.spritesheet('CraneDeFeu', 'assets/Sprites/CraneDeFeu.png',
+        { frameWidth: 64, frameHeight: 43 });
         this.load.image("PremierPlan2", "assets/Backgrounds/Background-Foret-Grotte_premier.png");
         this.load.image("SecondPlan2", "assets/Backgrounds/Background-Foret-Grotte_second.png");
         this.load.image("TroisiemePlan2", "assets/Backgrounds/Background-Foret-Grotte_troisieme.png");
@@ -201,6 +202,10 @@ export class Foret extends Phaser.Scene {
           });
 
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
+        this.CDF = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
+        this.physics.add.collider(this.CDF, Sol, function (CDF, Sol) {
+            CDF.destroy();
+        });
 
         this.Orbe = this.physics.add.group({ allowGravity: false, collideWorldBounds: false });
         this.physics.add.collider(this.Orbe, Sol, function (Orbe, Sol) {
@@ -392,7 +397,7 @@ export class Foret extends Phaser.Scene {
             child.setCollideWorldBounds(true);
             this.physics.add.collider(child, Sol);
             this.physics.add.overlap(this.player, child, this.PRENDREDESDEGATSCAFAITMAL,null,this);
-            this.physics.add.collider(this.Orbe, child, this.enemyHit,null,this);    
+            this.physics.add.collider(this.CDF, child, this.enemyHit,null,this);    
             this.physics.add.overlap(this.Scyth, child, this.enemyHitMelee,null,this);
             this.physics.add.overlap(this.ScythLeft, child, this.enemyHitMelee,null,this);
 
@@ -745,34 +750,39 @@ export class Foret extends Phaser.Scene {
         ///////////////////////////////////// ORBES ////////////////////////////////////////
 
         if (this.CanShoot == true) {
-
+    
             if (this.clavier.M.isDown && !this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x + 30, this.player.y, "Orb").setScale(0.5).setVelocityX(475);
+                this.CDF.create(this.player.x + 30, this.player.y, "CraneDeFeu").setScale(0.85).setVelocityX(350);
                 this.player.anims.play('HEROATTAQUEDROITE', true);
             }
             else if (this.clavier.K.isDown && !this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x - 30, this.player.y, "Orb").setScale(0.5).setVelocityX(- 475);
+                this.CDF.create(this.player.x - 30, this.player.y, "CraneDeFeu").setScale(0.85).setVelocityX(- 350).setFlipX(true);
                 this.player.anims.play('HEROATTAQUEGAUCHE', true);
             }
             else if (this.clavier.K.isDown && this.clavier.O.isDown) {
-                this.Orbe.create(this.player.x - 20, this.player.y - 20, "Orb").setScale(0.5).setVelocityX(- 475).setVelocityY(-475);
+                this.CDF.create(this.player.x - 20, this.player.y - 20, "CraneDeFeu").setScale(0.85).setVelocityX(- 350).setVelocityY(-350).setFlipX(true).setAngle(45);
             }
             else if (this.clavier.O.isDown && !this.clavier.M.isDown && !this.clavier.K.isDown) {
-                this.Orbe.create(this.player.x, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475);
+                this.CDF.create(this.player.x, this.player.y - 30, "CraneDeFeu").setScale(0.85).setVelocityY(-350).setAngle(-90);
             }
             else if (this.clavier.O.isDown && this.clavier.M.isDown) {
-                this.Orbe.create(this.player.x + 30, this.player.y - 30, "Orb").setScale(0.5).setVelocityY(-475).setVelocityX(475);
+                this.CDF.create(this.player.x + 30, this.player.y - 30, "CraneDeFeu").setScale(0.85).setVelocityY(-350).setVelocityX(350).setAngle(-45);
             }
             else if (this.clavier.L.isDown) {
-                this.Orbe.create(this.player.x, this.player.y, "Orb").setScale(0.5).setVelocityY(+475);
+                this.CDF.create(this.player.x, this.player.y, "CraneDeFeu").setScale(0.85).setVelocityY(+350).setAngle(90);
             }
 
             this.CanShoot = false;
 
             setTimeout(() => {
                 this.CanShoot = true;
-            }, 100);
+            }, 150);
         }
+        this.CDF.getChildren().forEach(function (child) {
+            child.anims.play('Crananim', true);
+            //this.nombreorbes += 1
+        }, this);
+
         //!this.clavier.RIGHT.isDown && !this.clavier.LEFT.isDown
         //
 
@@ -928,16 +938,16 @@ export class Foret extends Phaser.Scene {
 
     ///////////////////////////////////// FIN UPDATE //////////////////////////////////////////////////
 
-    enemyHit(enemy, Orbe) {
-
-        Orbe.destroy()
-        if (enemy.HP >= 0) {
-            enemy.HP -= 1;
-        }
-        else if (enemy.HP <= 0) {
-            enemy.destroy()
-        }
-    };
+    enemyHit(enemy, CDF) {
+            
+            CDF.destroy()
+            if (enemy.HP >= 0) {
+                enemy.HP -= 1;
+            }
+            else if (enemy.HP <= 0) {
+                enemy.destroy()
+            }
+        };
 
 
     
