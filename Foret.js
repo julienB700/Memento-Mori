@@ -66,10 +66,10 @@ export class Foret extends Phaser.Scene {
             { frameWidth: 64, frameHeight: 32 });
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
 
-        this.load.image("PremierPlan", "assets/Backgrounds/Background-Foret-Grotte_premier.png");
-        this.load.image("SecondPlan", "assets/Backgrounds/Background-Foret-Grotte_second.png");
-        this.load.image("TroisiemePlan", "assets/Backgrounds/Background-Foret-Grotte_troisieme.png");
-        this.load.image("QuatriemePlan", "assets/Backgrounds/Background-Foret-Quatrieme.png");
+        this.load.image("PremierPlan2", "assets/Backgrounds/Background-Foret-Grotte_premier.png");
+        this.load.image("SecondPlan2", "assets/Backgrounds/Background-Foret-Grotte_second.png");
+        this.load.image("TroisiemePlan2", "assets/Backgrounds/Background-Foret-Grotte_troisieme.png");
+        this.load.image("QuatriemePlan2", "assets/Backgrounds/Background-Foret-Quatrieme.png");
 
     }
 
@@ -80,10 +80,10 @@ export class Foret extends Phaser.Scene {
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
         //this.add.image(1600, 960, "Background_foret")
 
-        this.QuatriemePlan = this.add.image(1600, 960, "QuatriemePlan");
-        this.TroisiemePlan = this.add.image(1600, 960, "TroisiemePlan").setScrollFactor(0.80,1);
-        this.SecondPlan = this.add.image(1600, 960, "SecondPlan").setScrollFactor(0.90,1);
-        this.PremierPlan = this.add.image(1600, 960, "PremierPlan").setScrollFactor(0.98,1);
+        this.QuatriemePlan = this.add.image(1600, 960, "QuatriemePlan2");
+        this.TroisiemePlan = this.add.image(1600, 960, "TroisiemePlan2").setScrollFactor(0.80,1);
+        this.SecondPlan = this.add.image(1600, 960, "SecondPlan2").setScrollFactor(0.90,1);
+        this.PremierPlan = this.add.image(1600, 960, "PremierPlan2").setScrollFactor(0.98,1);
         
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
@@ -478,16 +478,11 @@ export class Foret extends Phaser.Scene {
         this.anims.create({
             key: 'RightHit',
             frames: this.anims.generateFrameNumbers('CoupDeFaux', { start: 1, end: 4 }),
-            frameRate: 10,
+            frameRate: 25,
             repeat: 0
         });
 
-        this.anims.create({
-            key: 'LeftHit',
-            frames: this.anims.generateFrameNumbers('CoupDeFauxLeft', { start: 1, end: 4 }),
-            frameRate: 10,
-            repeat: 0
-        });
+        
         ///////////////////////////////////////// ORBANIM ///////////////////////////////////////////////
 
         this.anims.create({
@@ -827,7 +822,7 @@ export class Foret extends Phaser.Scene {
             }
             this.Scyth.getChildren().forEach(function (child) {
             
-                child.anims.play('LeftHit', true);
+                child.anims.play('RightHit', true);
             
             }, this);
 

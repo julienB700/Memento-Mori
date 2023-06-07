@@ -70,9 +70,9 @@ export class Chateau extends Phaser.Scene {
         
         this.load.image("SpriteHitBox", "assets/Sprites/SpriteHitBox.png");
 
-        this.load.image("PremierPlan", "assets/Backgrounds/bgc1.png");
-        this.load.image("SecondPlan", "assets/Backgrounds/bgc2.png");
-        this.load.image("TroisiemePlan", "assets/Backgrounds/bgc3.png");
+        this.load.image("PremierPlan3", "assets/Backgrounds/bgc1.png");
+        this.load.image("SecondPlan3", "assets/Backgrounds/bgc2.png");
+        this.load.image("TroisiemePlan3", "assets/Backgrounds/bgc3.png");
         
     }
 
@@ -84,9 +84,9 @@ export class Chateau extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, 100 * 99, 99 * 32);
         
-        this.TroisiemePlan = this.add.image(1600, 1600, "TroisiemePlan");
-        this.SecondPlan = this.add.image(1600, 1600, "SecondPlan").setScrollFactor(0.85,1);
-        this.PremierPlan = this.add.image(1600, 1600, "PremierPlan").setScrollFactor(0.90,1);
+        this.TroisiemePlan = this.add.image(1600, 1600, "TroisiemePlan3");
+        this.SecondPlan = this.add.image(1600, 1600, "SecondPlan3").setScrollFactor(0.85,1);
+        this.PremierPlan = this.add.image(1600, 1600, "PremierPlan3").setScrollFactor(0.90,1);
 
         const carteDuNiveau = this.add.tilemap("Chateau");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");
@@ -140,7 +140,7 @@ export class Chateau extends Phaser.Scene {
         carteDuNiveau.getObjectLayer('Souls').objects.forEach((Soul) => {
             this.current_Soul =  this.Soul.create(Soul.x,Soul.y,'Souls')
             this.current_Soul.play('SoulsAnim')
-            this.physics.add.overlap(this.player, this.Soul, this.CEFAIRESOIGNERCESTCOOL, null, this);
+            this.physics.add.overlap(this.player, this.Soul, this.JERECUPERELAMEDESGENS, null, this);
           });
         ///////////////////////////////////////// ORBE ////////////////////////////////////////////////////////////////////
 
@@ -542,12 +542,6 @@ export class Chateau extends Phaser.Scene {
             repeat: 0
         });
 
-        this.anims.create({
-            key: 'LeftHit',
-            frames: this.anims.generateFrameNumbers('CoupDeFaux', { start: 0, end: 7 }),
-            frameRate: 25,
-            repeat: 0
-        });
 
         ///////////////////////////////////////// ORBANIM ///////////////////////////////////////////////
 
@@ -645,8 +639,6 @@ export class Chateau extends Phaser.Scene {
 
 //{ x: 36 * 32, y: 38 * 32 }
     update(time, delta) {
-        //this.transitionBig.anims.play("TransiBigAnim")
-
         this.mespointsdevieText.setText(this.mespointsdevie);
         this.SoulsText.setText(this.SoulsText);
 
@@ -912,7 +904,7 @@ export class Chateau extends Phaser.Scene {
             }
             this.Scyth.getChildren().forEach(function (child) {
             
-                child.anims.play('LeftHit', true);
+                child.anims.play('RightHit', true);
             
             }, this);
 
