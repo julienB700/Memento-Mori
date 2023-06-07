@@ -61,8 +61,8 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 237, frameHeight: 86 });
         this.load.spritesheet('CoupDeFaux', 'assets/Sprites/ScytheHit.png',
             { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
-            { frameWidth: 64, frameHeight: 64 });
+        //this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
+        //    { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
         this.load.spritesheet('FEU_VERT2', 'assets/Sprites/Feu_Vert32.png',
@@ -544,7 +544,7 @@ export class Chateau extends Phaser.Scene {
 
         this.anims.create({
             key: 'LeftHit',
-            frames: this.anims.generateFrameNumbers('CoupDeFauxLeft', { start: 0, end: 7 }),
+            frames: this.anims.generateFrameNumbers('CoupDeFaux', { start: 0, end: 7 }),
             frameRate: 25,
             repeat: 0
         });
@@ -631,6 +631,9 @@ export class Chateau extends Phaser.Scene {
         this.MyInterface.body.allowGravity = false;
         this.cameras.main.zoom = 1;
 
+        this.MyInterfaceSouls = this.physics.add.sprite(30, 120, "Souls").setScale(1).setScrollFactor(0);
+        this.MyInterfaceSouls.body.allowGravity = false;
+        this.MyInterfaceSouls.anims.play('SoulsAnim', true);
     }
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
@@ -873,10 +876,10 @@ export class Chateau extends Phaser.Scene {
                 
             if (this.clavier.P.isDown && !this.clavier.Q.isDown) {
                 if (this.clavier.D.isDown) {
-                    this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux")
+                    this.Scyth.create(this.player.x + 50, this.player.y, "CoupDeFaux");
                     var musique = this.sound.add('Attack', { loop: false });
                     musique.play();
-                    console.log("coupdroit")
+                    console.log("coupdroit");
                 }
                 this.CanHitMelee = false
                 setTimeout(() => {
@@ -892,7 +895,7 @@ export class Chateau extends Phaser.Scene {
     
             if (this.clavier.P.isDown && !this.clavier.D.isDown) {
                 if (this.clavier.Q.isDown) {
-                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFauxLeft")
+                    this.Scyth.create(this.player.x - 50, this.player.y, "CoupDeFaux");
                     var musique = this.sound.add('Attack', { loop: false });
                     musique.play();
                     console.log("coupgauche")

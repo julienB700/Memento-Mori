@@ -536,7 +536,9 @@ export class Village extends Phaser.Scene {
         this.MyInterface = this.physics.add.sprite(130, 60, "MyInterface").setScale(1).setScrollFactor(0);
         this.MyInterface.body.allowGravity = false;
         this.cameras.main.zoom = 1;
-
+        this.MyInterfaceSouls = this.physics.add.sprite(30, 120, "Souls").setScale(1).setScrollFactor(0);
+        this.MyInterfaceSouls.body.allowGravity = false;
+        this.MyInterfaceSouls.anims.play('SoulsAnim', true);
 
         
     }
