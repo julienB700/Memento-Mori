@@ -84,9 +84,9 @@ export class Chateau extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, 100 * 99, 99 * 32);
         
-        this.TroisiemePlan = this.add.image(3200, 3200, "TroisiemePlan").setScrollFactor(0.80,1);
-        this.SecondPlan = this.add.image(3200, 3200, "SecondPlan").setScrollFactor(0.90,1);
-        this.PremierPlan = this.add.image(3200, 3200, "PremierPlan").setScrollFactor(0.98,1);
+        this.TroisiemePlan = this.add.image(1600, 1600, "TroisiemePlan");
+        this.SecondPlan = this.add.image(1600, 1600, "SecondPlan").setScrollFactor(0.85,1);
+        this.PremierPlan = this.add.image(1600, 1600, "PremierPlan").setScrollFactor(0.90,1);
 
         const carteDuNiveau = this.add.tilemap("Chateau");
         const tileset = carteDuNiveau.addTilesetImage("tileset", "phaser_assets");

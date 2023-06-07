@@ -845,23 +845,13 @@ export class Foret extends Phaser.Scene {
             //    this.player.clearTint();
             //}
         }
-        //JERECUPERELAMEDESGENS(Soul){
-        //    this.messouls += 1;
-        //    Soul.destroy();
-        //    //if (this.messouls == 5){
-        //    //    
-        //    //}
-//
-        //
-//
-        //}
+        
     
     PRENDREDESDEGATSCAFAITMAL(mespointsdevie, enemy) {
         if (!this.player_invulnerable) {
             this.player.setTint(0xff0000);
             this.mespointsdevie -= 1;
             this.cameras.main.shake(100, 0.025);
-            //this.GetHit = true; 
             this.player_invulnerable = true;
             if (this.mespointsdevie === 4) {
                 this.MyInterface.anims.play('vie4', true)
@@ -922,6 +912,22 @@ export class Foret extends Phaser.Scene {
                 }, 500);
             }
             )
+        }
+
+        JERECUPERELAMEDESGENS(player, Soul){
+            this.messouls += 1;
+            Soul.destroy();
+            this.player.setTint(0x9900FF);
+            if (this.messouls == 5){
+                this.mespointsdevie += 1;
+            }
+            this.sleep(100).then(() => {
+                setTimeout(() => {
+                    this.player.clearTint();
+                }, 500);
+            }
+            )
+
         }
 
     sleep = (milliseconds) => {

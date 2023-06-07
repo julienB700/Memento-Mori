@@ -72,6 +72,9 @@ export class Village extends Phaser.Scene {
         this.load.spritesheet ('Scythpickup', 'assets/Sprites/ScythePickup.png',
             {frameWidth: 64, frameHeight: 64 });
 
+        this.load.image("PremierPlan", "assets/Backgrounds/bgv1.png");
+        this.load.image("SecondPlan", "assets/Backgrounds/bgv2.png");
+        this.load.image("TroisiemePlan", "assets/Backgrounds/bgv3.png");
         
     }
 
@@ -79,8 +82,13 @@ export class Village extends Phaser.Scene {
 
         this.clavier = this.input.keyboard.createCursorKeys('up,down,left,right');
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
-        this.add.image(800, 800, "Background_Village");
+       
         this.physics.world.setBounds(0, 0, 50*32, 50*32);
+
+
+        this.TroisiemePlan = this.add.image(800, 800, "TroisiemePlan");
+        this.SecondPlan = this.add.image(800, 800, "SecondPlan").setScrollFactor(0.85,1);
+        this.PremierPlan = this.add.image(800, 800, "PremierPlan").setScrollFactor(0.90,1);
 
         var musique = this.sound.add('Village2', { loop: false });
         // Joue la musique
