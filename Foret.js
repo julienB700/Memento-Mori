@@ -88,10 +88,8 @@ export class Foret extends Phaser.Scene {
         
         this.physics.world.setBounds(0, 0, 100 * 32, 60 * 32);
 
-        //var musique = this.sound.add('Village', { loop: false });
-        //// Joue la musique
-        //musique.play();
-
+        this.VillageMusique1 = this.sound.add('Village', { loop: true });
+        this.VillageMusique1.play();
 
         this.anims.create({
             key: 'Feu_vert',
@@ -579,6 +577,7 @@ export class Foret extends Phaser.Scene {
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
     PROCHAINESCENE() {
+        this.VillageMusique1.stop();
         this.scene.start('Chateau', { x: 0 * 32, y: 38 * 32 });
     }
 
@@ -871,6 +870,7 @@ export class Foret extends Phaser.Scene {
                 this.player.setTint(0xff0000);
 
                 this.scene.start("Foret")
+                this.VillageMusique1.stop();
             }
 
             this.sleep(100).then(() => {

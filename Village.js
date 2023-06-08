@@ -81,7 +81,7 @@ export class Village extends Phaser.Scene {
     }
 
     create() {
-
+        
         this.clavier = this.input.keyboard.createCursorKeys('up,down,left,right');
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
        
@@ -92,9 +92,9 @@ export class Village extends Phaser.Scene {
         this.SecondPlan = this.add.image(800, 800, "SecondPlan1").setScrollFactor(0.85,1);
         this.PremierPlan = this.add.image(800, 800, "PremierPlan1").setScrollFactor(0.90,1);
 
-        var musique = this.sound.add('Village2', { loop: true });
-        // Joue la musique
-        musique.play();
+        this.VillageMusique = this.sound.add('Village2', { loop: true });
+        this.VillageMusique.play();
+
         // Définit la musique en pause
         var musique = this.sound.add('Deathtalk', { loop: false });
         // Joue la musique
@@ -552,6 +552,7 @@ export class Village extends Phaser.Scene {
 
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
     PROCHAINESCENE(player, TRANSITION){
+        this.VillageMusique.stop();
         this.scene.start('Foret', {x: 1 * 32, y: 26 * 32});
         }
 
@@ -820,9 +821,9 @@ export class Village extends Phaser.Scene {
                 }
     
                 if (this.mespointsdevie === 0) {
-                    this.player.setTint(0xff0000);
-    
                     this.scene.start("Village")
+                    this.VillageMusique.stop();
+
                 }
     
                 this.sleep(100).then(() => {

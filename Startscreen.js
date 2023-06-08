@@ -9,6 +9,7 @@ export class Menu extends Phaser.Scene {
     preload() {
         this.load.audio('Intro', 'assets/Musics/Intro2.mp3');
         this.load.audio('HeartBeat', 'assets/Audio/Heartbeat.wav');
+        this.load.audio('Village2', 'assets/Musics/Combat2.mp3');
 
         this.load.image('1P', 'Startscreen/MenuScreenPremierPlan.png');
         this.load.image('3P', 'Startscreen/MenuScreenthirdPlan.png');
@@ -21,13 +22,14 @@ export class Menu extends Phaser.Scene {
     }
 
     create() {
+        //musique = this.sound.add('Village2', { loop: true });
         this.Son_HeartBeat = this.sound.add('HeartBeat', { loop: false });
         //this.pointer = setOrigin(0.5,0.5)
 
-        var musique = this.sound.add('Intro', { loop: false });
-            musique.play();
+        this.IntroMusique = this.sound.add('Intro', { loop: false });
+        this.IntroMusique.play();
 
-
+        
         this.fourthplan = this.add.image(WIDTH / 2, HEIGHT / 2, "4P").setScale(1.2);
         this.thirdplan = this.add.image(WIDTH / 2, HEIGHT / 2, "3P").setScale(1.2);
         this.titre = this.add.image(WIDTH / 2, HEIGHT / 2, "titre").setScale(1.1);
@@ -35,9 +37,10 @@ export class Menu extends Phaser.Scene {
         var button = this.add.sprite(449 ,270, 'Button1');
         button.setInteractive();
         button.once('pointerdown', () => {
+            
             this.Son_HeartBeat.play();
             this.Startgame();
-            musique.stop();
+            this.IntroMusique.stop();
             
         });
         var button = this.add.sprite(400 ,340, 'Button2')

@@ -27,8 +27,9 @@ export class Chateau extends Phaser.Scene {
         this.load.tilemapTiledJSON("Chateau", "assets/maps/Chateau.json");
         this.load.image("Background_Chateau", "assets/Backgrounds/Background_Chateau.png");
         this.load.image("phaser_assets", "assets/maps/tileset1.png");
-        this.load.audio('Village', 'assets/Musics/Village.mp3')
+        this.load.audio('Village2', 'assets/Musics/Village.mp3')
         this.load.audio('Attack', 'assets/Audio/Attacksound.wav')
+        this.load.audio('BOSSMUSIC', 'assets/Musics/Combat1.mp3')
 
         this.load.spritesheet('Souls', 'assets/Sprites/SoulsPickups.png',
             { frameWidth: 32, frameHeight: 32 });
@@ -63,8 +64,6 @@ export class Chateau extends Phaser.Scene {
             { frameWidth: 237, frameHeight: 86 });
         this.load.spritesheet('CoupDeFaux', 'assets/Sprites/ScytheHit.png',
             { frameWidth: 64, frameHeight: 64 });
-        //this.load.spritesheet('CoupDeFauxLeft', 'assets/Sprites/ScytheHitLeft.png',
-        //    { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('FEU_VERT', 'assets/Sprites/Feu_Vert.png',
             { frameWidth: 32, frameHeight: 30*32 });
         this.load.spritesheet('FEU_VERT2', 'assets/Sprites/Feu_Vert32.png',
@@ -85,7 +84,12 @@ export class Chateau extends Phaser.Scene {
         this.clavier = this.input.keyboard.addKeys('P,K,L,M,Z,O,Q,D,E,SPACE,SHIFT,UP,DOWN,LEFT,RIGHT');
 
         this.physics.world.setBounds(0, 0, 100 * 99, 99 * 32);
-        
+
+        this.BOSSMUSIC1 = this.sound.add('BOSSMUSIC', { loop: true });
+        this.VillageMusique1 = this.sound.add('Village2', { loop: true });
+        this.VillageMusique1.play();
+
+
         this.TroisiemePlan = this.add.image(1600, 1600, "TroisiemePlan3");
         this.SecondPlan = this.add.image(1600, 1600, "SecondPlan3").setScrollFactor(0.85,1);
         this.PremierPlan = this.add.image(1600, 1600, "PremierPlan3").setScrollFactor(0.90,1);
@@ -641,6 +645,8 @@ export class Chateau extends Phaser.Scene {
     /////////////////////////// FIN DU CREATE ////////////////////////////////////////
 
     PROCHAINESCENE(){
+        this.VillageMusique1.stop();
+        //this.BOSSMUSIC1.play();
         this.scene.start('Chateau', {x: 36 * 32, y: 38 * 32});
         }
 
@@ -952,8 +958,9 @@ export class Chateau extends Phaser.Scene {
             
             if(this.mespointsdevie === 0){
                 this.player.setTint( 0xff0000 );
-                
                 this.scene.start("Chateau")
+                this.VillageMusique1.stop();
+                //this.BOSSMUSIC1.stop();
             }
             
             this.sleep(100).then(() => {
